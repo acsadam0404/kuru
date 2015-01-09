@@ -1,0 +1,6 @@
+// Import all the mixins for this theme
+@import "kurutheme";
+
+.kurutheme {
+  @include kurutheme;
+}

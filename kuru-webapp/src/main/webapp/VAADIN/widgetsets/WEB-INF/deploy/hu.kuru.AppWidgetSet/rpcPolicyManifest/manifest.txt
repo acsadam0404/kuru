@@ -1,0 +1,2 @@
+# Module hu.kuru.AppWidgetSet
+# RPC service class, partial path of RPC policy file
