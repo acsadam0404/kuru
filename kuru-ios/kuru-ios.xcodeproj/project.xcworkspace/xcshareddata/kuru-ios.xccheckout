@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>56C593BB-EA52-4BB9-8F61-F0B7DACDB9C6</string>
+	<key>IDESourceControlProjectName</key>
+	<string>kuru-ios</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>462987D6D14631D4C9BE673A03184A5630264003</key>
+		<string>https://github.com/acsadam0404/kuru</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>kuru-ios/kuru-ios.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>462987D6D14631D4C9BE673A03184A5630264003</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/acsadam0404/kuru</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>462987D6D14631D4C9BE673A03184A5630264003</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>462987D6D14631D4C9BE673A03184A5630264003</string>
+			<key>IDESourceControlWCCName</key>
+			<string>kuru</string>
+		</dict>
+	</array>
+</dict>
+</plist>
