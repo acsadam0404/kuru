@@ -1,6 +1,6 @@
 package hu.kuru;
 
-import hu.kuru.security.Authentication;
+import hu.kuru.vaadin.security.Authentication;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

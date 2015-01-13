@@ -1,4 +1,4 @@
-package hu.kuru.user;
+package hu.kuru;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;

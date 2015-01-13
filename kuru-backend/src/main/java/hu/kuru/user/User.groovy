@@ -2,6 +2,7 @@ package hu.kuru.user
 
 import groovy.transform.EqualsAndHashCode
 import hu.kuru.BaseEntity
+import hu.kuru.ServiceLocator;
 
 import javax.persistence.Entity
 import javax.persistence.Table

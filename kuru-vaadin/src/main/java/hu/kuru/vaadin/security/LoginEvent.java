@@ -1,4 +1,4 @@
-package hu.kuru.security;
+package hu.kuru.vaadin.security;
 
 public class LoginEvent {
 	private final String username;

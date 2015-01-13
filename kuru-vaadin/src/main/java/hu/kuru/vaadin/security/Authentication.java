@@ -1,4 +1,4 @@
-package hu.kuru.security;
+package hu.kuru.vaadin.security;
 
 import com.vaadin.server.VaadinSession;
 

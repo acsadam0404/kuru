@@ -1,7 +1,7 @@
 package hu.kuru;
 
-import hu.kuru.security.Authentication;
-import hu.kuru.security.LoginEvent;
+import hu.kuru.vaadin.security.Authentication;
+import hu.kuru.vaadin.security.LoginEvent;
 
 import java.util.Locale;
 

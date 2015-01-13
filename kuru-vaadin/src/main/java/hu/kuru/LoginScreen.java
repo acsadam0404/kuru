@@ -1,6 +1,6 @@
 package hu.kuru;
 
-import hu.kuru.security.Authentication;
+import hu.kuru.vaadin.security.Authentication;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
