@@ -36,8 +36,6 @@ class Bill extends BaseEntity {
 	Date closeDate
 	@NotNull
 	String currency
-	@NotNull
-	boolean closed
 	
 	static List<Bill> findByCustomer(long customerId) {
 		repo.findByCustomer(customerId)

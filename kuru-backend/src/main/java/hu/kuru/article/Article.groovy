@@ -3,6 +3,7 @@ package hu.kuru.article
 import groovy.transform.EqualsAndHashCode
 import hu.kuru.BaseEntity
 import hu.kuru.ServiceLocator;
+import hu.kuru.user.UserRepo;
 
 import javax.persistence.Entity
 import javax.persistence.Table
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Configurable
 @Table(name = "article")
 @EqualsAndHashCode(includes = ["code"])
 class Article extends BaseEntity {
+	
 	private static ArticleRepo repo
 	
 		Article() {
@@ -23,7 +25,7 @@ class Article extends BaseEntity {
 				repo = ServiceLocator.getBean(ArticleRepo)
 			}
 		}
-
+	
 		@NotNull
 		String code
 		@NotNull

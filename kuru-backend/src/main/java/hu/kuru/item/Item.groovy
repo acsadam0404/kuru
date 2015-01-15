@@ -37,7 +37,7 @@ class Item extends BaseEntity {
 	@NotNull
 	long amount
 	@NotNull
-	boolean closed
+	Date outDate
 	
 	static List<Item> findByBill(long billId) {
 		repo.findByBill(billId)
