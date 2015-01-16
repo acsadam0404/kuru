@@ -1,29 +1,22 @@
 package hu.kuru;
 
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.TextField;
 
 
 public class Menu extends CustomComponent {
+
+	private static final long serialVersionUID = 1L;
+
 	public Menu() {
-		MenuBar menubar = new MenuBar();
-		menubar.addItem("Home", new Command() {
-
-			@Override
-			public void menuSelected(MenuItem selectedItem) {
-				MainUI.getCurrent().getNavigator().navigateTo(HomeView.NAME);
-			}
-		});
-		menubar.addItem("Other", new Command() {
-
-			@Override
-			public void menuSelected(MenuItem selectedItem) {
-				MainUI.getCurrent().getNavigator().navigateTo(OtherView.NAME);
-			}
-		});
-		setCompositionRoot(menubar);
+		VerticalLayout main = new VerticalLayout();
+		main.addComponent(new Label("menü"));
+		main.setStyleName("menu");
+		setCompositionRoot(main);
 	}
 }

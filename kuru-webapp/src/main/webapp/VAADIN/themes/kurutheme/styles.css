@@ -12189,3 +12189,7 @@ div.v-layout.v-horizontal.v-widget {
 .v-ios7 .kurutheme .v-ui[width-range~="0-800px"] .view-content, .v-ios8 .kurutheme .v-ui[width-range~="0-800px"] .view-content {
 	border-radius: 0;
 }
+
+.kurutheme .v-vertical-menu {
+	background-color: 4b4b4b;
+}

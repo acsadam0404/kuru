@@ -20,7 +20,7 @@ public class HomeView extends AbstractView implements View {
 
 
 	public HomeView() {
-
+		
 	}
 
 

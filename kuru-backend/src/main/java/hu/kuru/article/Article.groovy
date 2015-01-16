@@ -17,46 +17,44 @@ import org.springframework.beans.factory.annotation.Configurable
 @Table(name = "article")
 @EqualsAndHashCode(includes = ["code"])
 class Article extends BaseEntity {
-	
+
 	private static ArticleRepo repo
-	
-		Article() {
-			if (ServiceLocator.loaded && !repo)  {
-				repo = ServiceLocator.getBean(ArticleRepo)
-			}
+
+	Article() {
+		if (ServiceLocator.loaded && !repo)  {
+			repo = ServiceLocator.getBean(ArticleRepo)
 		}
-	
-		@NotNull
-		String code
-		@NotNull
-		String name
-		@NotNull
-		long price
-		@NotNull
-		String icon
-		@NotNull
-		String comment
-	
-		static Article findByCode(String code) {
-			repo.findByCode(code)
-		}
-		
-		static Article findByName(String name) {
-			repo.findByName(name)
-		}
-		
-		static List<Article> findAll() {
-			repo.findAll();
-		}
-	
-		Article save() {
-			repo.save(this)
-		}
-	
-		@Override
-		String toString() {
-			code + ", " + name + ", " + price + ", " + comment
-		}
-	
-	
+	}
+
+	@NotNull
+	String code
+	@NotNull
+	String name
+	@NotNull
+	long price
+	@NotNull
+	String icon
+	@NotNull
+	String comment
+
+	static Article findByCode(String code) {
+		repo.findByCode(code)
+	}
+
+	static Article findByName(String name) {
+		repo.findByName(name)
+	}
+
+	static List<Article> findAll() {
+		repo.findAll();
+	}
+
+	Article save() {
+		repo.save(this)
+	}
+
+	@Override
+	String toString() {
+		code + ", " + name + ", " + price + ", " + comment
+	}
 }

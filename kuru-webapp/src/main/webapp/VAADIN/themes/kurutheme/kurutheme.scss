@@ -10,4 +10,9 @@ $valo-menu-background-color: #414B56;
 @mixin kurutheme {
   @include valo;
   @include common;
+  
+  .v-vertical-menu { 
+  	background-color: 4b4b4b;
+  }
+  
 }

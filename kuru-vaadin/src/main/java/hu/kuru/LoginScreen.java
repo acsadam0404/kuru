@@ -12,7 +12,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -23,13 +22,13 @@ public class LoginScreen extends CustomComponent {
 
 	private Authentication authentication;
 
-
 	public LoginScreen(Authentication authentication) {
 		this.authentication = authentication;
 		setSizeFull();
-
+		
 		Component loginForm = buildLoginForm();
 		VerticalLayout root = new VerticalLayout();
+		root.setSizeFull();
 		root.addComponent(loginForm);
 		root.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 		setCompositionRoot(root);
@@ -42,31 +41,36 @@ public class LoginScreen extends CustomComponent {
 		Responsive.makeResponsive(loginPanel);
 		loginPanel.addStyleName("login-panel");
 
+		CheckBox box = new CheckBox("Emlékezz rám", true);
+		
 		loginPanel.addComponent(buildFields());
-		loginPanel.addComponent(new CheckBox("Remember me", true));
+		loginPanel.addComponent(box);
+		loginPanel.setComponentAlignment(box, Alignment.MIDDLE_CENTER);
 		return loginPanel;
 	}
 
 	private Component buildFields() {
-		HorizontalLayout fields = new HorizontalLayout();
+		VerticalLayout fields = new VerticalLayout();
 		fields.setSpacing(true);
 		fields.addStyleName("fields");
 
-		final TextField username = new TextField("Username");
+		final TextField username = new TextField();
+		username.setInputPrompt("Felhasználónév");
 		username.setIcon(FontAwesome.USER);
 		username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-		final PasswordField password = new PasswordField("Password");
+		final PasswordField password = new PasswordField();
+		password.setInputPrompt("Jelszó");
 		password.setIcon(FontAwesome.LOCK);
 		password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-		final Button signin = new Button("Sign In");
+		final Button signin = new Button("Bejelentkezés");
 		signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		signin.setClickShortcut(KeyCode.ENTER);
 		signin.focus();
 
 		fields.addComponents(username, password, signin);
-		fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
+		fields.setComponentAlignment(signin, Alignment.MIDDLE_CENTER);
 
 		signin.addClickListener(new ClickListener() {
 			@Override

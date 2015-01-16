@@ -63,8 +63,11 @@ public class MainUI extends UI {
 		VerticalLayout content = new VerticalLayout();
 		setNavigator(setupNavigator(content));
 		content.setSizeFull();
-		main.addComponent(new Menu());
+		Menu menu = new Menu();
+		main.addComponent(menu);
 		main.addComponent(content);
+		menu.setWidth("200px");
+		main.setExpandRatio(content, 1.0f);
 
 		getNavigator().navigateTo(HomeView.NAME);
 		setContent(main);
