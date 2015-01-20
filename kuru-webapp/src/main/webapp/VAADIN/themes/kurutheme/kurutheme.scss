@@ -1,3 +1,8 @@
+$v-layout-margin-top: 10px; 
+$v-layout-margin-right: 10px; 
+$v-layout-margin-bottom: 10px; 
+$v-layout-margin-left: 10px;
+
 @import "../valo/valo";
 @import "common";
 
@@ -10,9 +15,58 @@ $valo-menu-background-color: #414B56;
 @mixin kurutheme {
   @include valo;
   @include common;
-  
-  .v-vertical-menu { 
-  	background-color: 4b4b4b;
-  }
-  
+
+.v-panel-content-menu { background-color: #4b4b4b; }
+
+.v-panel-caption-menu {
+	background: #1876da;
+	text-transform: uppercase;
+	text-align: center;
+	font-size: 24px;
+	color: white;
+}
+
+.v-panel-caption-to-be-issued {
+	text-transform: uppercase;
+	font-size: 30px;
+}
+
+.v-vertical-articlebox {
+	margin: 5px 5px 5px 5px;
+}
+
+.v-panel-itembox > div > [class*="-caption"] {
+	margin: 12px 12px;
+}
+
+.v-panel-caption-itembox {
+	font-size: 20px;
+}
+
+.v-panel-content-itembox {
+	margin-top: -60px;
+}
+
+.v-label-box { 
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.v-label-box-title { 
+	font-size: 30px;
+}
+
+.v-label-title {
+	text-transform: uppercase;
+	font-size: 30px;
+}
+
+.v-label-justify {
+	text-align: justify;
+}
+
+.v-label-box-label { 
+	font-size: 24px;
+}
+
 }

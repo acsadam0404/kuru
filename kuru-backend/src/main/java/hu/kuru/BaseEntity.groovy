@@ -1,14 +1,11 @@
 package hu.kuru
 ;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Column
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
 abstract class BaseEntity implements Serializable {
@@ -17,10 +14,14 @@ abstract class BaseEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(unique = true)
-	protected long id
+	protected Long id
 
-	long getId() {
+	Long getId() {
 		return id
+	}
+
+	void setId(Long id) {
+		this.id = id
 	}
 
 	@Override
@@ -33,7 +34,7 @@ abstract class BaseEntity implements Serializable {
 		}
 		return false
 	}
-	
+
 	@Override
 	public int hashCode() {
 		if (id != 0) {
@@ -41,7 +42,7 @@ abstract class BaseEntity implements Serializable {
 		}
 		return super.hashCode()
 	}
-	
+
 	@Override
 	String toString() {
 		return getClass().getSimpleName() + "(" + id + ")";

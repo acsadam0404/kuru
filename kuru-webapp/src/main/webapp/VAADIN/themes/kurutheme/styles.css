@@ -1811,19 +1811,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .kurutheme .v-margin-top {
-	padding-top: 37px;
+	padding-top: 10px;
 }
 
 .kurutheme .v-margin-right {
-	padding-right: 37px;
+	padding-right: 10px;
 }
 
 .kurutheme .v-margin-bottom {
-	padding-bottom: 37px;
+	padding-bottom: 10px;
 }
 
 .kurutheme .v-margin-left {
-	padding-left: 37px;
+	padding-left: 10px;
 }
 
 .kurutheme .v-spacing {
@@ -3865,27 +3865,27 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .kurutheme [class*="margin-top"] > tbody > [class*="firstrow"] > td {
-	padding-top: 37px;
+	padding-top: 10px;
 }
 
 .kurutheme [class*="margin-bottom"] > tbody > [class*="lastrow"] > td {
-	padding-bottom: 37px;
+	padding-bottom: 10px;
 }
 
 .kurutheme [class*="margin-left"] > tbody > [class*="row"] > [class*="captioncell"] {
-	padding-left: 37px;
+	padding-left: 10px;
 }
 
 .kurutheme [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h2, .kurutheme [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h3, .kurutheme [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h4 {
-	left: 37px;
+	left: 10px;
 }
 
 .kurutheme [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"] {
-	padding-right: 37px;
+	padding-right: 10px;
 }
 
 .kurutheme [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h2, .kurutheme [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h3, .kurutheme [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h4 {
-	right: 37px;
+	right: 10px;
 }
 
 .kurutheme .v-formlayout > table {
@@ -6220,19 +6220,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .kurutheme .v-gridlayout-margin-top {
-	padding-top: 37px;
+	padding-top: 10px;
 }
 
 .kurutheme .v-gridlayout-margin-bottom {
-	padding-bottom: 37px;
+	padding-bottom: 10px;
 }
 
 .kurutheme .v-gridlayout-margin-left {
-	padding-left: 37px;
+	padding-left: 10px;
 }
 
 .kurutheme .v-gridlayout-margin-right {
-	padding-right: 37px;
+	padding-right: 10px;
 }
 
 .kurutheme .v-gridlayout-spacing-on {
@@ -12190,6 +12190,57 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0;
 }
 
-.kurutheme .v-vertical-menu {
-	background-color: 4b4b4b;
+.kurutheme .v-panel-content-menu {
+	background-color: #4b4b4b;
+}
+
+.kurutheme .v-panel-caption-menu {
+	background: #1876da;
+	text-transform: uppercase;
+	text-align: center;
+	font-size: 24px;
+	color: white;
+}
+
+.kurutheme .v-panel-caption-to-be-issued {
+	text-transform: uppercase;
+	font-size: 30px;
+}
+
+.kurutheme .v-vertical-articlebox {
+	margin: 5px 5px 5px 5px;
+}
+
+.kurutheme .v-panel-itembox > div > [class*="-caption"] {
+	margin: 12px 12px;
+}
+
+.kurutheme .v-panel-caption-itembox {
+	font-size: 20px;
+}
+
+.kurutheme .v-panel-content-itembox {
+	margin-top: -60px;
+}
+
+.kurutheme .v-label-box {
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.kurutheme .v-label-box-title {
+	font-size: 30px;
+}
+
+.kurutheme .v-label-title {
+	text-transform: uppercase;
+	font-size: 30px;
+}
+
+.kurutheme .v-label-justify {
+	text-align: justify;
+}
+
+.kurutheme .v-label-box-label {
+	font-size: 24px;
 }

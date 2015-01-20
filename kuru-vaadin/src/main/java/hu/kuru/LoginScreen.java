@@ -17,17 +17,18 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-
 public class LoginScreen extends CustomComponent {
 
 	private Authentication authentication;
 
+	private VerticalLayout root;
+
 	public LoginScreen(Authentication authentication) {
 		this.authentication = authentication;
 		setSizeFull();
-		
+
 		Component loginForm = buildLoginForm();
-		VerticalLayout root = new VerticalLayout();
+		root = new VerticalLayout();
 		root.setSizeFull();
 		root.addComponent(loginForm);
 		root.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
@@ -42,7 +43,7 @@ public class LoginScreen extends CustomComponent {
 		loginPanel.addStyleName("login-panel");
 
 		CheckBox box = new CheckBox("Emlékezz rám", true);
-		
+
 		loginPanel.addComponent(buildFields());
 		loginPanel.addComponent(box);
 		loginPanel.setComponentAlignment(box, Alignment.MIDDLE_CENTER);
@@ -67,7 +68,7 @@ public class LoginScreen extends CustomComponent {
 		final Button signin = new Button("Bejelentkezés");
 		signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		signin.setClickShortcut(KeyCode.ENTER);
-		signin.focus();
+		username.focus();
 
 		fields.addComponents(username, password, signin);
 		fields.setComponentAlignment(signin, Alignment.MIDDLE_CENTER);

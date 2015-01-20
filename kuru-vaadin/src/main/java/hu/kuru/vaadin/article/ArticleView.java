@@ -1,6 +1,7 @@
-package hu.kuru;
+package hu.kuru.vaadin.article;
 
-import hu.kuru.vaadin.security.Authentication;
+import hu.kuru.AbstractView;
+import hu.kuru.ServiceLocator;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -9,23 +10,17 @@ import ru.xpoft.vaadin.VaadinView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Label;
-
 
 @Component
 @Scope("prototype")
-@VaadinView(HomeView.NAME)
-public class HomeView extends AbstractView implements View {
-	public static final String NAME = "";
+@VaadinView(ArticleView.NAME)
+public class ArticleView extends AbstractView implements View {
 
-
-	public HomeView() {
-		
-	}
-
+	public static final String NAME = "article";
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		setCompositionRoot(new Label("Hello " + Authentication.getUser()));
+		setCompositionRoot(ServiceLocator.getBean(ArticleComp.class));
 	}
+
 }

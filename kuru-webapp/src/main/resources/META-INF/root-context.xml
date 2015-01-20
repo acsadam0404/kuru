@@ -5,4 +5,10 @@
 	<context:annotation-config />
 	<context:component-scan base-package="hu.kuru" />
 
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename"
+			value="classpath:/locales/messages" /> 
+	</bean>
+
 </beans>

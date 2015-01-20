@@ -2,16 +2,11 @@ package hu.kuru.article
 
 import groovy.transform.EqualsAndHashCode
 import hu.kuru.BaseEntity
-import hu.kuru.ServiceLocator;
-import hu.kuru.user.UserRepo;
+import hu.kuru.ServiceLocator
 
 import javax.persistence.Entity
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
-
-import org.springframework.beans.factory.annotation.Autowire
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Configurable
 
 @Entity
 @Table(name = "article")
@@ -34,8 +29,9 @@ class Article extends BaseEntity {
 	long price
 	@NotNull
 	String icon
+	String description
 	@NotNull
-	String comment
+	boolean active
 
 	static Article findByCode(String code) {
 		repo.findByCode(code)
@@ -45,8 +41,24 @@ class Article extends BaseEntity {
 		repo.findByName(name)
 	}
 
+	static Article findOne(Long id) {
+		repo.findOne(id)
+	}
+
 	static List<Article> findAll() {
 		repo.findAll();
+	}
+
+	static List<Article> findAllActive() {
+		repo.findAllActive()
+	}
+
+	static Boolean existName(String name) {
+		repo.existName(name)
+	}
+
+	static Boolean existCode(String code) {
+		repo.existCode(code)
 	}
 
 	Article save() {

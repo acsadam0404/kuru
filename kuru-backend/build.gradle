@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'application'
+ 
+//the naming of this artifact
+group = 'com.mulesoft.support'
+version = '1.0'
+ 
+//dependencies versions
+ext.muleVersion = '3.4.1'
+ext.springVersion = '3.2.1.RELEASE'
+ext.sfdcVersion = '5.3.4'
+ext.groovyVersion = '1.8.6'
+ 
+ 
+//dependencies declaration
+dependencies {
+	compile group: 'org.mule', name: 'mule-core', version: muleVersion
+	compile group: 'org.mule.modules', name: 'mule-module-spring-config', version: muleVersion
+	compile group: 'org.mule.modules', name: 'mule-module-devkit-support', version: muleVersion
+	compile group: 'org.springframework', name: 'spring-context', version: springVersion
+	compile group: 'org.mule.modules', name: 'mule-module-sfdc', version: sfdcVersion
+	compile group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
+}
+ 
+//application properties
+mainClassName = 'com.mulesoft.support.App'
+ 
+ 
+//repositories
+repositories {
+	mavenCentral()
+ 
+	mavenLocal()
+ 
+	maven {
+		url "https://repository-master.mulesoft.org/nexus/content/repositories/public/"
+	}
+ 
+	maven {
+		url "https://repository.jboss.org/nexus/content/repositories/"
+	}
+}
