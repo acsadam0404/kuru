@@ -35,7 +35,7 @@ class Bill extends BaseEntity {
 	@NotNull
 	String currency
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bill")
-	List<Item> itemList
+	List<Item> items
 
 	static List<Bill> findByCustomer(long customerId) {
 		repo.findByCustomer(customerId)
@@ -43,5 +43,9 @@ class Bill extends BaseEntity {
 
 	static Long countOpenBills() {
 		repo.countOpenBills()
+	}
+
+	Bill save() {
+		repo.save(this)
 	}
 }

@@ -1,9 +1,12 @@
 package hu.kuru.vaadin.article;
 
+import hu.kuru.UIEventBus;
 import hu.kuru.article.Article;
+import hu.kuru.eventbus.ArticleSelectedEvent;
+import hu.kuru.eventbus.EventBusAttachListener;
+import hu.kuru.eventbus.EventBusDetachListener;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.server.ThemeResource;
@@ -16,15 +19,12 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-public class ArticleBoxFactory extends CustomComponent {
+public class ArticleBox extends CustomComponent {
 
 	private VerticalLayout main;
 	private boolean selected;
-	private EventBus eventBus;
 
-	private ArticleBoxFactory(EventBus eventBus, Article article) {
-		this.eventBus = eventBus;
-		eventBus.register(this);
+	private ArticleBox(Article article) {
 		setCompositionRoot(buildBox(article));
 	}
 
@@ -40,11 +40,11 @@ public class ArticleBoxFactory extends CustomComponent {
 			public void layoutClick(LayoutClickEvent event) {
 				if (!selected) {
 					main.setStyleName(ValoTheme.LAYOUT_WELL);
-					eventBus.post(new ArticleSelectedEvent(article.getId()));
+					UIEventBus.post(new ArticleSelectedEvent(article.getId()));
 					selected = true;
 				} else {
 					main.setStyleName(null);
-					eventBus.post(new ArticleSelectedEvent(null));
+					UIEventBus.post(new ArticleSelectedEvent(null));
 					selected = false;
 				}
 			}
@@ -101,8 +101,11 @@ public class ArticleBoxFactory extends CustomComponent {
 		return headerLayout;
 	}
 
-	public static Component buildArticleBoxes(EventBus eventBus, Article article) {
-		return new ArticleBoxFactory(eventBus, article);
+	public static Component buildArticleBox(Article article) {
+		Component comp = new ArticleBox(article);
+		comp.addAttachListener(new EventBusAttachListener(comp));
+		comp.addDetachListener(new EventBusDetachListener(comp));
+		return comp;
 	}
 
 }

@@ -1,4 +1,4 @@
-package hu.kuru.vaadin.component;
+package hu.kuru.vaadin.component.button;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;

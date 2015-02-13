@@ -37,7 +37,7 @@ class Item extends BaseEntity {
 	Date createDate
 	Date outDate
 
-	static List<Item> findByBill(long billId) {
+	static List<Item> findByBill(Long billId) {
 		repo.findByBill(billId)
 	}
 
@@ -51,5 +51,9 @@ class Item extends BaseEntity {
 
 	static Long countOpenBillSummary() {
 		repo.countOpenBillSummary()
+	}
+
+	Item save() {
+		repo.save(this)
 	}
 }

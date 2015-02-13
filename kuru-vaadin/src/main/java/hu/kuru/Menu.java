@@ -1,7 +1,8 @@
 package hu.kuru;
 
 import hu.kuru.vaadin.article.ArticleView;
-import hu.kuru.vaadin.component.MenuButton;
+import hu.kuru.vaadin.bill.BillView;
+import hu.kuru.vaadin.component.button.MenuButton;
 import hu.kuru.vaadin.summary.SummaryView;
 
 import com.vaadin.server.ThemeResource;
@@ -34,7 +35,7 @@ public class Menu extends CustomComponent {
 		VerticalLayout btnLayout = new VerticalLayout();
 		btnLayout.setSpacing(true);
 		Button article = MenuButton.fromCaptionAndView("Cikkek", ArticleView.NAME);
-		Button clients = MenuButton.fromCaptionAndView("Ügyfelek", SummaryView.NAME);
+		Button clients = MenuButton.fromCaptionAndView("Számlák", BillView.NAME);
 		Button summary = MenuButton.fromCaptionAndView("Összesítő", SummaryView.NAME);
 		btnLayout.addComponents(article, clients, summary);
 		btnLayout.setComponentAlignment(article, Alignment.MIDDLE_CENTER);

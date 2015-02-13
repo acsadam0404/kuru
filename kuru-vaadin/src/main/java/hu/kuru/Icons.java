@@ -1,5 +1,11 @@
 package hu.kuru;
 
-public interface Icons {
+public class Icons {
+
+	public static final String PIZZA = "img/pizza-icon.png";
+
+	private Icons() {
+		//
+	}
 
 }

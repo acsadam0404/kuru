@@ -20,9 +20,9 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @Theme("kurutheme")
-@org.springframework.stereotype.Component("MainUI")
 @Scope("prototype")
 @Widgetset("hu.kuru.AppWidgetSet")
+@org.springframework.stereotype.Component("MainUI")
 public class MainUI extends UI {
 	private static final Logger logger = Logger.getLogger(MainUI.class);
 

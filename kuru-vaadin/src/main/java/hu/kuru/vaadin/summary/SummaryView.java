@@ -1,7 +1,6 @@
 package hu.kuru.vaadin.summary;
 
 import hu.kuru.AbstractView;
-import hu.kuru.ServiceLocator;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,6 +19,6 @@ public class SummaryView extends AbstractView implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		setCompositionRoot(ServiceLocator.getBean(SummaryComp.class));
+		setCompositionRoot(new SummaryComp());
 	}
 }

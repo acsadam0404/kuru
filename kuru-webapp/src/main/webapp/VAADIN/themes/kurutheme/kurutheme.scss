@@ -26,6 +26,16 @@ $valo-menu-background-color: #414B56;
 	color: white;
 }
 
+.masonry-layout .masonry-item.border-green {
+	width: 584px;
+	border: green solid 2px;
+}
+
+.masonry-layout .masonry-item.border-red {
+	width: 584px;
+	border: red solid 2px;
+}
+
 .v-panel-caption-to-be-issued {
 	text-transform: uppercase;
 	font-size: 30px;

@@ -1,4 +1,4 @@
-package hu.kuru.vaadin.article;
+package hu.kuru.eventbus;
 
 public class ArticlesRefreshEvent {
 	//

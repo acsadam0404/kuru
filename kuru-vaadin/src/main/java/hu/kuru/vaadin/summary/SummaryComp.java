@@ -3,8 +3,6 @@ package hu.kuru.vaadin.summary;
 import hu.kuru.bill.Bill;
 import hu.kuru.item.Item;
 
-import org.springframework.context.annotation.Scope;
-
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
@@ -13,8 +11,6 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-@Scope("prototype")
-@org.springframework.stereotype.Component
 public class SummaryComp extends CustomComponent {
 
 	public SummaryComp() {
@@ -37,7 +33,7 @@ public class SummaryComp extends CustomComponent {
 		panel.setSizeFull();
 		panel.addStyleName(ValoTheme.PANEL_BORDERLESS);
 		panel.addStyleName("to-be-issued");
-		panel.setContent(IssuedItemBoxFactory.createBoxItems(Item.findIssuedItems()));
+		panel.setContent(IssuedItemBox.createBoxItems(Item.findIssuedItems()));
 		return panel;
 	}
 
