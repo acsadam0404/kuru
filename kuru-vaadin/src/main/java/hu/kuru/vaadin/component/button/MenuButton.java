@@ -1,15 +1,21 @@
 package hu.kuru.vaadin.component.button;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.themes.ValoTheme;
 
 public class MenuButton extends Button {
 
 	private static final long serialVersionUID = 1L;
 
-	private MenuButton(String caption, final String viewName) {
+	private MenuButton(String caption, final String viewName, FontAwesome icon) {
 		super(caption);
 		setWidth("200px");
+		setIcon(icon);
+		setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+		addStyleName(ValoTheme.BUTTON_HUGE);
+		addStyleName("menubutton");
 		addClickListener(new ClickListener() {
 
 			@Override
@@ -19,8 +25,8 @@ public class MenuButton extends Button {
 		});
 	}
 
-	public static MenuButton fromCaptionAndView(String caption, String viewName) {
-		return new MenuButton(caption, viewName);
+	public static MenuButton fromCaptionViewIcon(String caption, String viewName, FontAwesome icon) {
+		return new MenuButton(caption, viewName, icon);
 	}
 
 }

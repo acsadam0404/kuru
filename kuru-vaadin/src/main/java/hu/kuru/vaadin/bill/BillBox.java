@@ -32,7 +32,6 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class BillBox extends CustomComponent {
 
-	private VerticalLayout main;
 	private Bill currentBill;
 	private boolean closed;
 
@@ -43,7 +42,7 @@ public class BillBox extends CustomComponent {
 	}
 
 	private Component buildBox() {
-		main = new VerticalLayout();
+		VerticalLayout main = new VerticalLayout();
 		main.setMargin(true);
 		main.addStyleName("articlebox");
 		main.setSizeFull();

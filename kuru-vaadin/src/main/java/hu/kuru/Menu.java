@@ -5,6 +5,7 @@ import hu.kuru.vaadin.bill.BillView;
 import hu.kuru.vaadin.component.button.MenuButton;
 import hu.kuru.vaadin.summary.SummaryView;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -34,9 +35,9 @@ public class Menu extends CustomComponent {
 	private Component buildMenuItems() {
 		VerticalLayout btnLayout = new VerticalLayout();
 		btnLayout.setSpacing(true);
-		Button article = MenuButton.fromCaptionAndView("Cikkek", ArticleView.NAME);
-		Button clients = MenuButton.fromCaptionAndView("Számlák", BillView.NAME);
-		Button summary = MenuButton.fromCaptionAndView("Összesítő", SummaryView.NAME);
+		Button article = MenuButton.fromCaptionViewIcon("Cikkek", ArticleView.NAME, FontAwesome.BARS);
+		Button clients = MenuButton.fromCaptionViewIcon("Számlák", BillView.NAME, FontAwesome.BANK);
+		Button summary = MenuButton.fromCaptionViewIcon("Összesítő", SummaryView.NAME, FontAwesome.BAR_CHART_O);
 		btnLayout.addComponents(article, clients, summary);
 		btnLayout.setComponentAlignment(article, Alignment.MIDDLE_CENTER);
 		btnLayout.setComponentAlignment(clients, Alignment.MIDDLE_CENTER);

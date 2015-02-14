@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "item")
-@EqualsAndHashCode(includes = ["bill"])
+@EqualsAndHashCode
 class Item extends BaseEntity {
 
 	private static ItemRepo repo
