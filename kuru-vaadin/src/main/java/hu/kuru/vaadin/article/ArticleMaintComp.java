@@ -10,6 +10,7 @@ import hu.kuru.eventbus.ArticlesRefreshEvent;
 import hu.kuru.eventbus.EventBusAttachListener;
 import hu.kuru.eventbus.EventBusDetachListener;
 import hu.kuru.eventbus.IconChoosedEvent;
+import hu.kuru.vaadin.KFieldGroup;
 import hu.kuru.vaadin.component.KNotification;
 import hu.kuru.vaadin.component.KTextArea;
 import hu.kuru.vaadin.component.KTextField;
@@ -40,7 +41,7 @@ public class ArticleMaintComp extends CustomComponent {
 	private Image icon;
 	private TextArea description;
 
-	private BeanFieldGroup<Article> fg;
+	private KFieldGroup<Article> fg;
 	private Window window;
 
 	private class SaveButton extends Button {
@@ -67,7 +68,7 @@ public class ArticleMaintComp extends CustomComponent {
 	}
 
 	private ArticleMaintComp(Article article) {
-		fg = new BeanFieldGroup<Article>(Article.class);
+		fg = new KFieldGroup<>(Article.class);
 		init(article.getIcon());
 		fg.bindMemberFields(this);
 		fg.setItemDataSource(article);

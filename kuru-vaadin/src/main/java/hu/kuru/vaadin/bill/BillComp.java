@@ -11,7 +11,7 @@ import hu.kuru.eventbus.AddBillEvent;
 import hu.kuru.eventbus.AddCustomerEvent;
 import hu.kuru.eventbus.BillClosedEvent;
 import hu.kuru.vaadin.component.KWindow;
-import hu.kuru.vaadin.customer.CustomerModifyComp;
+import hu.kuru.vaadin.customer.CustomerMaintComp;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,7 +170,7 @@ public class BillComp extends CustomComponent {
 				public void buttonClick(ClickEvent event) {
 					final KWindow window = new KWindow(caption);
 					Customer customer = (Customer) searchCombo.getValue();
-					CustomerModifyComp comp = isNew ? CustomerModifyComp.createNew() : CustomerModifyComp.fromCustomer(customer);
+					CustomerMaintComp comp = isNew ? CustomerMaintComp.createNew() : CustomerMaintComp.fromCustomer(customer);
 					comp.setWindow(window);
 					window.setContent(comp);
 					UI.getCurrent().addWindow(window);
