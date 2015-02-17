@@ -59,6 +59,6 @@ class Article extends BaseEntity {
 
 	@Override
 	String toString() {
-		code + ", " + name + ", " + price + ", " + comment
+		code + ", " + name + ", " + price + ", " +description
 	}
 }
