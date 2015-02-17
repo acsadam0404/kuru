@@ -142,7 +142,8 @@ public class ArticleComp extends CustomComponent {
 		header.addComponent(articleLabel);
 		header.addComponent(right);
 		header.setComponentAlignment(right, Alignment.MIDDLE_RIGHT);
-
+		header.setExpandRatio(right, 0.8f);
+		header.setExpandRatio(articleLabel, 0.2f);
 		return header;
 	}
 
