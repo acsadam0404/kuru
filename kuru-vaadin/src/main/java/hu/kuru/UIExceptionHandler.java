@@ -11,7 +11,7 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 public class UIExceptionHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UIExceptionHandler.class);
-	private static final String ERROR_MESSAGE = "A folyamat közben hiba adódott!";
+	private static final String ERROR_MESSAGE = "Hiba történt a folyamat közben";
 
 	public static void handleException(Throwable e) {
 		if (e instanceof IllegalArgumentException) {
