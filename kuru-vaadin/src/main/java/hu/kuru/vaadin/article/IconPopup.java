@@ -11,9 +11,9 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Window;
 
-public class IconPopUp extends Window {
+public class IconPopup extends Window {
 
-	public IconPopUp() {
+	public IconPopup() {
 		super();
 		setModal(true);
 		setResizable(false);

@@ -95,7 +95,7 @@ public class ArticleModComp extends CustomComponent {
 
 			@Override
 			public void click(ClickEvent event) {
-				UI.getCurrent().addWindow(new IconPopUp());
+				UI.getCurrent().addWindow(new IconPopup());
 			}
 		});
 		description = new KTextArea("Cikk leírás");
