@@ -29,7 +29,10 @@ public class CustomerMaintComp extends CustomComponent {
 		bind(customer);
 	}
 
+	/* TODO ne bind legyen a neve */
 	private void bind(Customer customer) {
+		fg = new KFieldGroup<>(Customer.class);
+		fg.setBuffered(true);
 		fg.bindMemberFields(this);
 		fg.setItemDataSource(customer);
 	}
@@ -43,7 +46,6 @@ public class CustomerMaintComp extends CustomComponent {
 	}
 
 	private void init() {
-		fg = new KFieldGroup<>(Customer.class);
 		name = new TextField("Név");
 		code = new TextField("Kód");
 		name.setImmediate(true);
