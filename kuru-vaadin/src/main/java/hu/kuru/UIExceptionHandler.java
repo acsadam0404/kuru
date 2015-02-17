@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 
+/* TODO miért nem standard módon van az error kezelve? 
+ * https://vaadin.com/book/-/page/application.errors.html#application.errors.unchecked-exceptions
+ */
 public class UIExceptionHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(UIExceptionHandler.class);
