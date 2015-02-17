@@ -14,6 +14,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class SummaryComp extends CustomComponent {
 
 	public SummaryComp() {
+		setSizeFull();
 		setCompositionRoot(build());
 	}
 
@@ -24,7 +25,9 @@ public class SummaryComp extends CustomComponent {
 		main.setMargin(true);
 		Responsive.makeResponsive(main);
 		main.addComponent(buildBoxLayout());
-		main.addComponent(buildNewItemsLayout());
+		Component newItemsLayout = buildNewItemsLayout();
+		main.addComponent(newItemsLayout);
+		main.setExpandRatio(newItemsLayout, 1f);
 		return main;
 	}
 
@@ -39,13 +42,11 @@ public class SummaryComp extends CustomComponent {
 
 	private Component buildBoxLayout() {
 		HorizontalLayout boxLayout = new HorizontalLayout();
-		boxLayout.setSizeFull();
+		boxLayout.setSizeUndefined();
 		boxLayout.setSpacing(true);
 		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák száma", Bill.countOpenBills().toString()));
-		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák értéke",
-				(Item.countOpenBillSummary() != null ? Item.countOpenBillSummary() : 0) + " Ft"));
-		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Napi bevétel", (Item.countDailyIncome() != null ? Item.countDailyIncome() : 0)
-				+ " Ft"));
+		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák értéke", (Item.countOpenBillSummary() != null ? Item.countOpenBillSummary() : 0) + " Ft"));
+		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Napi bevétel", (Item.countDailyIncome() != null ? Item.countDailyIncome() : 0)				+ " Ft"));
 		return boxLayout;
 	}
 
