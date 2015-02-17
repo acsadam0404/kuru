@@ -33,22 +33,10 @@ import com.vaadin.ui.themes.ValoTheme;
 public class BillBox extends CustomComponent {
 
 	private Bill currentBill;
-	private boolean closed;
 
 	private BillBox(Bill bill) {
 		currentBill = bill;
-		closed = bill.getCloseDate() != null;
-		setCompositionRoot(buildBox());
-	}
-
-	private Component buildBox() {
-		VerticalLayout main = new VerticalLayout();
-		main.setMargin(true);
-		main.addStyleName("articlebox");
-		main.setSizeFull();
-		main.setSpacing(true);
-		main.addComponent(buildLayout());
-		return main;
+		setCompositionRoot(build());
 	}
 
 	private Component buildTable(List<Item> itemList) {
@@ -67,12 +55,13 @@ public class BillBox extends CustomComponent {
 	@Subscribe
 	public void onItemAdded(ItemAddedEvent event) {
 		if (currentBill.getId().equals(event.getBillId())) {
-			setCompositionRoot(buildBox());
+			setCompositionRoot(build());
 		}
 	}
 
-	private Component buildLayout() {
+	private Component build() {
 		VerticalLayout box = new VerticalLayout();
+		box.addStyleName("articlebox");
 		box.setSizeFull();
 		box.setSpacing(true);
 		box.setMargin(true);
@@ -80,12 +69,14 @@ public class BillBox extends CustomComponent {
 		box.addComponent(buildHeader());
 		box.addComponent(buildTable(itemList));
 		box.addComponent(buildFooter(getSum(itemList)));
+		
 		return box;
 	}
 
 	private Component buildHeader() {
 		HorizontalLayout layout = new HorizontalLayout();
-		layout.setSizeFull();
+		layout.setSizeUndefined();
+		layout.setWidth("100%");
 		layout.setSpacing(true);
 		DateField openDate = new DateField("Nyitás dátuma");
 		DateField closeDate = new DateField("Zárás dátuma");
@@ -110,12 +101,13 @@ public class BillBox extends CustomComponent {
 
 	private Component buildFooter(int sum) {
 		HorizontalLayout footer = new HorizontalLayout();
-		footer.setSizeFull();
+		footer.setSizeUndefined();
+		footer.setWidth("100%");
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		HorizontalLayout priceLayout = new HorizontalLayout();
 
 		buttonLayout.setSpacing(true);
-		if (!closed) {
+		if (!currentBill.isClosed()) {
 			buttonLayout.addComponent(new AddItemButton());
 			buttonLayout.addComponent(new CloseButton());
 		}
@@ -154,7 +146,6 @@ public class BillBox extends CustomComponent {
 				public void buttonClick(ClickEvent event) {
 					currentBill.setCloseDate(new Date());
 					currentBill.save();
-					closed = true;
 					UIEventBus.post(new BillClosedEvent(currentBill.getCustomer(), BillBox.this));
 				}
 			});
@@ -178,8 +169,7 @@ public class BillBox extends CustomComponent {
 		}
 	}
 
-	public boolean isClosed() {
-		return closed;
+	boolean isClosed() {
+		return currentBill.isClosed();
 	}
-
 }

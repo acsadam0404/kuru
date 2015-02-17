@@ -48,4 +48,8 @@ class Bill extends BaseEntity {
 	Bill save() {
 		repo.save(this)
 	}
+	
+	boolean isClosed() {
+		closeDate != null
+	}
 }
