@@ -6,9 +6,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class MenuButton extends Button {
-
-	private static final long serialVersionUID = 1L;
-
 	private MenuButton(String caption, final String viewName, FontAwesome icon) {
 		super(caption);
 		setWidth("200px");
