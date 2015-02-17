@@ -87,7 +87,7 @@ public class BillComp extends CustomComponent {
 
 	private Component buildHeader(List<Customer> customerList) {
 		HorizontalLayout header = new HorizontalLayout();
-		header.setWidth("90%");
+		header.setSizeFull();
 		header.setSpacing(true);
 
 		HorizontalLayout right = new HorizontalLayout();
@@ -115,8 +115,7 @@ public class BillComp extends CustomComponent {
 
 		header.addComponent(headerLabel);
 		header.addComponent(right);
-		header.setComponentAlignment(right, Alignment.MIDDLE_CENTER);
-
+		header.setComponentAlignment(right, Alignment.MIDDLE_RIGHT);
 		return header;
 	}
 
