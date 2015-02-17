@@ -68,16 +68,13 @@ public class ArticleModComp extends CustomComponent {
 
 	private ArticleModComp(Article article) {
 		init(article.getIcon());
-		bind(article);
+		fg.bindMemberFields(this);
+		fg.setItemDataSource(article);
 		setCompositionRoot(buildLayout());
 		addAttachListener(new EventBusAttachListener(this));
 		addDetachListener(new EventBusDetachListener(this));
 	}
 
-	private void bind(Article article) {
-		fg.bindMemberFields(this);
-		fg.setItemDataSource(article);
-	}
 
 	@Subscribe
 	public void onIconChoosed(IconChoosedEvent event) {
