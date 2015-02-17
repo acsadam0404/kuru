@@ -2,10 +2,12 @@ package hu.kuru.vaadin.article;
 
 import hu.kuru.ServiceLocator;
 import hu.kuru.UIEventBus;
+import hu.kuru.UIExceptionHandler;
 import hu.kuru.article.Article;
 import hu.kuru.article.ArticleService;
 import hu.kuru.eventbus.ArticleSelectedEvent;
 import hu.kuru.eventbus.ArticlesRefreshEvent;
+import hu.kuru.vaadin.component.KNotification;
 import hu.kuru.vaadin.component.KWindow;
 
 import java.util.LinkedHashMap;
@@ -25,7 +27,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -43,7 +45,11 @@ public class ArticleComp extends CustomComponent {
 
 	public ArticleComp() {
 		articleMap = new LinkedHashMap<Article, Component>();
-		setCompositionRoot(buildLayout());
+		Panel panel = new Panel();
+		panel.setSizeFull();
+		panel.setContent(buildLayout());
+		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+		setCompositionRoot(panel);
 	}
 
 	@Subscribe
@@ -56,6 +62,7 @@ public class ArticleComp extends CustomComponent {
 
 	@Subscribe
 	public void handleArticlesRefresh(ArticlesRefreshEvent event) {
+		articleMap = new LinkedHashMap<Article, Component>();
 		setCompositionRoot(buildLayout());
 	}
 
@@ -187,9 +194,13 @@ public class ArticleComp extends CustomComponent {
 			addClickListener(new ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
-					ServiceLocator.getBean(ArticleService.class).delete(selectedArticleId);
-					setCompositionRoot(buildLayout());
-					Notification.show("Sikeres törlés!");
+					try {
+						ServiceLocator.getBean(ArticleService.class).delete(selectedArticleId);
+						setCompositionRoot(buildLayout());
+						new KNotification("Sikeres törlés!").showSuccess();
+					} catch (Exception e) {
+						UIExceptionHandler.handleException(e);
+					}
 				}
 			});
 		}

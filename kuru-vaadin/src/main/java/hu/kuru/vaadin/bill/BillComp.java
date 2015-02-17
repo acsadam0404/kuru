@@ -1,6 +1,7 @@
 package hu.kuru.vaadin.bill;
 
 import hu.kuru.ServiceLocator;
+import hu.kuru.UIExceptionHandler;
 import hu.kuru.bill.Bill;
 import hu.kuru.bill.BillRepo;
 import hu.kuru.customer.Customer;
@@ -28,12 +29,14 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -51,7 +54,11 @@ public class BillComp extends CustomComponent {
 	private List<BillBox> openBills;
 
 	public BillComp() {
-		setCompositionRoot(buildLayout());
+		Panel panel = new Panel();
+		panel.setSizeFull();
+		panel.setContent(buildLayout());
+		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+		setCompositionRoot(panel);
 	}
 
 	private Component buildLayout() {
@@ -80,7 +87,7 @@ public class BillComp extends CustomComponent {
 
 	private Component buildHeader(List<Customer> customerList) {
 		HorizontalLayout header = new HorizontalLayout();
-		header.setSizeFull();
+		header.setWidth("90%");
 		header.setSpacing(true);
 
 		HorizontalLayout right = new HorizontalLayout();
@@ -108,15 +115,16 @@ public class BillComp extends CustomComponent {
 
 		header.addComponent(headerLabel);
 		header.addComponent(right);
+		header.setComponentAlignment(right, Alignment.MIDDLE_CENTER);
 
 		return header;
 	}
 
 	private void addCustomerToLayout(Customer customer, boolean isFirstLoading) {
 		List<Bill> billList = ServiceLocator.getBean(BillRepo.class).findByCustomer(customer.getId());
-		Collections.sort(billList, new BillComparator());
 		List<BillBox> components = new ArrayList<>();
 		if (billList != null) {
+			Collections.sort(billList, new BillComparator());
 			for (Bill bill : billList) {
 				BillBox box = BillBox.buildBillBox(bill);
 				if (isFirstLoading && bill.getCloseDate() == null) {
@@ -130,8 +138,9 @@ public class BillComp extends CustomComponent {
 
 	@Subscribe
 	public void onBillClosed(BillClosedEvent event) {
+		openBills.remove(event.getBillBox());
 		addCustomerToLayout(event.getCustomer(), false);
-		reBuildBillLayout(event.getCustomer());
+		reBuildBillLayout(searchCombo.getValue() != null ? event.getCustomer() : null);
 	}
 
 	@Subscribe
@@ -156,7 +165,7 @@ public class BillComp extends CustomComponent {
 			}
 		} else {
 			for (BillBox component : openBills) {
-				billsLayout.addComponent(component, component.isClosed() ? "border-red" : "border-green");
+				billsLayout.addComponent(component, "border-green");
 			}
 		}
 	}
@@ -223,10 +232,14 @@ public class BillComp extends CustomComponent {
 			addClickListener(new ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
-					Customer customer = (Customer) searchCombo.getValue();
-					ServiceLocator.getBean(CustomerService.class).deleteCustomer(customer.getId());
-					searchCombo.setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(CustomerRepo.class)
-							.findAll(new Sort(Direction.ASC, "name"))));
+					try {
+						Customer customer = (Customer) searchCombo.getValue();
+						ServiceLocator.getBean(CustomerService.class).deleteCustomer(customer.getId());
+						searchCombo.setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(
+								CustomerRepo.class).findAll(new Sort(Direction.ASC, "name"))));
+					} catch (Exception e) {
+						UIExceptionHandler.handleException(e);
+					}
 				}
 			});
 		}

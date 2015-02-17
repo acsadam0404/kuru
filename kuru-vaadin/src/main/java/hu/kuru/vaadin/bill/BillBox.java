@@ -155,7 +155,7 @@ public class BillBox extends CustomComponent {
 					currentBill.setCloseDate(new Date());
 					currentBill.save();
 					closed = true;
-					UIEventBus.post(new BillClosedEvent(currentBill.getCustomer()));
+					UIEventBus.post(new BillClosedEvent(currentBill.getCustomer(), BillBox.this));
 				}
 			});
 		}

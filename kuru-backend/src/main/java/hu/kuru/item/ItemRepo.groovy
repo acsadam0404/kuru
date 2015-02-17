@@ -23,4 +23,10 @@ interface ItemRepo extends JpaRepository<Item, Long>{
 	@Transactional
 	@Query("delete from Item i where i.bill.id in ?1")
 	void deleteByBillId(List<Long> billIds);
+
+	@Query("select case when (count(i) = 0) then true else false end from Item i where i.article.id = ?1 and i.outDate is null")
+	Boolean isIssuedByArticleId(Long articleId)
+
+	@Query("select case when (count(i) = 0) then true else false end from Item i where i.article.id = ?1 and i.bill.closeDate is null")
+	Boolean isClosedByArticleId(Long articleId)
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+import com.google.common.base.Preconditions
+
 @Service
 @Transactional
 class CustomerServiceImpl implements CustomerService {
@@ -22,9 +24,13 @@ class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void deleteCustomer(Long id) {
+		Preconditions.checkArgument(id != null, "Nem létezik ilyen ügyfél!")
+		Preconditions.checkArgument(!billRepo.hasOpenBillByCustomer(id), "A törölni kívánt ügyfélnek létezik nyitott számlája.")
 		List<Long> billList = billRepo.findIdsByCustomer(id)
-		itemRepo.deleteByBillId(billList)
-		billRepo.deleteByIds(billList)
+		if(billList != null) {
+			itemRepo.deleteByBillId(billList)
+			billRepo.deleteByIds(billList)
+		}
 		customerRepo.delete(id)
 	}
 }

@@ -14,7 +14,11 @@ import com.vaadin.ui.themes.ValoTheme;
 public class SummaryComp extends CustomComponent {
 
 	public SummaryComp() {
-		setCompositionRoot(buildLayout());
+		Panel panel = new Panel();
+		panel.setSizeFull();
+		panel.setContent(buildLayout());
+		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+		setCompositionRoot(panel);
 	}
 
 	private Component buildLayout() {
@@ -42,7 +46,8 @@ public class SummaryComp extends CustomComponent {
 		boxLayout.setSizeFull();
 		boxLayout.setSpacing(true);
 		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák száma", Bill.countOpenBills().toString()));
-		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák értéke", Item.countOpenBillSummary() + " Ft"));
+		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák értéke",
+				(Item.countOpenBillSummary() != null ? Item.countOpenBillSummary() : 0) + " Ft"));
 		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Napi bevétel", (Item.countDailyIncome() != null ? Item.countDailyIncome() : 0)
 				+ " Ft"));
 		return boxLayout;

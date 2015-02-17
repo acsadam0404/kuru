@@ -53,14 +53,6 @@ class Article extends BaseEntity {
 		repo.findAllActive()
 	}
 
-	static Boolean existName(String name) {
-		repo.existName(name)
-	}
-
-	static Boolean existCode(String code) {
-		repo.existCode(code)
-	}
-
 	Article save() {
 		repo.save(this)
 	}

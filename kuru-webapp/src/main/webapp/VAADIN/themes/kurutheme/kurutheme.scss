@@ -26,6 +26,10 @@ $valo-menu-background-color: #414B56;
 	color: white;
 }
 
+.overflow {
+	overflow-y: auto;
+}
+
 .v-button-menubutton { 
 	color: #eeeeee;
 	font-size: x-large;
@@ -48,7 +52,11 @@ $valo-menu-background-color: #414B56;
 }
 
 .v-vertical-articlebox {
-	margin: 5px 5px 5px 5px;
+	margin: 3px 3px 3px 3px;
+}
+
+.v-vertical-articlebox-selected {
+	border: green solid 2px;
 }
 
 .v-panel-itembox > div > [class*="-caption"] {

@@ -33,23 +33,8 @@ public class KNotification extends Notification {
 		this.show(Page.getCurrent());
 	}
 
-	public KNotification withDelay(int ms) {
-		this.setDelayMsec(ms);
-		return this;
-	}
-
 	public KNotification withDescription(String desc) {
 		this.setDescription(desc);
-		return this;
-	}
-
-	public KNotification withPosition(Position pos) {
-		this.setPosition(pos);
-		return this;
-	}
-
-	public KNotification withStyle(String style) {
-		this.setStyleName(style);
 		return this;
 	}
 

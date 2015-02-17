@@ -1,6 +1,7 @@
 package hu.kuru.vaadin.summary;
 
 import hu.kuru.ServiceLocator;
+import hu.kuru.UIExceptionHandler;
 import hu.kuru.bean.ItemBean;
 import hu.kuru.customer.Customer;
 import hu.kuru.item.Item;
@@ -124,8 +125,12 @@ public class IssuedItemBox extends CustomComponent {
 			addClickListener(new ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
-					ServiceLocator.getBean(ItemService.class).issueItems(itemList);
-					layout.removeComponent(panel);
+					try {
+						ServiceLocator.getBean(ItemService.class).issueItems(itemList);
+						layout.removeComponent(panel);
+					} catch (Exception e) {
+						UIExceptionHandler.handleException(e);
+					}
 				}
 			});
 		}

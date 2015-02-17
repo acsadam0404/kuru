@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional
 
 interface BillRepo extends JpaRepository<Bill, Long> {
 
-	@Query("select b from Bill b where b.customer.id = ?1")
-	List<Bill> findByCustomer(long customerId)
+	@Query("select b from Bill b join fetch b.customer where b.customer.id = ?1")
+	List<Bill> findByCustomer(Long customerId)
 
 	@Query("select b.id from Bill b where b.customer.id = ?1")
 	List<Long> findIdsByCustomer(long customerId)
@@ -20,4 +20,7 @@ interface BillRepo extends JpaRepository<Bill, Long> {
 	@Transactional
 	@Query("delete from Bill b where b.id in ?1")
 	void deleteByIds(List<Long> billIds);
+
+	@Query("select case when (count(b) > 0) then true else false end from Bill b where b.customer.id = ?1 and b.closeDate is null")
+	Boolean hasOpenBillByCustomer(Long customerId)
 }
