@@ -49,6 +49,7 @@ public class ArticleComp extends CustomComponent {
 		panel.setSizeFull();
 		panel.setContent(buildLayout());
 		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+		panel.addStyleName("overflow");
 		setCompositionRoot(panel);
 	}
 

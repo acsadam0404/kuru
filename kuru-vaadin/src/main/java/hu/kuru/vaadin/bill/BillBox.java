@@ -1,18 +1,28 @@
 package hu.kuru.vaadin.bill;
 
+import hu.kuru.ServiceLocator;
 import hu.kuru.UIEventBus;
 import hu.kuru.bean.ItemBean;
 import hu.kuru.bill.Bill;
+import hu.kuru.enums.Currency;
 import hu.kuru.eventbus.BillClosedEvent;
 import hu.kuru.eventbus.EventBusAttachListener;
 import hu.kuru.eventbus.EventBusDetachListener;
 import hu.kuru.eventbus.ItemAddedEvent;
+import hu.kuru.external.mnb.ExchangeRate;
+import hu.kuru.external.mnb.MNBExchangeRateService;
+import hu.kuru.external.mnb.MNBServiceException;
 import hu.kuru.item.Item;
+import hu.kuru.vaadin.component.KNotification;
 import hu.kuru.vaadin.component.KWindow;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.data.util.BeanItemContainer;
@@ -31,6 +41,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class BillBox extends CustomComponent {
+
+	private static final Logger LOG = LoggerFactory.getLogger(BillBox.class);
 
 	private Bill currentBill;
 	private boolean closed;
@@ -120,7 +132,7 @@ public class BillBox extends CustomComponent {
 			buttonLayout.addComponent(new CloseButton());
 		}
 
-		Label price = new Label("Ár: " + sum + " Ft");
+		Label price = new Label("Ár: " + getChangedSum(sum));
 		price.setStyleName(ValoTheme.LABEL_BOLD);
 		priceLayout.addComponent(price);
 
@@ -129,6 +141,41 @@ public class BillBox extends CustomComponent {
 		footer.setComponentAlignment(buttonLayout, Alignment.MIDDLE_LEFT);
 		footer.setComponentAlignment(priceLayout, Alignment.MIDDLE_RIGHT);
 		return footer;
+	}
+
+	private String getChangedSum(int sum) {
+		String huf = sum + " HUF";
+		DecimalFormat format = new DecimalFormat("#.##");
+		double result = 0;
+		String currency = currentBill.getCurrency();
+		try {
+			if (!Currency.HUF.name().equals(currency)) {
+				List<ExchangeRate> list = ServiceLocator.getBean(MNBExchangeRateService.class).getExchangeRates();
+				if (Currency.EUR.name().equals(currency)) {
+					result = sum / getRate(list, Currency.EUR.name());
+				} else if (Currency.GBP.name().equals(currency)) {
+					result = sum / getRate(list, Currency.GBP.name());
+				} else if (Currency.USD.name().equals(currency)) {
+					result = sum / getRate(list, Currency.USD.name());
+				}
+				result = Double.valueOf(format.format(result).replace(",", "."));
+			} else {
+				return huf;
+			}
+		} catch (MNBServiceException e) {
+			new KNotification("Sikertelen MNB árfolyam lekérdezés.").withDescription("A árak forintban jelennek meg.");
+			return huf;
+		}
+		return result + " " + currency;
+	}
+
+	private double getRate(List<ExchangeRate> list, String name) throws MNBServiceException {
+		for (ExchangeRate exchangeRate : list) {
+			if (exchangeRate.getCurr().equals(name)) {
+				return Double.valueOf(exchangeRate.getValue().replace(",", "."));
+			}
+		}
+		throw new MNBServiceException();
 	}
 
 	private List<ItemBean> getItemList(List<Item> itemList) {
