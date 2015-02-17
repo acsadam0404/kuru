@@ -14,14 +14,10 @@ import com.vaadin.ui.themes.ValoTheme;
 public class SummaryComp extends CustomComponent {
 
 	public SummaryComp() {
-		Panel panel = new Panel();
-		panel.setSizeFull();
-		panel.setContent(buildLayout());
-		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
-		setCompositionRoot(panel);
+		setCompositionRoot(build());
 	}
 
-	private Component buildLayout() {
+	private Component build() {
 		VerticalLayout main = new VerticalLayout();
 		main.setSizeFull();
 		main.setSpacing(true);
