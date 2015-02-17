@@ -29,13 +29,11 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -54,21 +52,20 @@ public class BillComp extends CustomComponent {
 	private List<BillBox> openBills;
 
 	public BillComp() {
-		Panel panel = new Panel();
-		panel.setSizeFull();
-		panel.setContent(buildLayout());
-		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
-		setCompositionRoot(panel);
+		setSizeFull();
+		setCompositionRoot(build());
 	}
 
-	private Component buildLayout() {
+	private Component build() {
 		VerticalLayout main = new VerticalLayout();
 		main.setSizeFull();
 		main.setSpacing(true);
 		main.setMargin(true);
 		List<Customer> customerList = ServiceLocator.getBean(CustomerRepo.class).findAll(new Sort(Direction.ASC, "name"));
 		main.addComponent(buildHeader(customerList));
-		main.addComponent(buildBillsLayout(customerList));
+		Component billsLayout = buildBillsLayout(customerList);
+		main.addComponent(billsLayout);
+		main.setExpandRatio(billsLayout, 1f);
 		Responsive.makeResponsive(main);
 		return main;
 	}
@@ -82,20 +79,18 @@ public class BillComp extends CustomComponent {
 			addCustomerToLayout(customer, true);
 		}
 		reBuildBillLayout(null);
-		return billsLayout;
+		
+		Panel billsPanel = new Panel(billsLayout);
+		billsPanel.setSizeFull();
+		billsPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+		return billsPanel;
 	}
 
 	private Component buildHeader(List<Customer> customerList) {
 		HorizontalLayout header = new HorizontalLayout();
-		header.setSizeFull();
+		header.setSizeUndefined();
+		header.setWidth("100%");
 		header.setSpacing(true);
-
-		HorizontalLayout right = new HorizontalLayout();
-		right.setSpacing(true);
-		right.setSizeUndefined();
-
-		Label headerLabel = new Label("Ügyfelek - Számlák");
-		headerLabel.setStyleName("title");
 
 		addBillBtn = new AddBillButton();
 		addCustomerBtn = new ModifyButton("Új ügyfél", true);
@@ -107,15 +102,13 @@ public class BillComp extends CustomComponent {
 		modifyBtn.setEnabled(false);
 		deleteBtn.setEnabled(false);
 
-		right.addComponent(searchCombo);
-		right.addComponent(addBillBtn);
-		right.addComponent(addCustomerBtn);
-		right.addComponent(modifyBtn);
-		right.addComponent(deleteBtn);
+		header.addComponent(searchCombo);
+		header.addComponent(addBillBtn);
+		header.addComponent(addCustomerBtn);
+		header.addComponent(modifyBtn);
+		header.addComponent(deleteBtn);
+		header.setExpandRatio(searchCombo, 1f);
 
-		header.addComponent(headerLabel);
-		header.addComponent(right);
-		header.setComponentAlignment(right, Alignment.MIDDLE_RIGHT);
 		return header;
 	}
 

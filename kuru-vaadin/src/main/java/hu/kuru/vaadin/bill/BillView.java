@@ -21,6 +21,7 @@ public class BillView extends AbstractView implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		setSizeFull();
 		Component comp = new BillComp();
 		comp.addAttachListener(new EventBusAttachListener(comp));
 		comp.addDetachListener(new EventBusDetachListener(comp));
