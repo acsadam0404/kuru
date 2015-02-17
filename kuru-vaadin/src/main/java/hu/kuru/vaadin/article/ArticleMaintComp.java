@@ -32,7 +32,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-public class ArticleModComp extends CustomComponent {
+public class ArticleMaintComp extends CustomComponent {
 
 	private TextField code;
 	private TextField name;
@@ -66,11 +66,12 @@ public class ArticleModComp extends CustomComponent {
 		}
 	}
 
-	private ArticleModComp(Article article) {
+	private ArticleMaintComp(Article article) {
+		fg = new BeanFieldGroup<Article>(Article.class);
 		init(article.getIcon());
 		fg.bindMemberFields(this);
 		fg.setItemDataSource(article);
-		setCompositionRoot(buildLayout());
+		setCompositionRoot(build());
 		addAttachListener(new EventBusAttachListener(this));
 		addDetachListener(new EventBusDetachListener(this));
 	}
@@ -82,7 +83,6 @@ public class ArticleModComp extends CustomComponent {
 	}
 
 	private void init(String iconPath) {
-		fg = new BeanFieldGroup<Article>(Article.class);
 		code = new KTextField("Cikk kód");
 		name = new KTextField("Cikk név");
 		price = new KTextField("Cikk ár");
@@ -98,7 +98,7 @@ public class ArticleModComp extends CustomComponent {
 		description = new KTextArea("Cikk leírás");
 	}
 
-	private Component buildLayout() {
+	private Component build() {
 		VerticalLayout main = new VerticalLayout();
 		main.setSizeFull();
 		main.setMargin(true);
@@ -124,8 +124,8 @@ public class ArticleModComp extends CustomComponent {
 		return main;
 	}
 
-	public static ArticleModComp fromArticle(Article article) {
-		return new ArticleModComp(article);
+	public static ArticleMaintComp fromArticle(Article article) {
+		return new ArticleMaintComp(article);
 	}
 
 	public void setWindow(Window window) {
