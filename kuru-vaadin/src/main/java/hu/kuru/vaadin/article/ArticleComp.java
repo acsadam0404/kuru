@@ -45,11 +45,8 @@ public class ArticleComp extends CustomComponent {
 
 	public ArticleComp() {
 		articleMap = new LinkedHashMap<Article, Component>();
-		Panel panel = new Panel();
-		panel.setSizeFull();
-		panel.setContent(buildLayout());
-		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
-		setCompositionRoot(panel);
+		setSizeFull();
+		setCompositionRoot(buildLayout());
 	}
 
 	@Subscribe
@@ -73,7 +70,9 @@ public class ArticleComp extends CustomComponent {
 		main.setMargin(true);
 		Responsive.makeResponsive(main);
 		main.addComponent(buildHeader());
-		main.addComponent(buildArticlesLayout());
+		Component body = buildArticlesLayout();
+		main.addComponent(body);
+		main.setExpandRatio(body, 1f);
 		return main;
 	}
 
@@ -109,7 +108,10 @@ public class ArticleComp extends CustomComponent {
 				articlesLayout.addComponent(component);
 			}
 		}
-		return articlesLayout;
+		Panel articlesPanel = new Panel(articlesLayout);
+		articlesPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+		articlesPanel.setSizeFull();
+		return articlesPanel;
 	}
 
 	private boolean shouldBeGreater(String code, String name) {
@@ -118,7 +120,8 @@ public class ArticleComp extends CustomComponent {
 
 	private Component buildHeader() {
 		HorizontalLayout header = new HorizontalLayout();
-		header.setSizeFull();
+		header.setSizeUndefined();
+		header.setWidth("100%");
 		header.setSpacing(true);
 
 		HorizontalLayout right = new HorizontalLayout();
