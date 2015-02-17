@@ -46,7 +46,7 @@ public class ArticleComp extends CustomComponent {
 	public ArticleComp() {
 		articleMap = new LinkedHashMap<Article, Component>();
 		setSizeFull();
-		setCompositionRoot(buildLayout());
+		setCompositionRoot(build());
 	}
 
 	@Subscribe
@@ -60,10 +60,10 @@ public class ArticleComp extends CustomComponent {
 	@Subscribe
 	public void handleArticlesRefresh(ArticlesRefreshEvent event) {
 		articleMap = new LinkedHashMap<Article, Component>();
-		setCompositionRoot(buildLayout());
+		setCompositionRoot(build());
 	}
 
-	private Component buildLayout() {
+	private Component build() {
 		VerticalLayout main = new VerticalLayout();
 		main.setSizeFull();
 		main.setSpacing(true);
@@ -200,7 +200,7 @@ public class ArticleComp extends CustomComponent {
 				public void buttonClick(ClickEvent event) {
 					try {
 						ServiceLocator.getBean(ArticleService.class).delete(selectedArticleId);
-						setCompositionRoot(buildLayout());
+						setCompositionRoot(build());
 						new KNotification("Sikeres törlés!").showSuccess();
 					} catch (Exception e) {
 						UIExceptionHandler.handleException(e);
