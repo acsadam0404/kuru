@@ -32,6 +32,7 @@ class Bill extends BaseEntity {
 	@NotNull
 	Date openDate
 	Date closeDate
+	Long sum
 	@NotNull
 	String currency
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bill")
