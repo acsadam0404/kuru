@@ -12203,7 +12203,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .kurutheme .overflow {
-	overflow-y: auto;
+	overflow-y: scroll;
 }
 
 .kurutheme .v-button-menubutton {
@@ -12245,6 +12245,14 @@ div.v-layout.v-horizontal.v-widget {
 
 .kurutheme .v-panel-content-itembox {
 	margin-top: -60px;
+}
+
+.kurutheme .v-panel-billbox > div > [class*="-caption"] {
+	margin: 12px 12px;
+}
+
+.kurutheme .v-panel-caption-billbox {
+	font-size: 20px;
 }
 
 .kurutheme .v-label-box {

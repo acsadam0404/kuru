@@ -8,7 +8,6 @@ import hu.kuru.enums.Currency;
 import hu.kuru.eventbus.BillClosedEvent;
 import hu.kuru.eventbus.EventBusAttachListener;
 import hu.kuru.eventbus.EventBusDetachListener;
-import hu.kuru.eventbus.ItemAddedEvent;
 import hu.kuru.external.mnb.ExchangeRate;
 import hu.kuru.external.mnb.MNBExchangeRateService;
 import hu.kuru.external.mnb.MNBServiceException;
@@ -24,7 +23,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.Alignment;
@@ -34,6 +32,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.Align;
 import com.vaadin.ui.UI;
@@ -64,13 +63,6 @@ public class BillBox extends CustomComponent {
 		return table;
 	}
 
-	@Subscribe
-	public void onItemAdded(ItemAddedEvent event) {
-		if (currentBill.getId().equals(event.getBillId())) {
-			setCompositionRoot(build());
-		}
-	}
-
 	private Component build() {
 		VerticalLayout box = new VerticalLayout();
 		box.addStyleName("articlebox");
@@ -81,8 +73,13 @@ public class BillBox extends CustomComponent {
 		box.addComponent(buildHeader());
 		box.addComponent(buildTable(itemList));
 		box.addComponent(buildFooter(getSum(itemList)));
-		
-		return box;
+
+		final Panel panel = new Panel(currentBill.getCustomer().getCode() + " - " + currentBill.getCustomer().getName());
+		panel.setSizeFull();
+		panel.addStyleName(ValoTheme.PANEL_BORDERLESS);
+		panel.addStyleName("billbox");
+		panel.setContent(box);
+		return panel;
 	}
 
 	private Component buildHeader() {
@@ -173,7 +170,8 @@ public class BillBox extends CustomComponent {
 	private List<ItemBean> getItemList(List<Item> itemList) {
 		List<ItemBean> beanList = new ArrayList<>();
 		for (Item item : itemList) {
-			beanList.add(new ItemBean(item.getArticle().getCode(), item.getArticle().getName(), item.getAmount() + " db"));
+			beanList.add(new ItemBean(item.getArticle().getCode(), item.getArticle().getName(), item.getAmount() + " "
+					+ item.getArticle().getUnit()));
 		}
 		return beanList;
 	}
@@ -216,7 +214,7 @@ public class BillBox extends CustomComponent {
 		}
 	}
 
-	boolean isClosed() {
-		return currentBill.isClosed();
+	Bill getCurrentBill() {
+		return currentBill;
 	}
 }

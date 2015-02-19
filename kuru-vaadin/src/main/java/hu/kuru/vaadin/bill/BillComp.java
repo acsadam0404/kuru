@@ -1,7 +1,6 @@
 package hu.kuru.vaadin.bill;
 
 import hu.kuru.ServiceLocator;
-import hu.kuru.UIExceptionHandler;
 import hu.kuru.bill.Bill;
 import hu.kuru.bill.BillRepo;
 import hu.kuru.customer.Customer;
@@ -10,6 +9,7 @@ import hu.kuru.customer.CustomerService;
 import hu.kuru.eventbus.AddBillEvent;
 import hu.kuru.eventbus.AddCustomerEvent;
 import hu.kuru.eventbus.BillClosedEvent;
+import hu.kuru.eventbus.ItemAddedEvent;
 import hu.kuru.vaadin.component.KWindow;
 import hu.kuru.vaadin.customer.CustomerMaintComp;
 
@@ -79,7 +79,7 @@ public class BillComp extends CustomComponent {
 			addCustomerToLayout(customer, true);
 		}
 		reBuildBillLayout(null);
-		
+
 		Panel billsPanel = new Panel(billsLayout);
 		billsPanel.setSizeFull();
 		billsPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -128,6 +128,27 @@ public class BillComp extends CustomComponent {
 		customerMap.put(customer, components);
 	}
 
+	private void removeBoxFromList(List<BillBox> list, Bill bill) {
+		for (BillBox box : list) {
+			if (box.getCurrentBill().getId().equals(bill.getId())) {
+				list.remove(box);
+				break;
+			}
+		}
+		list.add(BillBox.buildBillBox(bill));
+	}
+
+	@Subscribe
+	public void onItemAdded(ItemAddedEvent event) {
+		Bill bill = ServiceLocator.getBean(BillRepo.class).findById(event.getBillId());
+		Customer customer = bill.getCustomer();
+		removeBoxFromList(customerMap.get(customer), bill);
+		removeBoxFromList(openBills, bill);
+		Collections.sort(customerMap.get(customer), new BillBoxComparator());
+		Collections.sort(openBills, new BillBoxComparator());
+		reBuildBillLayout((Customer) (searchCombo.getValue() != null ? searchCombo.getValue() : null));
+	}
+
 	@Subscribe
 	public void onBillClosed(BillClosedEvent event) {
 		openBills.remove(event.getBillBox());
@@ -153,7 +174,7 @@ public class BillComp extends CustomComponent {
 		billsLayout.removeAllComponents();
 		if (value != null) {
 			for (BillBox component : customerMap.get(value)) {
-				billsLayout.addComponent(component, component.isClosed() ? "border-red" : "border-green");
+				billsLayout.addComponent(component, component.getCurrentBill().isClosed() ? "border-red" : "border-green");
 			}
 		} else {
 			for (BillBox component : openBills) {
@@ -224,14 +245,10 @@ public class BillComp extends CustomComponent {
 			addClickListener(new ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
-					try {
-						Customer customer = (Customer) searchCombo.getValue();
-						ServiceLocator.getBean(CustomerService.class).deleteCustomer(customer.getId());
-						searchCombo.setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(
-								CustomerRepo.class).findAll(new Sort(Direction.ASC, "name"))));
-					} catch (Exception e) {
-						UIExceptionHandler.handleException(e);
-					}
+					Customer customer = (Customer) searchCombo.getValue();
+					ServiceLocator.getBean(CustomerService.class).deleteCustomer(customer.getId());
+					searchCombo.setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(CustomerRepo.class)
+							.findAll(new Sort(Direction.ASC, "name"))));
 				}
 			});
 		}
@@ -248,6 +265,15 @@ public class BillComp extends CustomComponent {
 		@Override
 		public int compare(Bill o1, Bill o2) {
 			return o1.getOpenDate().compareTo(o2.getOpenDate());
+		}
+
+	}
+
+	private static class BillBoxComparator implements Comparator<BillBox> {
+
+		@Override
+		public int compare(BillBox o1, BillBox o2) {
+			return o1.getCurrentBill().getOpenDate().compareTo(o2.getCurrentBill().getOpenDate());
 		}
 
 	}

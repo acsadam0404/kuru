@@ -25,6 +25,7 @@ class ArticleServiceImpl implements ArticleService {
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(article.code), "Kötelező cikk kódot megadni!")
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(article.name), "Kötelező cikk nevet megadni!")
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(article.icon), "Kötelező ikont választani!")
+		Preconditions.checkArgument(!Strings.isNullOrEmpty(article.unit), "Kötelező mértékegységet választani!")
 		if(isNew(article)) {
 			Preconditions.checkArgument(!articleRepo.existCode(article.code), "Már létezik cikk ezzel a kóddal!")
 			Preconditions.checkArgument(!articleRepo.existName(article.name), "Már létezik cikk ezzel a névvel!")

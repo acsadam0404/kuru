@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.HorizontalLayout;
@@ -67,6 +68,13 @@ public class MainUI extends UI {
 		menu.setSizeFull();
 		menu.setWidth("300px");
 		main.setExpandRatio(contentPanel, 1.0f);
+
+		setErrorHandler(new DefaultErrorHandler() {
+			@Override
+			public void error(com.vaadin.server.ErrorEvent event) {
+				UIExceptionHandler.handleException(event.getThrowable());
+			}
+		});
 
 		getNavigator().navigateTo(SummaryView.NAME);
 		setContent(main);

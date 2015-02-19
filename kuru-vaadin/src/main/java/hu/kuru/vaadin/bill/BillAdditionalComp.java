@@ -1,7 +1,6 @@
 package hu.kuru.vaadin.bill;
 
 import hu.kuru.UIEventBus;
-import hu.kuru.UIExceptionHandler;
 import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.enums.Currency;
@@ -55,18 +54,14 @@ public class BillAdditionalComp extends CustomComponent {
 
 				@Override
 				public void buttonClick(ClickEvent event) {
-					try {
-						currency.validate();
-						Bill bill = new Bill();
-						bill.setCustomer(customer);
-						bill.setCurrency(((Currency) currency.getValue()).name());
-						bill.setOpenDate(new Date());
-						bill.save();
-						UIEventBus.post(new AddBillEvent(bill));
-						window.close();
-					} catch (Exception e) {
-						UIExceptionHandler.handleException(e);
-					}
+					currency.validate();
+					Bill bill = new Bill();
+					bill.setCustomer(customer);
+					bill.setCurrency(((Currency) currency.getValue()).name());
+					bill.setOpenDate(new Date());
+					bill.save();
+					UIEventBus.post(new AddBillEvent(bill));
+					window.close();
 				}
 			});
 		}

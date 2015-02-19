@@ -11,7 +11,10 @@ interface BillRepo extends JpaRepository<Bill, Long> {
 	List<Bill> findByCustomer(Long customerId)
 
 	@Query("select b.id from Bill b where b.customer.id = ?1")
-	List<Long> findIdsByCustomer(long customerId)
+	List<Long> findIdsByCustomer(Long customerId)
+
+	@Query("select b from Bill b join fetch b.customer where b.id = ?1")
+	Bill findById(Long billId)
 
 	@Query("select count(b) from Bill b where b.closeDate is null")
 	Long countOpenBills();

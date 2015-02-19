@@ -16,7 +16,6 @@ import hu.kuru.vaadin.component.KTextArea;
 import hu.kuru.vaadin.component.KTextField;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.util.converter.StringToLongConverter;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.event.MouseEvents.ClickEvent;
@@ -38,6 +37,7 @@ public class ArticleMaintComp extends CustomComponent {
 	private TextField code;
 	private TextField name;
 	private TextField price;
+	private TextField unit;
 	private Image icon;
 	private TextArea description;
 
@@ -77,7 +77,6 @@ public class ArticleMaintComp extends CustomComponent {
 		addDetachListener(new EventBusDetachListener(this));
 	}
 
-
 	@Subscribe
 	public void onIconChoosed(IconChoosedEvent event) {
 		icon.setSource(new ThemeResource(event.getResource()));
@@ -87,6 +86,7 @@ public class ArticleMaintComp extends CustomComponent {
 		code = new KTextField("Cikk kód");
 		name = new KTextField("Cikk név");
 		price = new KTextField("Cikk ár");
+		unit = new KTextField("Mértékegység");
 		price.setConverter(new StringToLongConverter());
 		icon = new Image(null, new ThemeResource(iconPath != null ? iconPath : Icon.DEFAULT.getResource()));
 		icon.addClickListener(new MouseEvents.ClickListener() {
@@ -112,6 +112,7 @@ public class ArticleMaintComp extends CustomComponent {
 		details.setSpacing(true);
 		details.addComponent(code);
 		details.addComponent(name);
+		details.addComponent(unit);
 		details.addComponent(price);
 
 		upperLayout.addComponent(icon);

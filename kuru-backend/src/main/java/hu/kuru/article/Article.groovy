@@ -29,6 +29,8 @@ class Article extends BaseEntity {
 	long price
 	@NotNull
 	String icon
+	@NotNull
+	String unit
 	String description
 	@NotNull
 	boolean active

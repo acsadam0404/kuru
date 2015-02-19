@@ -198,13 +198,9 @@ public class ArticleComp extends CustomComponent {
 			addClickListener(new ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
-					try {
-						ServiceLocator.getBean(ArticleService.class).delete(selectedArticleId);
-						setCompositionRoot(build());
-						new KNotification("Sikeres törlés!").showSuccess();
-					} catch (Exception e) {
-						UIExceptionHandler.handleException(e);
-					}
+					ServiceLocator.getBean(ArticleService.class).delete(selectedArticleId);
+					setCompositionRoot(build());
+					new KNotification("Sikeres törlés!").showSuccess();
 				}
 			});
 		}

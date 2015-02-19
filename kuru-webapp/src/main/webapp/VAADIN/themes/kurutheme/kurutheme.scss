@@ -71,6 +71,14 @@ $valo-menu-background-color: #414B56;
 	margin-top: -60px;
 }
 
+.v-panel-billbox > div > [class*="-caption"] {
+	margin: 12px 12px;
+}
+
+.v-panel-caption-billbox {
+	font-size: 20px;
+}
+
 .v-label-box { 
 	text-transform: uppercase;
 	text-align: center;
