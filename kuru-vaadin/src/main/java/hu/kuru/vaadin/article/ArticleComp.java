@@ -2,7 +2,6 @@ package hu.kuru.vaadin.article;
 
 import hu.kuru.ServiceLocator;
 import hu.kuru.UIEventBus;
-import hu.kuru.UIExceptionHandler;
 import hu.kuru.article.Article;
 import hu.kuru.article.ArticleService;
 import hu.kuru.eventbus.ArticleSelectedEvent;
@@ -21,12 +20,10 @@ import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -124,12 +121,6 @@ public class ArticleComp extends CustomComponent {
 		header.setWidth("100%");
 		header.setSpacing(true);
 
-		HorizontalLayout right = new HorizontalLayout();
-		right.setSpacing(true);
-
-		Label articleLabel = new Label("Cikkek");
-		articleLabel.setStyleName("title");
-
 		Button addBtn = new ModifyButton("Hozzáadás", true);
 		modifyBtn = new ModifyButton("Módosítás", false);
 		deleteBtn = new DeleteButton();
@@ -137,16 +128,13 @@ public class ArticleComp extends CustomComponent {
 		modifyBtn.setEnabled(false);
 		deleteBtn.setEnabled(false);
 
-		right.addComponent(new SearchField());
-		right.addComponent(addBtn);
-		right.addComponent(modifyBtn);
-		right.addComponent(deleteBtn);
+		SearchField search = new SearchField();
+		header.addComponent(search);
+		header.addComponent(addBtn);
+		header.addComponent(modifyBtn);
+		header.addComponent(deleteBtn);
 
-		header.addComponent(articleLabel);
-		header.addComponent(right);
-		header.setComponentAlignment(right, Alignment.MIDDLE_RIGHT);
-		header.setExpandRatio(right, 0.8f);
-		header.setExpandRatio(articleLabel, 0.2f);
+		header.setExpandRatio(search, 1f);
 		return header;
 	}
 
@@ -164,6 +152,7 @@ public class ArticleComp extends CustomComponent {
 	private class SearchField extends TextField {
 		private SearchField() {
 			setInputPrompt("Keresés");
+			setWidth("300px");
 			setIcon(FontAwesome.SEARCH);
 			addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 			addTextChangeListener(new TextChangeListener() {
