@@ -1,0 +1,77 @@
+buildscript {
+	repositories {
+		maven { url "http://repo.spring.io/libs-release" }
+		mavenLocal()
+		mavenCentral()
+	}
+	dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.9.RELEASE") }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'groovy'
+apply plugin: 'spring-boot'
+apply from: 'http://plugins.jasoft.fi/vaadin-groovy.plugin'
+	
+group = 'hu.kuru'
+version = '0.1.0'
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+vaadin {
+	version '7.3.+'
+	widgetset 'hu.kuru.Widgetset'
+}
+
+sourceSets {
+	main {
+		java { srcDirs = []}
+		groovy {
+			srcDirs = ["src/main/java", "src/test/java"]
+		}
+	}
+}
+
+repositories{
+	mavenLocal()
+	mavenCentral()
+	maven { url "http://repo.spring.io/libs-release" }
+	maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {	
+	compile "org.springframework.boot:spring-boot-starter-websocket"
+	compile "org.springframework.boot:spring-boot-starter-data-jpa"
+	compile 'org.springframework.boot:spring-boot-starter-security'
+	compile "org.springframework.boot:spring-boot-starter-web"
+	 compile 'org.codehaus.groovy:groovy-all:2.3.6'
+	compile "org.springframework.data:spring-data-rest-webmvc"
+	compile 'javax.validation:validation-api:1.1.0.Final'
+	compile 'org.hibernate:hibernate-validator:5.1.3.Final'
+	compile 'org.apache.commons:commons-lang3:3.3.2'
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.5.0'
+	compile 'org.springframework.boot:spring-boot-starter-test'
+	compile "junit:junit"
+	compile 'org.vaadin.spring:spring-boot-vaadin:0.0.5-SNAPSHOT'
+	compile 'com.vaadin:vaadin-themes:7.3.10'
+	compile 'com.vaadin:vaadin-client-compiled:7.3.10'	
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.2.1'
+}
+
+task stage(type: Copy, dependsOn: [clean, build]) {
+    from jar.archivePath
+    into project.rootDir 
+    rename {
+        'app.jar'
+    }
+}
+stage.mustRunAfter(clean)
+
+clean << {
+    project.file('app.jar').delete()
+}
