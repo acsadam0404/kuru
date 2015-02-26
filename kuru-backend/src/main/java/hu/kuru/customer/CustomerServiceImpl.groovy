@@ -23,6 +23,22 @@ class CustomerServiceImpl implements CustomerService {
 	private CustomerRepo customerRepo
 
 	@Override
+	public void saveCustomer(Customer customer) {
+		if(isNew(customer)) {
+			Preconditions.checkArgument(!customerRepo.isExistsByName(customer.name), "Már létezik ilyen ügyfél ezzel a névvel!")
+			Preconditions.checkArgument(!customerRepo.isExistsByCode(customer.code), "Már létezik ilyen ügyfél ezzel a kóddal!")
+		} else {
+			Preconditions.checkArgument(!customerRepo.isExistsMoreByName(customer.name), "Már létezik ilyen ügyfél ezzel a névvel!")
+			Preconditions.checkArgument(!customerRepo.isExistsMoreByCode(customer.code), "Már létezik ilyen ügyfél ezzel a kóddal!")
+		}
+		customer.save()
+	}
+
+	private boolean isNew(Customer customer) {
+		customer.id == null
+	}
+
+	@Override
 	public void deleteCustomer(Long id) {
 		Preconditions.checkArgument(id != null, "Nem létezik ilyen ügyfél!")
 		Preconditions.checkArgument(!billRepo.hasOpenBillByCustomer(id), "A törölni kívánt ügyfélnek létezik nyitott számlája.")

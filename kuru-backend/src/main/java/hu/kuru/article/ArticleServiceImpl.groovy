@@ -56,7 +56,7 @@ class ArticleServiceImpl implements ArticleService {
 	public void delete(Long articleId) {
 		Preconditions.checkArgument(articleId != null, "Nem lett kiválasztva cikk a törléshez!")
 		Preconditions.checkArgument(itemRepo.isIssuedByArticleId(articleId), "A törölni kívánt cikk szerepel a kiadandó tételek listáján!")
-		Preconditions.checkArgument(itemRepo.isClosedByArticleId(articleId), "A módosítani kívánt cikk szerepel nyitott számlán!")
+		Preconditions.checkArgument(itemRepo.isClosedByArticleId(articleId), "A törölni kívánt cikk szerepel nyitott számlán!")
 		Article article = Article.findOne(articleId)
 		Preconditions.checkArgument(article != null, "Nem létezik ilyen cikk!")
 		article.setActive(false)
