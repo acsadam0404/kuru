@@ -1,6 +1,7 @@
 package hu.kuru.vaadin.bill;
 
 import hu.kuru.UIEventBus;
+import hu.kuru.UIExceptionHandler;
 import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.enums.Currency;
@@ -38,6 +39,7 @@ public class BillAdditionalComp extends CustomComponent {
 		currency = new ComboBox("Pénznem");
 		currency.addValidator(new NullValidator("Kötelező kitölteni!", false));
 		currency.addItems(Currency.values());
+		currency.setValidationVisible(false);
 
 		Button save = new SaveButton(customer);
 
@@ -54,14 +56,19 @@ public class BillAdditionalComp extends CustomComponent {
 
 				@Override
 				public void buttonClick(ClickEvent event) {
-					currency.validate();
-					Bill bill = new Bill();
-					bill.setCustomer(customer);
-					bill.setCurrency(((Currency) currency.getValue()).name());
-					bill.setOpenDate(new Date());
-					bill.save();
-					UIEventBus.post(new AddBillEvent(bill));
-					window.close();
+					try {
+						currency.validate();
+						Bill bill = new Bill();
+						bill.setCustomer(customer);
+						bill.setCurrency(((Currency) currency.getValue()).name());
+						bill.setOpenDate(new Date());
+						bill.save();
+						UIEventBus.post(new AddBillEvent(bill));
+						window.close();
+					} catch (Exception e) {
+						currency.setValidationVisible(true);
+						UIExceptionHandler.handleException(e);
+					}
 				}
 			});
 		}

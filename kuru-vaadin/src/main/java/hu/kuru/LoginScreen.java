@@ -55,13 +55,11 @@ public class LoginScreen extends CustomComponent {
 		fields.setSpacing(true);
 		fields.addStyleName("fields");
 
-		final TextField username = new TextField();
-		username.setInputPrompt("Felhasználónév");
+		final TextField username = new TextField("Felhasználónév");
 		username.setIcon(FontAwesome.USER);
 		username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-		final PasswordField password = new PasswordField();
-		password.setInputPrompt("Jelszó");
+		final PasswordField password = new PasswordField("Jelszó");
 		password.setIcon(FontAwesome.LOCK);
 		password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 

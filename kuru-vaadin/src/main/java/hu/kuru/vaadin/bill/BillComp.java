@@ -1,6 +1,7 @@
 package hu.kuru.vaadin.bill;
 
 import hu.kuru.ServiceLocator;
+import hu.kuru.UIExceptionHandler;
 import hu.kuru.bill.Bill;
 import hu.kuru.bill.BillRepo;
 import hu.kuru.customer.Customer;
@@ -166,8 +167,19 @@ public class BillComp extends CustomComponent {
 
 	@Subscribe
 	public void onAddCustomer(AddCustomerEvent event) {
-		((BeanItemContainer<Customer>) searchCombo.getContainerDataSource()).addBean(event.getCustomer());
-		customerMap.put(event.getCustomer(), new ArrayList<BillBox>());
+		if (event.isNew()) {
+			customerMap.put(event.getCustomer(), new ArrayList<BillBox>());
+		} else {
+			setBoxCaptions(event.getCustomer());
+		}
+		searchCombo.refresh();
+		searchCombo.setValue(event.getCustomer());
+	}
+
+	private void setBoxCaptions(Customer customer) {
+		for (BillBox component : customerMap.get(customer)) {
+			component.setCaption(customer.getName());
+		}
 	}
 
 	private void reBuildBillLayout(Customer value) {
@@ -220,6 +232,11 @@ public class BillComp extends CustomComponent {
 			});
 		}
 
+		public void refresh() {
+			setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(CustomerRepo.class).findAll(
+					new Sort(Direction.ASC, "name"))));
+		}
+
 	}
 
 	private class AddBillButton extends Button {
@@ -245,10 +262,14 @@ public class BillComp extends CustomComponent {
 			addClickListener(new ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
-					Customer customer = (Customer) searchCombo.getValue();
-					ServiceLocator.getBean(CustomerService.class).deleteCustomer(customer.getId());
-					searchCombo.setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(CustomerRepo.class)
-							.findAll(new Sort(Direction.ASC, "name"))));
+					try {
+						Customer customer = (Customer) searchCombo.getValue();
+						ServiceLocator.getBean(CustomerService.class).deleteCustomer(customer.getId());
+						searchCombo.setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(
+								CustomerRepo.class).findAll(new Sort(Direction.ASC, "name"))));
+					} catch (Exception e) {
+						UIExceptionHandler.handleException(e);
+					}
 				}
 			});
 		}

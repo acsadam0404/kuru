@@ -14,6 +14,8 @@ import hu.kuru.vaadin.KFieldGroup;
 import hu.kuru.vaadin.component.KNotification;
 import hu.kuru.vaadin.component.KTextArea;
 import hu.kuru.vaadin.component.KTextField;
+import hu.kuru.valueset.ValueSet;
+import hu.kuru.valueset.ValueSetRepo;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.data.util.converter.StringToLongConverter;
@@ -22,6 +24,7 @@ import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
@@ -37,7 +40,7 @@ public class ArticleMaintComp extends CustomComponent {
 	private TextField code;
 	private TextField name;
 	private TextField price;
-	private TextField unit;
+	private ComboBox unit;
 	private Image icon;
 	private TextArea description;
 
@@ -60,6 +63,7 @@ public class ArticleMaintComp extends CustomComponent {
 						UIEventBus.post(new ArticlesRefreshEvent());
 						new KNotification("Sikeres mentés!").showSuccess();
 					} catch (Exception e) {
+						setValidationVisible(true);
 						UIExceptionHandler.handleException(e);
 					}
 				}
@@ -85,9 +89,12 @@ public class ArticleMaintComp extends CustomComponent {
 	private void init(String iconPath) {
 		code = new KTextField("Cikk kód");
 		name = new KTextField("Cikk név");
-		price = new KTextField("Cikk ár");
-		unit = new KTextField("Mértékegység");
+		price = new KTextField("Cikk ár (forintban)");
+		unit = new ComboBox("Mértékegység");
+		unit.addItems(ServiceLocator.getBean(ValueSetRepo.class).findByName(ValueSet.QUANTITY).getValues());
+		description = new KTextArea("Cikk leírás");
 		price.setConverter(new StringToLongConverter());
+		price.setConversionError("Csak számot lehet megadni!");
 		icon = new Image(null, new ThemeResource(iconPath != null ? iconPath : Icon.DEFAULT.getResource()));
 		icon.addClickListener(new MouseEvents.ClickListener() {
 
@@ -96,7 +103,17 @@ public class ArticleMaintComp extends CustomComponent {
 				UI.getCurrent().addWindow(new IconPopup());
 			}
 		});
-		description = new KTextArea("Cikk leírás");
+		name.setSizeFull();
+		code.setSizeFull();
+		price.setSizeFull();
+		unit.setSizeFull();
+		setValidationVisible(false);
+	}
+
+	private void setValidationVisible(boolean visible) {
+		name.setValidationVisible(visible);
+		code.setValidationVisible(visible);
+		unit.setValidationVisible(visible);
 	}
 
 	private Component build() {
@@ -105,8 +122,8 @@ public class ArticleMaintComp extends CustomComponent {
 		main.setMargin(true);
 		main.setSpacing(true);
 
-		HorizontalLayout upperLayout = new HorizontalLayout();
-		upperLayout.setSpacing(true);
+		HorizontalLayout bottomLayout = new HorizontalLayout();
+		bottomLayout.setSpacing(true);
 
 		VerticalLayout details = new VerticalLayout();
 		details.setSpacing(true);
@@ -115,10 +132,10 @@ public class ArticleMaintComp extends CustomComponent {
 		details.addComponent(unit);
 		details.addComponent(price);
 
-		upperLayout.addComponent(icon);
-		upperLayout.addComponent(details);
-		main.addComponent(upperLayout);
-		main.addComponent(description);
+		bottomLayout.addComponent(icon);
+		bottomLayout.addComponent(description);
+		main.addComponent(details);
+		main.addComponent(bottomLayout);
 		Button saveBtn = new SaveButton();
 		saveBtn.setSizeUndefined();
 		main.addComponent(saveBtn);

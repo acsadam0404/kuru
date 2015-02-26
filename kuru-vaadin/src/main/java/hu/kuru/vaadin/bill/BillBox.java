@@ -43,6 +43,7 @@ public class BillBox extends CustomComponent {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BillBox.class);
 
+	private Panel panel;
 	private Bill currentBill;
 
 	private BillBox(Bill bill) {
@@ -74,12 +75,16 @@ public class BillBox extends CustomComponent {
 		box.addComponent(buildTable(itemList));
 		box.addComponent(buildFooter(getSum(itemList)));
 
-		final Panel panel = new Panel(currentBill.getCustomer().getCode() + " - " + currentBill.getCustomer().getName());
+		panel = new Panel(currentBill.getCustomer().getCode() + " - " + currentBill.getCustomer().getName());
 		panel.setSizeFull();
 		panel.addStyleName(ValoTheme.PANEL_BORDERLESS);
 		panel.addStyleName("billbox");
 		panel.setContent(box);
 		return panel;
+	}
+
+	public void setCaption(String caption) {
+		panel.setCaption(currentBill.getCustomer().getCode() + " - " + caption);
 	}
 
 	private Component buildHeader() {

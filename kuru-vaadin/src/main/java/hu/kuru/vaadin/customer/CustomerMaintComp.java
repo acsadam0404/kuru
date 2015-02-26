@@ -1,12 +1,13 @@
 package hu.kuru.vaadin.customer;
 
+import hu.kuru.ServiceLocator;
 import hu.kuru.UIEventBus;
+import hu.kuru.UIExceptionHandler;
 import hu.kuru.customer.Customer;
+import hu.kuru.customer.CustomerService;
 import hu.kuru.eventbus.AddCustomerEvent;
 import hu.kuru.vaadin.KFieldGroup;
-import hu.kuru.vaadin.component.KNotification;
 
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -26,15 +27,15 @@ public class CustomerMaintComp extends CustomComponent {
 	private CustomerMaintComp(Customer customer) {
 		init();
 		setCompositionRoot(buildLayout());
-		bind(customer);
+		load(customer);
 	}
 
-	/* TODO ne bind legyen a neve */
-	private void bind(Customer customer) {
+	private void load(Customer customer) {
 		fg = new KFieldGroup<>(Customer.class);
 		fg.setBuffered(true);
 		fg.bindMemberFields(this);
 		fg.setItemDataSource(customer);
+		code.setEnabled(customer.getId() == null);
 	}
 
 	public static CustomerMaintComp createNew() {
@@ -50,10 +51,16 @@ public class CustomerMaintComp extends CustomComponent {
 		code = new TextField("Kód");
 		name.setImmediate(true);
 		code.setImmediate(true);
-		
-		//TODO nullrepresentation aspectből kell majd
+
+		// TODO nullrepresentation aspectből kell majd
 		name.setNullRepresentation("");
 		code.setNullRepresentation("");
+		setValidationVisible(false);
+	}
+
+	private void setValidationVisible(boolean visible) {
+		name.setValidationVisible(visible);
+		code.setValidationVisible(visible);
 	}
 
 	private Component buildLayout() {
@@ -80,11 +87,13 @@ public class CustomerMaintComp extends CustomComponent {
 					try {
 						fg.commit();
 						Customer customer = fg.getItemDataSource().getBean();
-						customer.save();
+						boolean isNew = customer.getId() == null;
+						ServiceLocator.getBean(CustomerService.class).saveCustomer(customer);
 						window.close();
-						UIEventBus.post(new AddCustomerEvent(customer));
-					} catch (CommitException e) {
-						new KNotification("Minden mező kitöltése kötelező!").showError();
+						UIEventBus.post(new AddCustomerEvent(customer, isNew));
+					} catch (Exception e) {
+						setValidationVisible(true);
+						UIExceptionHandler.handleException(e);
 					}
 				}
 			});
