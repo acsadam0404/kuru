@@ -26,4 +26,6 @@
     <inherits name="org.vaadin.alump.masonry.WidgetSet" />
 
     <inherits name="org.vaadin.alump.gofullscreen.gwt.GoFullScreenWidgetSet" />
+
+    <inherits name="com.vaadin.addon.touchkit.gwt.TouchKitWidgetSet" />
 </module>
