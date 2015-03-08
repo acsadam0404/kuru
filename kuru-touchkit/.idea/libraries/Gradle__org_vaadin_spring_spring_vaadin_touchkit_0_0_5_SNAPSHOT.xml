@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.vaadin.spring:spring-vaadin-touchkit:0.0.5-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.vaadin.spring/spring-vaadin-touchkit/0.0.5-SNAPSHOT/752c0603253e0b02887c01114459eaab9197b04a/spring-vaadin-touchkit-0.0.5-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.vaadin.spring/spring-vaadin-touchkit/0.0.5-SNAPSHOT/97e24f3afcba447fd09d03c1837e2799df0c4035/spring-vaadin-touchkit-0.0.5-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

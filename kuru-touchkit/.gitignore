@@ -4,3 +4,4 @@
 /.classpath
 /.project
 /src/main/webapp/VAADIN/gwt-unitCache
+/target/

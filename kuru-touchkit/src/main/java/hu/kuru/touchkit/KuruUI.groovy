@@ -1,25 +1,15 @@
 package hu.kuru.touchkit
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.vaadin.spring.annotation.VaadinUI
-import org.vaadin.spring.navigator.SpringViewProvider
-import org.vaadin.spring.touchkit.annotation.TouchKitUI;
-
-import com.vaadin.addon.touchkit.ui.VerticalComponentGroup;
 import com.vaadin.annotations.Theme
 import com.vaadin.annotations.Widgetset
-import com.vaadin.navigator.Navigator
-import com.vaadin.navigator.View
-import com.vaadin.navigator.ViewChangeListener
 import com.vaadin.server.VaadinRequest
-import com.vaadin.ui.Button
-import com.vaadin.ui.CssLayout
 import com.vaadin.ui.Label
-import com.vaadin.ui.Panel
 import com.vaadin.ui.TextField
 import com.vaadin.ui.UI
 import com.vaadin.ui.VerticalLayout
-import com.vaadin.ui.themes.ValoTheme
+import org.vaadin.spring.annotation.VaadinUI
+import org.vaadin.spring.navigator.SpringViewProvider
+import org.vaadin.spring.touchkit.annotation.TouchKitUI
 
 @VaadinUI
 @Theme("valo")
@@ -39,9 +29,8 @@ class KuruUI extends UI{
 			setSpacing(true)
 			setSizeFull();
 		}
-		VerticalComponentGroup c = new VerticalComponentGroup()
-		c.addComponent(new Label("first"))
-		c.addComponent(new TextField("second"))
+		def c = new VerticalLayout()
+		c.addComponent(new ArticleGrid())
 		root.addComponent(c)
 		setContent(root)
 	}
