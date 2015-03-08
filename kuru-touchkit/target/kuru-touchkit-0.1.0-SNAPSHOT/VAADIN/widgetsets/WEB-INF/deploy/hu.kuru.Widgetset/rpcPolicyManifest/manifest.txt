@@ -1,2 +1,0 @@
-# Module hu.kuru.Widgetset
-# RPC service class, partial path of RPC policy file
