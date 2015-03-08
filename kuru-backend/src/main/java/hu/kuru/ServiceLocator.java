@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.poi.ss.formula.functions.T;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Scope("singleton")
 public class ServiceLocator implements ApplicationContextAware{
-	private static final Logger logger = Logger.getLogger(ServiceLocator.class);
+	private static final Logger logger = LoggerFactory.getLogger(ServiceLocator.class);
 	private static ApplicationContext springContext;
 
 	@Override
@@ -31,7 +31,7 @@ public class ServiceLocator implements ApplicationContextAware{
 	
 	public static <T> T getBean(Class<T> requiredType) {
 		if (springContext == null) {
-			logger.fatal("springContext null ServiceLocator-ban!");
+			logger.error("springContext null ServiceLocator-ban!");
 		}
 		return springContext.getBean(requiredType);
 	}

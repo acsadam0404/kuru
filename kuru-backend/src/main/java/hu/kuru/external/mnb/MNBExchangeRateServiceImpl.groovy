@@ -3,12 +3,13 @@ package hu.kuru.external.mnb;
 import hu.mnb.webservices.MNBArfolyamService
 import hu.mnb.webservices.MNBArfolyamServiceSoap
 
-import org.apache.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class MNBExchangeRateServiceImpl implements MNBExchangeRateService{
-	private static final Logger logger = Logger.getLogger(MNBExchangeRateServiceImpl);
+	private static final Logger logger = LoggerFactory.getLogger(MNBExchangeRateServiceImpl);
 
 	@Override
 	List<ExchangeRate> getExchangeRates() throws MNBServiceException {
