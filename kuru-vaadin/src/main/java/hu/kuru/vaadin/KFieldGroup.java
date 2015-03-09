@@ -1,6 +1,7 @@
 package hu.kuru.vaadin;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
@@ -13,7 +14,7 @@ import com.vaadin.ui.Field;
  * @param <T>
  */
 public class KFieldGroup<T> extends BeanFieldGroup<T> {
-	private static final Logger logger = Logger.getLogger(KFieldGroup.class);
+	private static final Logger logger = LoggerFactory.getLogger(KFieldGroup.class);
 	/* azért kell a copy, mert az ősben private a beanType */
 	private Class<T> beanTypeCopy;
 

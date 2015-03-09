@@ -5,3 +5,5 @@
 /.project
 /src/main/webapp/VAADIN/gwt-unitCache
 /target/
+/target/
+/.springBeans

@@ -15,6 +15,9 @@ class Article extends BaseEntity {
 
 	private static ArticleRepo repo
 
+	public static void setRepo(ArticleRepo repo) {
+		this.repo = repo
+	}
 	Article() {
 		if (ServiceLocator.loaded && !repo)  {
 			repo = ServiceLocator.getBean(ArticleRepo)

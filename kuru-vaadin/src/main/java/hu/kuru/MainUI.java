@@ -6,7 +6,8 @@ import hu.kuru.vaadin.summary.SummaryView;
 
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
@@ -25,7 +26,7 @@ import com.vaadin.ui.VerticalLayout;
 @Widgetset("hu.kuru.AppWidgetSet")
 @org.springframework.stereotype.Component("MainUI")
 public class MainUI extends UI {
-	private static final Logger logger = Logger.getLogger(MainUI.class);
+	private static final Logger logger = LoggerFactory.getLogger(MainUI.class);
 
 	private final HorizontalLayout main = new HorizontalLayout();
 	private final UIEventBus eventbus = new UIEventBus();

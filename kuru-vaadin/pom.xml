@@ -16,7 +16,11 @@
 			<groupId>hu.kuru</groupId>
 			<artifactId>kuru-backend</artifactId>
 		</dependency>
-
+		
+ <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
@@ -79,11 +83,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.vaadin.alump.gofullscreen</groupId>
-			<artifactId>gofullscreen-addon</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
@@ -111,11 +110,6 @@
 		</dependency>
 
 
-<dependency>
-   <groupId>com.vaadin.addon</groupId>
-   <artifactId>vaadin-touchkit-agpl</artifactId>
-   <version>4.0.0</version>
-</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
@@ -174,31 +168,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>jcifs</groupId>
-			<artifactId>jcifs</artifactId>
-		</dependency>
 
 
 	</dependencies>

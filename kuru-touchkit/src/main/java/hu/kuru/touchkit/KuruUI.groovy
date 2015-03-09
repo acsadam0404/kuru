@@ -30,7 +30,8 @@ class KuruUI extends UI{
 			setSizeFull();
 		}
 		def c = new VerticalLayout()
-		c.addComponent(new ArticleGrid())
+		c.addComponent(new TextField("Hello world"))
+//		c.addComponent(new ArticleGrid())
 		root.addComponent(c)
 		setContent(root)
 	}
