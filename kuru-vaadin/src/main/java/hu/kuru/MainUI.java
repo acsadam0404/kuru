@@ -35,6 +35,7 @@ public class MainUI extends UI {
 	public MainUI() {
 		super();
 		Locale locale = new Locale("hu", "HU");
+		this.getPage().setTitle("KURU");
 		setLocale(locale);
 	}
 
