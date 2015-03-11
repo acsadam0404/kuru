@@ -1,8 +1,10 @@
 package hu.kuru.vaadin.security;
 
+import hu.kuru.MainUI;
 import hu.kuru.UIEventBus;
 import hu.kuru.user.User;
 
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 
 public class Authentication {
@@ -25,7 +27,10 @@ public class Authentication {
 
 	public void logout() {
 		if (isAuthenticated()) {
-			VaadinSession.getCurrent().close();
+			//TODO: mért nem szünteti meg a sessiont? nem jó igy a setlocation!!!!
+			 VaadinSession.getCurrent().close();
+			 VaadinSession.getCurrent().setAttribute("username", null);
+			 MainUI.getCurrent().getPage().setLocation("/kuru-webapp");
 		}
 		UIEventBus.post(new LoginEvent(null));
 	}
