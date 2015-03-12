@@ -43,7 +43,7 @@ class CustomerServiceImpl implements CustomerService {
 		Preconditions.checkArgument(id != null, "Nem létezik ilyen ügyfél!")
 		Preconditions.checkArgument(!billRepo.hasOpenBillByCustomer(id), "A törölni kívánt ügyfélnek létezik nyitott számlája.")
 		List<Long> billList = billRepo.findIdsByCustomer(id)
-		if(billList != null) {
+		if(billList != null && billList.size() != 0) {
 			itemRepo.deleteByBillId(billList)
 			billRepo.deleteByIds(billList)
 		}
