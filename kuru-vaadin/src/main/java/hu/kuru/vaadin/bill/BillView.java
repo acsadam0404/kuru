@@ -6,14 +6,11 @@ import hu.kuru.eventbus.EventBusDetachListener;
 
 import org.springframework.context.annotation.Scope;
 
-import ru.xpoft.vaadin.VaadinView;
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Component;
 
 @Scope("prototype")
-@VaadinView(BillView.NAME)
 @org.springframework.stereotype.Component
 public class BillView extends AbstractView implements View {
 

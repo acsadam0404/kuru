@@ -1,44 +1,79 @@
 package hu.kuru.user
 
-import groovy.transform.EqualsAndHashCode
-import hu.kuru.BaseEntity
-import hu.kuru.ServiceLocator;
 
+import hu.kuru.BaseEntity
+
+import javax.persistence.Column
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
-import org.springframework.beans.factory.annotation.Autowire
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Configurable
-
 @Entity
 @Table(name = "user")
-@EqualsAndHashCode(includes = ["username"])
-class User extends BaseEntity {
+class User extends BaseEntity{
+	static final String USERNAME = "username"
+	static final String PASSWORD = "password"
+	static final String ROLES = "roles"
+
 	private static UserRepo repo
 
-	User() {
-		if (ServiceLocator.loaded && !repo)  {
-			repo = ServiceLocator.getBean(UserRepo)
-		}
+	static void setRepo(UserRepo repo) {
+		this.repo = repo
 	}
 
+	@Column(unique =  true)
 	@NotNull
 	String username
+
 	@NotNull
 	String password
 
-	static User get(String username) {
-		repo.findByUsername(username)
+	@ElementCollection(fetch = FetchType.EAGER)
+	Set<String> roles = []
+
+	static List<User> findAll() {
+		repo.findAll()
 	}
 
 	User save() {
 		repo.save(this)
 	}
 
+	static boolean valid(String username, String password) {
+		def user = repo.findByUsernameAndPassword(username, password)
+		user ? true : false
+	}
+	void delete() {
+		repo.delete(id)
+	}
+
+	static Set<String> findAllRoles() {
+		return ["USER", "ADMIN"] as Set
+	}
+
+	boolean hasRole(String role) {
+		roles.contains(role)
+	}
+
+
+	static User findByUsername(String username) {
+		repo.findByUsername(username)
+	}
+	
+	/**
+	 * használjuk a findByUsername-t mert az konvencionálisabb
+	 * @param username
+	 * @return
+	 */
+	@Deprecated
+	static User get(String username) {
+		return repo.findByUsername(username)
+	}
+
 	@Override
 	String toString() {
-		username
+		return username
 	}
 }

@@ -27,10 +27,7 @@ public class Authentication {
 
 	public void logout() {
 		if (isAuthenticated()) {
-			//TODO: mért nem szünteti meg a sessiont? nem jó igy a setlocation!!!!
-			 VaadinSession.getCurrent().close();
-			 VaadinSession.getCurrent().setAttribute("username", null);
-			 MainUI.getCurrent().getPage().setLocation("/kuru-webapp");
+			VaadinSession.getCurrent().setAttribute("username", null);
 		}
 		UIEventBus.post(new LoginEvent(null));
 	}

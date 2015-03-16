@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="VaadinServlet" version="3.0">
   <servlet>
-    <servlet-name>VaadinServlet</servlet-name>
-    <servlet-class>ru.xpoft.vaadin.SpringVaadinServlet</servlet-class>
-    <init-param>
-      <param-name>beanName</param-name>
-      <param-value>MainUI</param-value>
-    </init-param>
-    <init-param>
-      <param-name>systemMessagesBeanName</param-name>
-      <param-value>DEFAULT</param-value>
-    </init-param>
-    <load-on-startup>10</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>VaadinServlet</servlet-name>
-    <url-pattern>/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>VaadinServlet</servlet-name>
-    <url-pattern>/VAADIN/*</url-pattern>
-  </servlet-mapping>
-  <servlet>
     <servlet-name>SpringRestServlet</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
