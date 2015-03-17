@@ -1,4 +1,4 @@
-package hu.kuru.touchkit
+package hu.kuru.ui
 
 import hu.kuru.article.Article
 

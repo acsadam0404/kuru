@@ -1,4 +1,4 @@
-package hu.kuru.touchkit
+package hu.kuru.ui
 
 import com.vaadin.ui.Component
 import com.vaadin.ui.CustomComponent

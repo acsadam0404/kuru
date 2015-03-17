@@ -1,4 +1,6 @@
-package hu.kuru.touchkit;
+package hu.kuru.ui;
+
+import hu.kuru.KuruUI;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.google.gwt.thirdparty.guava.common.eventbus.SubscriberExceptionContext;
