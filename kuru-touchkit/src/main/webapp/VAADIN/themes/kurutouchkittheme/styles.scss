@@ -1,0 +1,16 @@
+// Import all the mixins for this theme
+@import "kurutouchkittheme";
+
+.kurutouchkittheme {
+  @include kurutouchkittheme;
+
+.v-button {
+    margin: 10px;
+    border: 1px solid black;
+
+    /* A nested selector to increase specificity */
+    .v-button-caption {
+      color: blue;
+    }
+  }
+}

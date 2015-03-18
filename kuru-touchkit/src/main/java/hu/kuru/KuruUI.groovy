@@ -1,7 +1,10 @@
 package hu.kuru
 
+import hu.kuru.ui.LoginView
 import hu.kuru.ui.UIEventBus;
 
+import com.vaadin.addon.touchkit.ui.NavigationButton
+import com.vaadin.addon.touchkit.ui.NavigationManager
 import com.vaadin.addon.touchkit.ui.VerticalComponentGroup
 import com.vaadin.annotations.Theme
 import com.vaadin.annotations.Widgetset
@@ -20,7 +23,7 @@ import org.vaadin.spring.navigator.SpringViewProvider
 import org.vaadin.spring.touchkit.annotation.TouchKitUI
 
 @VaadinUI
-@Theme("valo")
+@Theme("kurutickettheme")
 @Widgetset("hu.kuru.Widgetset")
 @TouchKitUI
 class KuruUI extends UI{
@@ -38,20 +41,9 @@ class KuruUI extends UI{
 			setSpacing(true)
 			setSizeFull();
 		}
-		//TODO ez nem itt lesz!
-		def guestCompGroup = new VerticalComponentGroup("Bejelentkezés vendégként")
-		def guestCodeField = new TextField("Kód: ")
-		def guestLoginButton = new Button("Bejelentkezés");
-		guestCompGroup.addComponents(guestCodeField, guestLoginButton)
-		def waiterCompGroup = new VerticalComponentGroup("Bejelentkezés pincérként")
-		def waiterUserName = new TextField("Felhasználónév:")
-		def waiterPassword = new PasswordField("Jelszó:")
-		def waiterLoginButton = new Button("Bejelentkezés")
-		waiterCompGroup.addComponents(waiterUserName,waiterPassword,waiterLoginButton)
-		root.addComponents(guestCompGroup, waiterCompGroup)
-		root.setComponentAlignment(guestCompGroup, Alignment.MIDDLE_CENTER)
-		root.setComponentAlignment(waiterCompGroup, Alignment.MIDDLE_CENTER)
-		setContent(root)
+		NavigationManager manager =
+		new NavigationManager(new LoginView());
+		setContent(manager);
 	}
 
 
