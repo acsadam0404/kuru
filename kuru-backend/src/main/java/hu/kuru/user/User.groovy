@@ -30,7 +30,7 @@ class User extends BaseEntity{
 	@NotNull
 	String password
 
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.LAZY)
 	Set<String> roles = []
 
 	static List<User> findAll() {

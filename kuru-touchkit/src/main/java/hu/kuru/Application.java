@@ -2,19 +2,28 @@ package hu.kuru;
 
 import hu.kuru.article.Article;
 import hu.kuru.article.ArticleRepo;
+import hu.kuru.user.User;
+import hu.kuru.user.UserRepo;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 
 @Configuration
 @SpringBootApplication
+@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+@ImportResource("/META-INF/bus-context.xml")
 public class Application {
 	@Autowired
 	private ArticleRepo articleRepo;
+	@Autowired
+	private UserRepo userRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -24,6 +33,7 @@ public class Application {
 	@PostConstruct
 	public void init() {
 		Article.setRepo(articleRepo);
+		User.setRepo(userRepo);
 	}
 
 }

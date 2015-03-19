@@ -1,10 +1,8 @@
 package hu.kuru.vaadin.security;
 
-import hu.kuru.MainUI;
 import hu.kuru.UIEventBus;
 import hu.kuru.user.User;
 
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 
 public class Authentication {
@@ -12,7 +10,7 @@ public class Authentication {
 	}
 
 	public void login(String username, String password) {
-		User user = User.get(username);
+		User user = User.findByUsername(username);
 		if (user != null) {
 			if (password.equals(user.getPassword())) {
 				VaadinSession.getCurrent().setAttribute("username", username);

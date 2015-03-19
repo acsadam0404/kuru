@@ -12,8 +12,5 @@ appender("STDOUT", ConsoleAppender) {
   }
 }
  
-logger("co.uk.mcb", INFO)
-logger("com.bettingpromotion", WARN)
-logger("org.hibernate.tool.hbm2ddl.SchemaExport", ERROR)
-logger("bettingPromotionLogger", INFO)
+logger("org.hibernate.tool.hbm2ddl.SchemaExport", DEBUG)
 root(WARN, ["STDOUT"])

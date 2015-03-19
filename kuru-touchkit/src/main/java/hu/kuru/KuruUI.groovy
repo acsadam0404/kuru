@@ -1,8 +1,12 @@
 package hu.kuru
 
+import hu.kuru.security.Authentication
 import hu.kuru.ui.LoginView
+import hu.kuru.ui.MainView
 import hu.kuru.ui.UIEventBus;
+import hu.kuru.ui.event.LoginEvent
 
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.addon.touchkit.ui.NavigationButton
 import com.vaadin.addon.touchkit.ui.NavigationManager
 import com.vaadin.addon.touchkit.ui.VerticalComponentGroup
@@ -28,12 +32,14 @@ import org.vaadin.spring.touchkit.annotation.TouchKitUI
 @TouchKitUI
 class KuruUI extends UI{
 	private final SpringViewProvider viewProvider
-	
 	final UIEventBus eventbus = new UIEventBus()
+	private Authentication authentication
+	private NavigationManager manager
 
 	@Override
 	protected void init(VaadinRequest request) {
 		UIEventBus.register(this);
+		authentication = new Authentication()
 		def root = new VerticalLayout();
 		this.getPage().setTitle("KURU")
 		root.with {
@@ -41,13 +47,25 @@ class KuruUI extends UI{
 			setSpacing(true)
 			setSizeFull();
 		}
-		NavigationManager manager =
-		new NavigationManager(new LoginView());
-		setContent(manager);
+		manager = new NavigationManager();
+		setContent(manager)
+		init();
 	}
-
 
 	static KuruUI getCurrent() {
 		super.getCurrent()
+	}
+
+	@Subscribe
+	void handleLoginEvent(LoginEvent loginEvent) {
+		init();
+	}
+
+	void init() {
+		if (!authentication.isAuthenticated()) {
+			manager.navigateTo(new LoginView())
+		} else {
+			manager.navigateTo(new MainView())
+		}
 	}
 }
