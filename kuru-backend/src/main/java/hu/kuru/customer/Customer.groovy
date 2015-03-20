@@ -5,6 +5,7 @@ import hu.kuru.BaseEntity
 import hu.kuru.ServiceLocator
 import hu.kuru.bill.Bill
 
+import javax.persistence.Column;
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.OneToMany
@@ -18,13 +19,22 @@ class Customer extends BaseEntity {
 
 	private static CustomerRepo repo
 
+	/**
+	 * setrepo kéne helyette
+	 */
+	@Deprecated
 	Customer() {
 		if (ServiceLocator.loaded && !repo)  {
 			repo = ServiceLocator.getBean(CustomerRepo)
 		}
 	}
+	
+	static void setRepo(CustomerRepo repo) {
+		this.repo = repo;
+	}
 
 	@NotNull
+	@Column(unique = true)
 	String code
 	@NotNull
 	String name

@@ -7,6 +7,7 @@ import org.codehaus.groovy.transform.trait.SuperCallTraitTransformer;
 import org.vaadin.spring.navigator.annotation.VaadinView
 
 import com.vaadin.addon.touchkit.ui.HorizontalButtonGroup
+import com.vaadin.addon.touchkit.ui.NavigationManager;
 import com.vaadin.addon.touchkit.ui.NavigationView
 import com.vaadin.addon.touchkit.ui.VerticalComponentGroup
 import com.vaadin.ui.Button
@@ -26,27 +27,38 @@ class LoginView extends NavigationView {
 	private Authentication authentication
 	
 	LoginView() {
+		super("KURU")
 		authentication = new Authentication()
 		setContent(build())
 	}
 	
-	
+	/**
+	 * Tartalom létrehozását végző függvény
+	 * 
+	 * @author
+	 *
+	 */
 	private Component build() {
 		setSizeFull()
-		VerticalLayout layout = new VerticalLayout() 
+		
+		VerticalLayout layout = new VerticalLayout()
+		//Vendég bejelentkezés
 		VerticalComponentGroup vertCompGroupGuest = new VerticalComponentGroup()
-		vertCompGroupGuest.addComponent(new Label("Ügyfél bejelentkezés"))
-		vertCompGroupGuest.addComponent(new TextField("Kód:"))
+		vertCompGroupGuest.addComponent(new Label("Vendég bejelentkezés"))
+		TextField customerCodeField = new TextField("Kód:")
+		vertCompGroupGuest.addComponent(customerCodeField)
 		HorizontalButtonGroup buttons = new HorizontalButtonGroup()
 		Button guestLoginButton = new Button("Bejelentkezés")
 		guestLoginButton.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(final ClickEvent event) {
-				authentication.login(username.getValue(), password.getValue())
+				authentication.loginByCustomer(customerCodeField.getValue())
 			}
 		});
 		buttons.addComponent(guestLoginButton)
 		vertCompGroupGuest.addComponent(buttons)
+		
+		//dolgozó bejelentkezés
 		VerticalComponentGroup vertCompGroupWaiter = new VerticalComponentGroup()
 		vertCompGroupWaiter.addComponent(new Label("Alkalmazott bejelentkezés"))
 		TextField waiterUserNameField = new TextField("Felhasználónév:")
@@ -65,6 +77,7 @@ class LoginView extends NavigationView {
 			}
 		});
 		vertCompGroupWaiter.addComponent(buttonsForWaiter)
+		
 		return layout
 	}
 }

@@ -2,6 +2,8 @@ package hu.kuru;
 
 import hu.kuru.article.Article;
 import hu.kuru.article.ArticleRepo;
+import hu.kuru.customer.Customer;
+import hu.kuru.customer.CustomerRepo;
 import hu.kuru.user.User;
 import hu.kuru.user.UserRepo;
 
@@ -24,6 +26,9 @@ public class Application {
 	private ArticleRepo articleRepo;
 	@Autowired
 	private UserRepo userRepo;
+	@Autowired
+	private CustomerRepo customerRepo;
+	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -34,6 +39,7 @@ public class Application {
 	public void init() {
 		Article.setRepo(articleRepo);
 		User.setRepo(userRepo);
+		Customer.setRepo(customerRepo);
 	}
 
 }

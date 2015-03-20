@@ -2,7 +2,8 @@ package hu.kuru
 
 import hu.kuru.security.Authentication
 import hu.kuru.ui.LoginView
-import hu.kuru.ui.MainView
+import hu.kuru.ui.MainViewForCustomer
+import hu.kuru.ui.MainViewForWaiter
 import hu.kuru.ui.UIEventBus;
 import hu.kuru.ui.event.LoginEvent
 
@@ -31,10 +32,10 @@ import org.vaadin.spring.touchkit.annotation.TouchKitUI
 @Widgetset("hu.kuru.Widgetset")
 @TouchKitUI
 class KuruUI extends UI{
+
 	private final SpringViewProvider viewProvider
 	final UIEventBus eventbus = new UIEventBus()
 	private Authentication authentication
-	private NavigationManager manager
 
 	@Override
 	protected void init(VaadinRequest request) {
@@ -47,25 +48,37 @@ class KuruUI extends UI{
 			setSpacing(true)
 			setSizeFull();
 		}
-		manager = new NavigationManager();
-		setContent(manager)
-		init();
+		initContent();
 	}
 
 	static KuruUI getCurrent() {
 		super.getCurrent()
 	}
 
+	/**
+	 * Login event
+	 * 
+	 * @param loginEvent
+	 */
 	@Subscribe
-	void handleLoginEvent(LoginEvent loginEvent) {
-		init();
+	void handleLoginEventForWaiter(LoginEvent loginEvent) {
+		if(loginEvent.getUsername() == null && loginEvent.getCustomerCode() == null) {
+			this.setContent(new LoginView())
+		} else {
+			this.initContent()
+		}
 	}
 
-	void init() {
-		if (!authentication.isAuthenticated()) {
-			manager.navigateTo(new LoginView())
-		} else {
-			manager.navigateTo(new MainView())
+	/**
+	 * Tartalom inicializálását végző függvény
+	 */
+	void initContent() {
+		if(!authentication.isAuthenticated() && !authentication.isAuthenticatedByCustomer()) {
+			setContent(new LoginView())
+		} else if(authentication.isAuthenticated()) {
+			setContent(new MainViewForWaiter())
+		} else if(authentication.isAuthenticatedByCustomer()) {
+			setContent(new MainViewForCustomer())
 		}
 	}
 }

@@ -10,5 +10,5 @@ public class LoginEvent {
 	public String getUsername() {
 		return username;
 	}
-
+	
 }
