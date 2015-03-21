@@ -1,5 +1,5 @@
-@import "../valo/valo";
+@external v-ui, shifts, v-csslayout, shiftstable, shiftsfilter, v-table-sort-indicator, v-table-caption-container, v-table-header-wrap, v-table-cell-content, v-table-row, v-table-row-odd, v-table-cell-wrapper, v-table-header, v-table-resizer, v-table-body-wrapper, v-table-body, editfiltersbutton, filtersview, v-touchkit-navbutton, v-table-header-cell-asc, v-table-header-cell-desc, v-button;
 
 @mixin kurutouchkittheme {
-	@include valo;
+	
 }

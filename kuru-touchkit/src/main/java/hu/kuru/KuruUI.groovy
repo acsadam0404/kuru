@@ -28,7 +28,7 @@ import org.vaadin.spring.navigator.SpringViewProvider
 import org.vaadin.spring.touchkit.annotation.TouchKitUI
 
 @VaadinUI
-@Theme("kurutickettheme")
+@Theme("kurutouchkittheme")
 @Widgetset("hu.kuru.Widgetset")
 @TouchKitUI
 class KuruUI extends UI{
