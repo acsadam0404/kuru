@@ -6,6 +6,12 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.google.gwt.thirdparty.guava.common.eventbus.SubscriberExceptionContext;
 import com.google.gwt.thirdparty.guava.common.eventbus.SubscriberExceptionHandler;
 
+/**
+ * Eventbus a kommunikációhoz
+ * 
+ * @author 
+ *
+ */
 public class UIEventBus {
 
 	private final EventBus eventBus = new EventBus(new SubscriberExceptionHandler() {

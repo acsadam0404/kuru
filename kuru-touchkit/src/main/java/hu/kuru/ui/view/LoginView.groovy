@@ -1,4 +1,4 @@
-package hu.kuru.ui
+package hu.kuru.ui.view
 
 import com.vaadin.ui.Button.ClickEvent;
 
@@ -20,12 +20,21 @@ import com.vaadin.ui.VerticalLayout
 
 import hu.kuru.security.Authentication
 
+/**
+ * Bejelentkező felületet megvalósító osztály
+ * 
+ * @author 
+ *
+ */
 @VaadinView(name = LoginView.NAME)
 class LoginView extends NavigationView {
 	public static final String NAME = "LoginView"
 	
 	private Authentication authentication
 	
+	/**
+	 * Konstruktor a Login képernyőt megvalósító objektum létrehozásához
+	 */
 	LoginView() {
 		super("KURU")
 		authentication = new Authentication()
@@ -42,6 +51,7 @@ class LoginView extends NavigationView {
 		setSizeFull()
 		
 		VerticalLayout layout = new VerticalLayout()
+		
 		//Vendég bejelentkezés
 		VerticalComponentGroup vertCompGroupGuest = new VerticalComponentGroup()
 		vertCompGroupGuest.addComponent(new Label("Vendég bejelentkezés"))

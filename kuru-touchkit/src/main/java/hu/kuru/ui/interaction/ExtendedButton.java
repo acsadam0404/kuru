@@ -1,10 +1,16 @@
-package hu.kuru.ui;
+package hu.kuru.ui.interaction;
 
 import hu.kuru.article.Article;
 
 import com.vaadin.server.Resource;
 import com.vaadin.ui.Button;
 
+/**
+ * Kiterjesztett gomb, amely a bevásárló kosárhoz szükséges
+ * 
+ * @author tamas.mester
+ *
+ */
 public class ExtendedButton extends Button {
 
 	//TODO: object vagy osztály átnevezés
@@ -18,4 +24,5 @@ public class ExtendedButton extends Button {
 	public Article getArticle() {
 		return this.article;
 	}
+
 }

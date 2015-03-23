@@ -3,7 +3,6 @@
 .kurutouchkittheme .v-button {
 	margin: 10px;
 	border: 1px solid black;
-	font-color: blue;
 }
 
 .kurutouchkittheme .v-button .v-button-caption {
@@ -11,5 +10,10 @@
 }
 
 .kurutouchkittheme .v-textfield {
-  	border: 1px solid black;
-  }
+	border: 1px solid black;
+}
+
+.kurutouchkittheme .v-touchkit-horizontalbuttongroup .v-button {
+	font-size: 16px;
+	line-height: 1;
+}

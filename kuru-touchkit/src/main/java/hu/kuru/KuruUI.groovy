@@ -1,11 +1,11 @@
 package hu.kuru
 
 import hu.kuru.security.Authentication
-import hu.kuru.ui.LoginView
-import hu.kuru.ui.MainViewForCustomer
-import hu.kuru.ui.MainViewForWaiter
 import hu.kuru.ui.UIEventBus;
 import hu.kuru.ui.event.LoginEvent
+import hu.kuru.ui.view.LoginView;
+import hu.kuru.ui.view.MainViewForCustomer;
+import hu.kuru.ui.view.MainViewForWaiter;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.addon.touchkit.ui.NavigationButton
@@ -27,6 +27,11 @@ import org.vaadin.spring.annotation.VaadinUI
 import org.vaadin.spring.navigator.SpringViewProvider
 import org.vaadin.spring.touchkit.annotation.TouchKitUI
 
+/**
+ * Az alkalmazás user interface osztálya
+ * @author 
+ *
+ */
 @VaadinUI
 @Theme("kurutouchkittheme")
 @Widgetset("hu.kuru.Widgetset")
@@ -40,7 +45,9 @@ class KuruUI extends UI{
 	@Override
 	protected void init(VaadinRequest request) {
 		UIEventBus.register(this);
+		
 		authentication = new Authentication()
+		
 		def root = new VerticalLayout();
 		this.getPage().setTitle("KURU")
 		root.with {
@@ -48,6 +55,7 @@ class KuruUI extends UI{
 			setSpacing(true)
 			setSizeFull();
 		}
+		
 		initContent();
 	}
 

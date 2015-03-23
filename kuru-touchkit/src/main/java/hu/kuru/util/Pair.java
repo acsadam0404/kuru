@@ -1,5 +1,13 @@
 package hu.kuru.util;
 
+/**
+ * Általános Pár-t megvalósító osztály
+ * 
+ * @author 
+ *
+ * @param <F>
+ * @param <S>
+ */
 public class Pair<F, S> {
     private F first;
     private S second;

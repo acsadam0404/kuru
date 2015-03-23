@@ -1,4 +1,4 @@
-package hu.kuru.ui;
+package hu.kuru.ui.view;
 
 import hu.kuru.security.Authentication;
 
@@ -7,10 +7,9 @@ import org.vaadin.spring.navigator.annotation.VaadinView;
 import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.addon.touchkit.ui.VerticalComponentGroup;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
 
 /**
  * Főképernyő a dolgozóknak
@@ -21,7 +20,7 @@ import com.vaadin.ui.Button.ClickListener;
 @VaadinView(name = MainViewForWaiter.NAME)
 public class MainViewForWaiter extends NavigationView {
 
-	public static final String  NAME = "MainViewForWaiter";
+	public static final String NAME = "MainViewForWaiter";
 	
 	private VerticalComponentGroup content;
 	private Authentication authentication;
@@ -55,5 +54,5 @@ public class MainViewForWaiter extends NavigationView {
 		
 		return logoutButton;
 	}
-	
+
 }

@@ -1,6 +1,13 @@
 package hu.kuru.ui.event;
 
+/**
+ * Bejelentkezés eseményét megvalósító osztály
+ * 
+ * @author
+ *
+ */
 public class LoginEvent {
+	
 	private final String username;
 	private final String customerCode;
 
@@ -16,5 +23,5 @@ public class LoginEvent {
 	public String getCustomerCode() {
 		return customerCode;
 	}
-	
+
 }
