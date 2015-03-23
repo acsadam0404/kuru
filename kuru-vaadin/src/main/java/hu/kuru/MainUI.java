@@ -5,21 +5,16 @@ import hu.kuru.vaadin.security.LoginEvent;
 import hu.kuru.vaadin.summary.SummaryView;
 
 import java.util.Locale;
-import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.annotation.VaadinUI;
-import org.vaadin.spring.navigator.SpringViewProvider;
+import org.springframework.context.annotation.Scope;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
@@ -27,8 +22,9 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @Theme("kurutheme")
+@Scope("prototype")
 @Widgetset("hu.kuru.AppWidgetSet")
-@VaadinUI
+@org.springframework.stereotype.Component("MainUI")
 public class MainUI extends UI {
 	private static final Logger logger = LoggerFactory.getLogger(MainUI.class);
 
@@ -36,21 +32,15 @@ public class MainUI extends UI {
 	private final UIEventBus eventbus = new UIEventBus();
 	private Authentication authentication;
 
-	@Autowired
-	private SpringViewProvider ViewProvider;
-	
 	public MainUI() {
 		super();
+		Locale locale = new Locale("hu", "HU");
 		this.getPage().setTitle("KURU");
+		setLocale(locale);
 	}
 
 	@Override
 	protected void init(VaadinRequest request) {
-		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Budapest"));
-		Locale huLocale = new Locale("hu", "HU");
-		setLocale(huLocale);
-		VaadinSession.getCurrent().setLocale(huLocale);
-		
 		UIEventBus.register(this);
 		authentication = new Authentication();
 		init();
@@ -103,7 +93,6 @@ public class MainUI extends UI {
 
 	private Navigator setupNavigator(ComponentContainer content) {
 		Navigator navigator = new Navigator(this, content);
-		navigator.addProvider(ViewProvider);
 		return navigator;
 	}
 

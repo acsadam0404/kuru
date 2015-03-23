@@ -13,6 +13,13 @@
 
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.vaadin.spring</groupId>
+			<artifactId>spring-boot-vaadin</artifactId>
+			<version>0.0.5-SNAPSHOT</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -133,7 +140,7 @@
 			<scope>test</scope>
 		</dependency>
 
-<dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>

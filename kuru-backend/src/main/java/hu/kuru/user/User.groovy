@@ -2,6 +2,7 @@ package hu.kuru.user
 
 
 import hu.kuru.BaseEntity
+import hu.kuru.ServiceLocator;
 
 import javax.persistence.Column
 import javax.persistence.ElementCollection
@@ -22,7 +23,12 @@ class User extends BaseEntity{
 	static void setRepo(UserRepo repo) {
 		this.repo = repo
 	}
-
+	
+	User() {
+		if (ServiceLocator.loaded && !repo)  {
+			repo = ServiceLocator.getBean(UserRepo)
+		}
+	}
 	@Column(unique =  true)
 	@NotNull
 	String username

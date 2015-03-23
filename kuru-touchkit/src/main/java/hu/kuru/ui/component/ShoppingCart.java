@@ -11,6 +11,7 @@ import org.apache.tomcat.util.http.fileupload.MultipartStream.ItemInputStream;
 
 import com.vaadin.addon.touchkit.ui.HorizontalButtonGroup;
 import com.vaadin.addon.touchkit.ui.Popover;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -35,6 +36,7 @@ public class ShoppingCart extends Popover {
 	private ClickListener removeButtonClickListener;
 	private ClickListener increaseButtonClickListener;
 	private ClickListener decreaseButtonClickListener;
+	private ClickListener orderButtonClickListener;
 
 	/**
 	 * Konstruktor a bevásárló kosarat megvalósító objektum létrehozásához
@@ -46,7 +48,7 @@ public class ShoppingCart extends Popover {
 			Map<String, Pair<Article, Integer>> cartContent) {
 		super();
 		this.setHeight("300px");
-		this.setWidth("300px");
+		this.setWidth("420px");
 		this.relativeTo = relativeTo;
 		this.cartContent = cartContent;
 
@@ -78,14 +80,14 @@ public class ShoppingCart extends Popover {
 			rowLayout.setWidth("100%");
 			HorizontalButtonGroup buttonGroup = new HorizontalButtonGroup();
 			// + gomb
-			ExtendedButton increaseItemNumberButton = new ExtendedButton("+",
-					null, entry.getValue().getFirst());
+			ExtendedButton increaseItemNumberButton = new ExtendedButton(null,
+					FontAwesome.PLUS, entry.getValue().getFirst());
 			// - gomb
-			ExtendedButton decreaseItemNumberButton = new ExtendedButton("-",
-					null, entry.getValue().getFirst());
+			ExtendedButton decreaseItemNumberButton = new ExtendedButton(null,
+					FontAwesome.MINUS, entry.getValue().getFirst());
 			// Törlés gomb
-			ExtendedButton removeArticleButton = new ExtendedButton("Törlés",
-					null, entry.getValue().getFirst());
+			ExtendedButton removeArticleButton = new ExtendedButton(null,
+					FontAwesome.TRASH_O, entry.getValue().getFirst());
 			increaseItemNumberButton
 					.addClickListener(increaseButtonClickListener);
 			decreaseItemNumberButton
@@ -103,11 +105,17 @@ public class ShoppingCart extends Popover {
 					* entry.getValue().getFirst().getPrice();
 			vLayout.addComponent(rowLayout);
 		}
-		Label sumLabel = new Label("Összesen: " + sum);
+		
+		//TODO: ezt nem biztos hogy itt kéne
+		Label sumLabel = new Label("Összesen: " + sum + " Ft");
 		sumLabel.setHeight("20px");
+		
+		Button orderButton = new Button("Megrendelés", orderButtonClickListener);
+		orderButton.setWidth("200px");
 
 		contentLayout.addComponent(vLayout);
 		contentLayout.addComponent(sumLabel);
+		contentLayout.addComponent(orderButton);
 		contentLayout.setComponentAlignment(sumLabel, Alignment.BOTTOM_LEFT);
 		
 		this.setContent(contentLayout);
@@ -155,6 +163,16 @@ public class ShoppingCart extends Popover {
 				}
 				ShoppingCart.this.refreshItemContent();
 			}
+		};
+		
+		// Megrendelés
+		orderButtonClickListener = new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+
+			}
+			
 		};
 	}
 }

@@ -81,6 +81,7 @@
 
 	<dependencyManagement>
 		<dependencies>
+
 			<dependency>
 				<groupId>hu.kuru</groupId>
 				<artifactId>kuru-backend</artifactId>

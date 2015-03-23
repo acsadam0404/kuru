@@ -13,6 +13,7 @@ import com.vaadin.addon.touchkit.ui.VerticalComponentGroup
 import com.vaadin.ui.Button
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component
+import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label
 import com.vaadin.ui.PasswordField
 import com.vaadin.ui.TextField
@@ -50,7 +51,8 @@ class LoginView extends NavigationView {
 	private Component build() {
 		setSizeFull()
 		
-		VerticalLayout layout = new VerticalLayout()
+		HorizontalSplitPanel layout = new HorizontalSplitPanel()
+		layout.setSizeFull();
 		
 		//Vendég bejelentkezés
 		VerticalComponentGroup vertCompGroupGuest = new VerticalComponentGroup()
@@ -75,8 +77,7 @@ class LoginView extends NavigationView {
 		vertCompGroupWaiter.addComponent(waiterUserNameField)
 		PasswordField waiterPasswordField = new PasswordField("Jelszó:")
 		vertCompGroupWaiter.addComponent(waiterPasswordField)
-		layout.addComponent(vertCompGroupGuest)
-		layout.addComponent(vertCompGroupWaiter)
+
 		HorizontalButtonGroup buttonsForWaiter = new HorizontalButtonGroup()
 		Button waiterLoginButton = new Button("Bejelentkezés")
 		buttonsForWaiter.addComponent(waiterLoginButton)
@@ -87,6 +88,9 @@ class LoginView extends NavigationView {
 			}
 		});
 		vertCompGroupWaiter.addComponent(buttonsForWaiter)
+		
+		layout.addComponent(vertCompGroupGuest)
+		layout.addComponent(vertCompGroupWaiter)
 		
 		return layout
 	}

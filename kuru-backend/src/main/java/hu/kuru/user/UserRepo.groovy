@@ -1,9 +1,7 @@
 package hu.kuru.user
 
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface UserRepo extends CrudRepository<User, Long>{
-	User findByUsername(String username);
-	
-	User findByUsernameAndPassword(String username, String password);
+interface UserRepo extends JpaRepository<User, Long>{
+	User findByUsername(String username)
 }
