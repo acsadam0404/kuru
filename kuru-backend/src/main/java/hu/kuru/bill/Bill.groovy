@@ -35,7 +35,8 @@ class Bill extends BaseEntity {
 	Long sum
 	@NotNull
 	String currency
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bill")
+	//TODO: visszairni Lazy.re kell egy query ahol be lesz fetchelve mert lazy loading különben
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "bill")
 	List<Item> items
 
 	static List<Bill> findByCustomer(long customerId) {

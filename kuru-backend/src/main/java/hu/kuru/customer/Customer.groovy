@@ -17,6 +17,9 @@ import javax.validation.constraints.NotNull
 @EqualsAndHashCode(includes = ["code"])
 class Customer extends BaseEntity {
 
+	public static final String CODE = "code"
+	public static final String NAME = "name"
+	
 	private static CustomerRepo repo
 
 	/**
