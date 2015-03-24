@@ -15,6 +15,10 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>org.vaadin.alump.masonry</groupId>
+			<artifactId>masonry-addon</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>hu.kuru</groupId>
 			<artifactId>kuru-backend</artifactId>
 		</dependency>
