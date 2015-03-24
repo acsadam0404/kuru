@@ -13,11 +13,11 @@ interface ItemRepo extends JpaRepository<Item, Long>{
 	@Query("select i from Item i join fetch i.article join fetch i.bill b join fetch b.customer where i.outDate is null")
 	List<Item> findIssuedItems();
 
-	@Query("select SUM(i.article.price * i.amount) from Item i where i.bill.closeDate is null")
-	Long countOpenBillSummary();
+	@Query("select COALESCE(SUM(i.article.price * i.amount),0) from Item i where i.bill.closeDate is null")
+	long countOpenBillSummary();
 
-	@Query("select SUM(i.article.price * i.amount) from Item i where i.bill.closeDate > current_date()")
-	Long countDailyIncome();
+	@Query("select COALESCE(SUM(i.article.price * i.amount),1) from Item i where i.bill.closeDate > current_date()")
+	long countDailyIncome();
 
 	@Modifying
 	@Transactional

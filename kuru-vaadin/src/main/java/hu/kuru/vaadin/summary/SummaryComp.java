@@ -2,6 +2,8 @@ package hu.kuru.vaadin.summary;
 
 import hu.kuru.bill.Bill;
 import hu.kuru.item.Item;
+import hu.si.vaadin.converter.AbstractCustomizableStringToNumberConverter;
+import hu.si.vaadin.converter.StringToLongConverter;
 
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Component;
@@ -45,8 +47,8 @@ public class SummaryComp extends CustomComponent {
 		boxLayout.setSizeUndefined();
 		boxLayout.setSpacing(true);
 		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák száma", Bill.countOpenBills().toString()));
-		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák értéke", (Item.countOpenBillSummary() != null ? Item.countOpenBillSummary() : 0) + " Ft"));
-		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Napi bevétel", (Item.countDailyIncome() != null ? Item.countDailyIncome() : 0)				+ " Ft"));
+		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák értéke", new StringToLongConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(Item.countOpenBillSummary()) + " Ft"));
+		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Napi bevétel", new StringToLongConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(Item.countDailyIncome())+ " Ft"));
 		return boxLayout;
 	}
 

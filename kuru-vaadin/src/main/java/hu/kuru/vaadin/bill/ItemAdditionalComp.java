@@ -39,7 +39,7 @@ public class ItemAdditionalComp extends CustomComponent {
 		article = new ComboBox("Cikk név");
 		article.addValidator(new NullValidator("Kötelező kitölteni!", false));
 		article.setItemCaptionPropertyId("name");
-		article.setContainerDataSource(new BeanItemContainer<>(Article.class, Article.findAll()));
+		article.setContainerDataSource(new BeanItemContainer<>(Article.class, Article.findAllActive()));
 		amount = new TextField("Mennyiség");
 		amount.setNullRepresentation("");
 		amount.setImmediate(true);

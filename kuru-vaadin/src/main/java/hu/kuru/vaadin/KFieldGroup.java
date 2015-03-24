@@ -8,7 +8,7 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.ui.Field;
 
 /**
- * TODO egy az egyben másolva kc-ből, kéne már egy common projekt ezeknek..
+ * XXX nem szabad módosítani. si-vaadin projektből fog jönni
  * @author Ács Ádám
  *
  * @param <T>

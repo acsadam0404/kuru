@@ -172,7 +172,7 @@ public class ArticleComp extends CustomComponent {
 				@Override
 				public void buttonClick(ClickEvent event) {
 					final KWindow window = new KWindow(caption);
-					ArticleMaintComp comp = ArticleMaintComp.fromArticle(isNew ? new Article() : Article.findOne(selectedArticleId));
+					ArticleMaintComp comp = new ArticleMaintComp(isNew ? new Article() : Article.findOne(selectedArticleId));
 					comp.setWindow(window);
 					window.setContent(comp);
 					UI.getCurrent().addWindow(window);

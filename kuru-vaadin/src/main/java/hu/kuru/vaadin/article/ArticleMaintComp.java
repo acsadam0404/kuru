@@ -71,7 +71,7 @@ public class ArticleMaintComp extends CustomComponent {
 		}
 	}
 
-	private ArticleMaintComp(Article article) {
+	public ArticleMaintComp(Article article) {
 		fg = new KFieldGroup<>(Article.class);
 		init(article.getIcon());
 		fg.bindMemberFields(this);
@@ -143,9 +143,6 @@ public class ArticleMaintComp extends CustomComponent {
 		return main;
 	}
 
-	public static ArticleMaintComp fromArticle(Article article) {
-		return new ArticleMaintComp(article);
-	}
 
 	public void setWindow(Window window) {
 		this.window = window;

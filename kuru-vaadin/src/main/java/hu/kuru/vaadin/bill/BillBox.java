@@ -14,6 +14,9 @@ import hu.kuru.external.mnb.MNBServiceException;
 import hu.kuru.item.Item;
 import hu.kuru.vaadin.component.KNotification;
 import hu.kuru.vaadin.component.KWindow;
+import hu.si.vaadin.converter.AbstractCustomizableStringToNumberConverter;
+import hu.si.vaadin.converter.StringToDoubleConverter;
+import hu.si.vaadin.converter.StringToIntegerConverter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -70,6 +73,7 @@ public class BillBox extends CustomComponent {
 		box.setSizeFull();
 		box.setSpacing(true);
 		box.setMargin(true);
+		//TODO ez mi? mér nem currnetBill.items? 
 		List<Item> itemList = Item.findByBill(currentBill.getId());
 		box.addComponent(buildHeader());
 		box.addComponent(buildTable(itemList));
@@ -138,7 +142,7 @@ public class BillBox extends CustomComponent {
 	}
 
 	private String getChangedSum(int sum) {
-		String huf = sum + " HUF";
+		
 		DecimalFormat format = new DecimalFormat("#.##");
 		double result = 0;
 		String currency = currentBill.getCurrency();
@@ -154,13 +158,13 @@ public class BillBox extends CustomComponent {
 				}
 				result = Double.valueOf(format.format(result).replace(",", "."));
 			} else {
-				return huf;
+				return new StringToIntegerConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(sum) + " Ft";
 			}
 		} catch (MNBServiceException e) {
 			new KNotification("Sikertelen MNB árfolyam lekérdezés.").withDescription("A árak forintban jelennek meg.");
-			return huf;
+			return "Sikertelen";
 		}
-		return result + " " + currency;
+		return new StringToDoubleConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(result) + " " + currency;
 	}
 
 	private double getRate(List<ExchangeRate> list, String name) throws MNBServiceException {

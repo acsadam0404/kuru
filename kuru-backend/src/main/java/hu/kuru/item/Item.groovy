@@ -28,13 +28,17 @@ class Item extends BaseEntity {
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	Bill bill
+	
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	Article article
+	
 	@NotNull
 	long amount
+	
 	@NotNull
 	Date createDate
+	
 	Date outDate
 
 	static List<Item> findByBill(Long billId) {
@@ -45,11 +49,11 @@ class Item extends BaseEntity {
 		repo.findIssuedItems()
 	}
 
-	static Long countDailyIncome() {
+	static long countDailyIncome() {
 		repo.countDailyIncome()
 	}
 
-	static Long countOpenBillSummary() {
+	static long countOpenBillSummary() {
 		repo.countOpenBillSummary()
 	}
 

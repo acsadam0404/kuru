@@ -5,6 +5,8 @@ import hu.kuru.article.Article;
 import hu.kuru.eventbus.ArticleSelectedEvent;
 import hu.kuru.eventbus.EventBusAttachListener;
 import hu.kuru.eventbus.EventBusDetachListener;
+import hu.si.vaadin.converter.AbstractCustomizableStringToNumberConverter;
+import hu.si.vaadin.converter.StringToLongConverter;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
@@ -69,7 +71,7 @@ public class ArticleBox extends CustomComponent {
 
 	private Component buildFooter(Article article) {
 		HorizontalLayout footer = new HorizontalLayout();
-		Label price = new Label("Ár: " + article.getPrice() + " Ft");
+		Label price = new Label("Ár: " + new StringToLongConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(article.getPrice()) + " Ft");
 		price.setStyleName(ValoTheme.LABEL_BOLD);
 		footer.addComponent(price);
 		return footer;
@@ -103,6 +105,7 @@ public class ArticleBox extends CustomComponent {
 
 	public static Component buildArticleBox(Article article) {
 		Component comp = new ArticleBox(article);
+		//TODO ezt miért?
 		comp.addAttachListener(new EventBusAttachListener(comp));
 		comp.addDetachListener(new EventBusDetachListener(comp));
 		return comp;
