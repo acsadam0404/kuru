@@ -28,7 +28,7 @@ import com.vaadin.ui.VerticalLayout;
 public class MainUI extends UI {
 	private static final Logger logger = LoggerFactory.getLogger(MainUI.class);
 
-	private final HorizontalLayout main = new HorizontalLayout();
+	private HorizontalLayout main;
 	private final UIEventBus eventbus = new UIEventBus();
 	private Authentication authentication;
 
@@ -55,6 +55,7 @@ public class MainUI extends UI {
 	}
 
 	private void setupMainScreen() {
+		main = new HorizontalLayout();
 		main.setSizeFull();
 		setSizeFull();
 
