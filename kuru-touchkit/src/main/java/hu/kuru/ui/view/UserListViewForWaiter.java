@@ -97,7 +97,9 @@ public class UserListViewForWaiter extends NavigationView {
 					
 					@Override
 					public void buttonClick(ClickEvent event) {
-						UserListViewForWaiter.this.manager.navigateTo(new ArticleViewForWaiter(manager));
+						//TODO: nem jó itt kivenni eggyel lejebb is ez van
+						Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
+						UserListViewForWaiter.this.manager.navigateTo(new ArticleViewForWaiter(manager,customer));
 					}
 				});
 				navigateToArticleViewButton.setIcon(FontAwesome.BOOK);

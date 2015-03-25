@@ -44,14 +44,15 @@ public class MainViewForCustomer extends NavigationView {
 
 	private Authentication authentication;
 	private Map<String, Pair<Article, Integer>> cartContent;
+	private Customer customer;
 
 	public MainViewForCustomer() {
 		super();
 		authentication = new Authentication();
-		String customerName = Customer.findByCode(
+		customer = Customer.findByCode(
 				String.valueOf(VaadinSession.getCurrent().getAttribute(
-						"customerCode"))).getName();
-		this.setCaption(customerName);
+						"customerCode")));
+		this.setCaption(customer.getName());
 		
 		this.setLeftComponent(createShoppingBasketComponent());
 		this.setRightComponent(createLogoutButton());
@@ -81,7 +82,7 @@ public class MainViewForCustomer extends NavigationView {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				new ShoppingCart(basketButton, cartContent);
+				new ShoppingCart(basketButton, cartContent, MainViewForCustomer.this.customer);
 			}
 		});
 

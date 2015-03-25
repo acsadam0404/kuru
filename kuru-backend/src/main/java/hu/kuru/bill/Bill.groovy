@@ -6,6 +6,7 @@ import hu.kuru.ServiceLocator
 import hu.kuru.customer.Customer
 import hu.kuru.item.Item
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.ManyToOne
@@ -27,7 +28,7 @@ class Bill extends BaseEntity {
 	}
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	Customer customer
 	@NotNull
 	Date openDate
@@ -35,10 +36,9 @@ class Bill extends BaseEntity {
 	Long sum
 	@NotNull
 	String currency
-	//TODO: visszairni Lazy.re kell egy query ahol be lesz fetchelve mert lazy loading különben
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "bill")
+	//TODO: visszairni Lazy.re kell egy query ahol be lesz fetchelve mert lazy loading kĂĽlĂ¶nben
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bill")
 	List<Item> items
-
 	static List<Bill> findByCustomer(long customerId) {
 		repo.findByCustomer(customerId)
 	}
@@ -53,5 +53,9 @@ class Bill extends BaseEntity {
 	
 	boolean isClosed() {
 		closeDate != null
+	}
+	
+	static Bill getOpenBillByCustomerId(Long customerId) {
+		repo.getOpenBillByCustomerId(customerId)	
 	}
 }

@@ -1,6 +1,6 @@
 package hu.kuru.bean;
 
-public class ItemBean {
+public class ItemBean{
 
 	private String code;
 	private String name;

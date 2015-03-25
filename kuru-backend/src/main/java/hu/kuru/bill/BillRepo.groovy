@@ -26,4 +26,7 @@ interface BillRepo extends JpaRepository<Bill, Long> {
 
 	@Query("select case when (count(b) > 0) then true else false end from Bill b where b.customer.id = ?1 and b.closeDate is null")
 	Boolean hasOpenBillByCustomer(Long customerId)
+	
+	@Query("select b from Bill b where b.customer.id = ?1 and b.closeDate is null")
+	Bill getOpenBillByCustomerId(Long customerId)
 }

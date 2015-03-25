@@ -2,8 +2,11 @@ package hu.kuru;
 
 import hu.kuru.article.Article;
 import hu.kuru.article.ArticleRepo;
+import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.customer.CustomerRepo;
+import hu.kuru.item.Item;
+import hu.kuru.item.ItemRepo;
 import hu.kuru.user.User;
 import hu.kuru.user.UserRepo;
 
@@ -34,6 +37,8 @@ public class Application {
 	private UserRepo userRepo;
 	@Autowired
 	private CustomerRepo customerRepo;
+	@Autowired
+	private ItemRepo itemRepo;
 	
 	
 	public static void main(String[] args) {

@@ -1,13 +1,16 @@
 package hu.kuru.ui.component;
 
 import hu.kuru.article.Article;
+import hu.kuru.bill.Bill;
+import hu.kuru.customer.Customer;
+import hu.kuru.item.Item;
 import hu.kuru.ui.interaction.ExtendedButton;
-import hu.kuru.ui.view.MainViewForCustomer;
 import hu.kuru.util.Pair;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
-
-import org.apache.tomcat.util.http.fileupload.MultipartStream.ItemInputStream;
 
 import com.vaadin.addon.touchkit.ui.HorizontalButtonGroup;
 import com.vaadin.addon.touchkit.ui.Popover;
@@ -37,6 +40,7 @@ public class ShoppingCart extends Popover {
 	private ClickListener increaseButtonClickListener;
 	private ClickListener decreaseButtonClickListener;
 	private ClickListener orderButtonClickListener;
+	private Customer customer;
 
 	/**
 	 * Konstruktor a bevásárló kosarat megvalósító objektum létrehozásához
@@ -45,12 +49,13 @@ public class ShoppingCart extends Popover {
 	 * @param cartContent
 	 */
 	public ShoppingCart(Component relativeTo,
-			Map<String, Pair<Article, Integer>> cartContent) {
+			Map<String, Pair<Article, Integer>> cartContent, Customer customer) {
 		super();
 		this.setHeight("300px");
 		this.setWidth("420px");
 		this.relativeTo = relativeTo;
 		this.cartContent = cartContent;
+		this.customer = customer;
 
 		buildContent();
 	}
@@ -170,7 +175,18 @@ public class ShoppingCart extends Popover {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-
+				Bill openBillForCustomer = Bill.getOpenBillByCustomerId(ShoppingCart.this.customer.getId());
+				for (Map.Entry<String, Pair<Article, Integer>> element : cartContent
+						.entrySet()) {
+					Item item = new Item();
+					item.setBill(openBillForCustomer);
+					item.setArticle(element.getValue().getFirst());
+					item.setAmount(element.getValue().getSecond());
+					item.setCreateDate(new Date());
+					item.save();
+				}
+				cartContent.clear();
+				ShoppingCart.this.refreshItemContent();
 			}
 			
 		};

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import hu.kuru.article.Article;
+import hu.kuru.customer.Customer;
 import hu.kuru.ui.component.ShoppingCart;
 import hu.kuru.ui.layout.ArticleLayout;
 import hu.kuru.util.Pair;
@@ -15,25 +16,27 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-public class ArticleViewForWaiter extends NavigationView{
-	
-	//TODO: közösbe kivenni a managert nem jó átadogatva
-	private NavigationManager manager;
-	private Map<String, Pair<Article,Integer>> cartContent;
+public class ArticleViewForWaiter extends NavigationView {
 
-	public ArticleViewForWaiter(NavigationManager manager) {
+	// TODO: közösbe kivenni a managert nem jó átadogatva
+	private NavigationManager manager;
+	private Map<String, Pair<Article, Integer>> cartContent;
+	private Customer customer;
+
+	public ArticleViewForWaiter(NavigationManager manager, Customer customer) {
 		super();
 		this.manager = manager;
-		this.cartContent = new HashMap<String, Pair<Article,Integer>>();
+		this.customer = customer;
+		this.cartContent = new HashMap<String, Pair<Article, Integer>>();
 		this.setRightComponent(createBackButton());
 		this.setLeftComponent(createShoppingBasketComponent());
 		this.setContent(buildContent());
 	}
-	
+
 	private Component buildContent() {
 		return new ArticleLayout(cartContent);
 	}
-	
+
 	private Component createShoppingBasketComponent() {
 		final Button basketButton = new Button("Kosár");
 
@@ -41,24 +44,24 @@ public class ArticleViewForWaiter extends NavigationView{
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				new ShoppingCart(basketButton, cartContent);
+				new ShoppingCart(basketButton, cartContent,customer);
 			}
 		});
 
 		return basketButton;
 	}
-	
+
 	private Component createBackButton() {
 		Button backButton = new Button("Vissza");
-		
+
 		backButton.addClickListener(new ClickListener() {
-			
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				ArticleViewForWaiter.this.manager.navigateBack();
 			}
 		});
-		
+
 		return backButton;
 	}
 }

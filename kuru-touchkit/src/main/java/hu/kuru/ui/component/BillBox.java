@@ -2,6 +2,7 @@ package hu.kuru.ui.component;
 
 import hu.kuru.bean.ItemBean;
 import hu.kuru.bill.Bill;
+import hu.kuru.customer.Customer;
 import hu.kuru.item.Item;
 
 import java.util.ArrayList;
@@ -69,12 +70,15 @@ public class BillBox extends CustomComponent {
 	private Component buildTable() {
 		Table table = new Table();
 		table.setWidth("99%");
-		table.setContainerDataSource(new BeanItemContainer<>(ItemBean.class, getItemList()));
+		table.setContainerDataSource(new BeanItemContainer<ItemBean>(ItemBean.class));
 		table.setColumnHeader("name", "Név");
 		table.setColumnHeader("code", "Kód");
 		table.setColumnHeader("amount", "Mennyiség");
 		table.setColumnAlignment("amount", Align.RIGHT);
 		table.setVisibleColumns("code", "name", "amount");
+		BeanItemContainer<ItemBean> container = (BeanItemContainer) table.getContainerDataSource();
+		container.removeAllItems();
+		container.addAll(getItemList());
 		return table;
 	}
 	
@@ -95,7 +99,8 @@ public class BillBox extends CustomComponent {
 
 	private List<ItemBean> getItemList() {
 		List<ItemBean> beanList = new ArrayList<>();
-		for (Item item : bill.getItems()) {
+		List<Item> itemList = Item.findByBill(bill.getId());
+		for (Item item : itemList) {
 			beanList.add(new ItemBean(item.getArticle().getCode(), item.getArticle().getName(), item.getAmount() + " "
 					+ item.getArticle().getUnit()));
 		}
