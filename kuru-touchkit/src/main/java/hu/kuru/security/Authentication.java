@@ -17,7 +17,7 @@ public class Authentication {
 
 	public Authentication() {
 	}
-	
+
 	/**
 	 * Bejelentkezés dolgozóként
 	 * 
@@ -60,9 +60,7 @@ public class Authentication {
 	 * @param attribute
 	 */
 	public void logout(String attribute) {
-		if (isAuthenticated()) {
-			VaadinSession.getCurrent().setAttribute(attribute, null);
-		}
+		VaadinSession.getCurrent().setAttribute(attribute, null);
 		UIEventBus.post(new LoginEvent(null, null));
 	}
 

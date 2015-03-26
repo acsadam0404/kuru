@@ -44,7 +44,7 @@ public class BillComponent extends CustomComponent {
 			Collections.sort(billList, new BillComparator());
 			for (Bill bill : billList) {
 				BillBox box = new BillBox(bill);
-				if (bill.getCloseDate() != null) {
+				if (bill.getCloseDate() == null) {
 					bills.add(box);
 				}
 			}

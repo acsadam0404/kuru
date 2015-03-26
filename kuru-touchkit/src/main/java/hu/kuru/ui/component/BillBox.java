@@ -5,6 +5,7 @@ import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.item.Item;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,16 +55,9 @@ public class BillBox extends CustomComponent {
 		layout.setSizeUndefined();
 		layout.setWidth("100%");
 		layout.setSpacing(true);
-		DateField openDate = new DateField("Nyitás dátuma");
-		DateField closeDate = new DateField("Zárás dátuma");
+		Label openDate = new Label("Nyitás dátuma: " + bill.getOpenDate());
 		openDate.setEnabled(false);
-		closeDate.setEnabled(false);
-		openDate.setResolution(Resolution.SECOND);
-		closeDate.setResolution(Resolution.SECOND);
-		openDate.setValue(bill.getOpenDate());
-		closeDate.setValue(bill.getCloseDate());
 		layout.addComponent(openDate);
-		layout.addComponent(closeDate);
 		return layout;
 	}
 	
@@ -88,17 +82,25 @@ public class BillBox extends CustomComponent {
 		footer.setWidth("100%");
 		HorizontalLayout priceLayout = new HorizontalLayout();
 
-		Label price = new Label("Ár: ");
+		int priceSum = 0;
+		//TODO:
+		List<Item> itemList = Item.findByBill(bill.getId());
+		for (Item item : itemList) {
+			priceSum += item.getArticle().getPrice();
+		}
+		
+		Label price = new Label("Ár: " + priceSum + " " + bill.getCurrency());
 		price.setStyleName(ValoTheme.LABEL_BOLD);
 		priceLayout.addComponent(price);
 
 		footer.addComponent(priceLayout);
-		footer.setComponentAlignment(priceLayout, Alignment.MIDDLE_RIGHT);
+		footer.setComponentAlignment(priceLayout, Alignment.MIDDLE_LEFT);
 		return footer;
 	}
 
 	private List<ItemBean> getItemList() {
 		List<ItemBean> beanList = new ArrayList<>();
+		//TODO:
 		List<Item> itemList = Item.findByBill(bill.getId());
 		for (Item item : itemList) {
 			beanList.add(new ItemBean(item.getArticle().getCode(), item.getArticle().getName(), item.getAmount() + " "

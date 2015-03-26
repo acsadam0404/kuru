@@ -1,11 +1,14 @@
 package hu.kuru.ui.view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import hu.kuru.article.Article;
 import hu.kuru.customer.Customer;
 import hu.kuru.security.Authentication;
+import hu.kuru.ui.component.SearchComboBox;
 import hu.kuru.ui.component.ShoppingCart;
 import hu.kuru.ui.layout.ArticleLayout;
 import hu.kuru.util.Pair;
@@ -13,6 +16,8 @@ import hu.kuru.util.Pair;
 import com.vaadin.addon.touchkit.ui.NavigationManager;
 import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.data.Container;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.FontAwesome;
@@ -42,9 +47,38 @@ public class UserListViewForWaiter extends NavigationView {
 		authentication = new Authentication();
 		this.manager = manager;
 		this.setSizeFull();
+		this.setLeftComponent(createSearchField());
 		this.setRightComponent(createLogoutButton());
 		this.setContent(buildContent());
 		this.refresh();
+	}
+	
+	/**
+	 * Keresőmező felépítését végző függvény
+	 * 
+	 * @return
+	 */
+	private Component createSearchField() {
+		SearchComboBox searchCombo = new SearchComboBox(Customer.findAll());
+		searchCombo.addValueChangeListener(new ValueChangeListener() {
+
+			@Override
+			public void valueChange(Property.ValueChangeEvent event) {
+				//TODO: sokkal szebben kell ennél !!!
+				List<Customer> customerList = Customer.findAll();
+				List<Customer> newCustomerList = new ArrayList<Customer>();
+				UserListViewForWaiter.this.removeAllComponents();
+				for (Customer customer : customerList) {
+					if (customer.getName().contains(event.getProperty().toString())) {
+						newCustomerList.add(customer);
+					}
+				}
+				BeanItemContainer<Customer> container = (BeanItemContainer) customerTable.getContainerDataSource();
+				container.removeAllItems();
+				container.addAll(Customer.findAll());
+			}
+		});
+		return searchCombo;
 	}
 	
 	/**

@@ -3,9 +3,6 @@ package hu.kuru.ui.view;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import com.vaadin.addon.touchkit.ui.NavigationManager;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 
 /**
