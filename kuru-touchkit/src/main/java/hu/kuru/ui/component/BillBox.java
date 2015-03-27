@@ -63,7 +63,7 @@ public class BillBox extends CustomComponent {
 	
 	private Component buildTable() {
 		Table table = new Table();
-		table.setWidth("99%");
+		table.setSizeFull();
 		table.setContainerDataSource(new BeanItemContainer<ItemBean>(ItemBean.class));
 		table.setColumnHeader("name", "Név");
 		table.setColumnHeader("code", "Kód");

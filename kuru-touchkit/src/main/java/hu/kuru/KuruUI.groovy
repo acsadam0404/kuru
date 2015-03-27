@@ -1,6 +1,7 @@
 package hu.kuru
 
 import hu.kuru.security.Authentication
+
 import hu.kuru.ui.UIEventBus;
 import hu.kuru.ui.event.LoginEvent
 import hu.kuru.ui.view.LoginView;
@@ -29,6 +30,7 @@ import org.vaadin.spring.touchkit.annotation.TouchKitUI
 
 /**
  * Az alkalmazás user interface osztálya
+ * 
  * @author 
  *
  */
@@ -45,11 +47,10 @@ class KuruUI extends UI{
 	@Override
 	protected void init(VaadinRequest request) {
 		UIEventBus.register(this);
-		
 		authentication = new Authentication()
+		this.getPage().setTitle("KURU")
 		
 		def root = new VerticalLayout();
-		this.getPage().setTitle("KURU")
 		root.with {
 			setMargin(true)
 			setSpacing(true)
@@ -78,7 +79,7 @@ class KuruUI extends UI{
 	}
 
 	/**
-	 * Tartalom inicializálását végző függvény
+	 * Tartalom inicializálását végző függvény, annak függvényében történt-e authentikáció
 	 */
 	void initContent() {
 		if(!authentication.isAuthenticated() && !authentication.isAuthenticatedByCustomer()) {

@@ -1,36 +1,21 @@
 package hu.kuru.ui.view;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import hu.kuru.article.Article;
 import hu.kuru.customer.Customer;
 import hu.kuru.security.Authentication;
 import hu.kuru.ui.component.ShoppingCart;
-import hu.kuru.ui.interaction.ExtendedButton;
 import hu.kuru.ui.layout.ArticleLayout;
 import hu.kuru.util.Pair;
 
-import org.vaadin.spring.navigator.annotation.VaadinView;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.vaadin.addon.touchkit.ui.NavigationView;
-import com.vaadin.addon.touchkit.ui.Popover;
-import com.vaadin.addon.touchkit.ui.VerticalComponentGroup;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.VerticalLayout;
 
 /**
  * Fő képernyő a vendég felhasználóknak

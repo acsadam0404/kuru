@@ -4,22 +4,69 @@
 .kurutouchkittheme {
   @include kurutouchkittheme;
 
-.v-button {
-    margin: 10px;
-    border: 1px solid black;
-
-    /* A nested selector to increase specificity */
-    .v-button-caption {
-      color: blue;
-    }
-  }
-  
-  .v-textfield {
-  	border: 1px solid black;
-  }
-  
   .v-touchkit-horizontalbuttongroup .v-button {
     font-size: 16px;
     line-height: 1;
+}
+.v-touchkit-verticalcomponentgroup .v-textfield {
+    background: none repeat scroll 0 0 transparent;
+    border: 1px solid #1986e8;
+    border-radius: 5px;
+    height: 42px;
+    margin: 5px;
+}
+
+.loginTitle {
+	font-weight: bold;
+}
+
+.v-touchkit-horizontalbuttongroup .v-button {
+	-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #197de1;
+    background-image: linear-gradient(to bottom, #1b87e3 2%, #166ed5 98%);
+    border-color: #156ab3 #1362b1 #1156a8;
+    border-image: none;
+    border-left: 1px solid #1362b1;
+    border-radius: 4px;
+    border-right: 1px solid #1362b1;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 #4d98e6 inset, 0 -1px 0 #166bca inset, 0 2px 3px rgba(0, 0, 0, 0.05);
+    color: #ecf2f8;
+    font-weight: bold;
+    height: 37px;
+    min-width: 81px;
+    padding: 0 19px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+     padding-top: 8px;
+}
+
+.v-touchkit-componentgroup-row-nocap > .v-touchkit-componentgroup-cell {
+    flex: 1 1 0;
+    padding-left: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.v-button {
+    background: none repeat scroll 0 0 white;
+    border: medium none;
+    border-radius: 3px;
+    box-shadow: 0 2px rgba(0, 0, 0, 0.1);
+    color: #00a3e8;
+    display: block;
+    font-size: 20px;
+    font-weight: 500;
+    height: auto;
+    line-height: 2;
+    margin: 0;
+    overflow: hidden;
+    padding: 3px;
+    position: relative;
+    text-align: center;
+    width: auto;
 }
 }

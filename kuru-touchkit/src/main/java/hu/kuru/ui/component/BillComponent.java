@@ -51,7 +51,7 @@ public class BillComponent extends CustomComponent {
 		}
 
 		for (BillBox billBox : bills) {
-			billsLayout.addComponent(billBox, "border-green");
+			billsLayout.addComponent(billBox);
 		}
 		main.addComponent(billsLayout);
 		Responsive.makeResponsive(main);

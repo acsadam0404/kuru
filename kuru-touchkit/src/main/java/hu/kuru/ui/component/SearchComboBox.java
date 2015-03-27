@@ -1,15 +1,9 @@
 package hu.kuru.ui.component;
 
-import hu.kuru.ServiceLocator;
 import hu.kuru.customer.Customer;
-import hu.kuru.customer.CustomerRepo;
 
 import java.util.List;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.themes.ValoTheme;

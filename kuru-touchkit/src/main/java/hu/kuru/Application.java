@@ -2,10 +2,8 @@ package hu.kuru;
 
 import hu.kuru.article.Article;
 import hu.kuru.article.ArticleRepo;
-import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.customer.CustomerRepo;
-import hu.kuru.item.Item;
 import hu.kuru.item.ItemRepo;
 import hu.kuru.user.User;
 import hu.kuru.user.UserRepo;
@@ -31,6 +29,7 @@ import org.springframework.context.annotation.ImportResource;
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @ImportResource("/META-INF/bus-context.xml")
 public class Application {
+	
 	@Autowired
 	private ArticleRepo articleRepo;
 	@Autowired

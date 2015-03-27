@@ -7,9 +7,7 @@ import hu.kuru.item.Item;
 import hu.kuru.ui.interaction.ExtendedButton;
 import hu.kuru.util.Pair;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import com.vaadin.addon.touchkit.ui.HorizontalButtonGroup;
@@ -65,6 +63,7 @@ public class ShoppingCart extends Popover {
 	 */
 	private void buildContent() {
 		contentLayout = new VerticalLayout();
+		contentLayout.setMargin(true);
 		contentLayout.setSizeFull();
 
 		createButtonHandlers();
@@ -77,13 +76,15 @@ public class ShoppingCart extends Popover {
 	private void refreshItemContent() {
 		contentLayout.removeAllComponents();
 		vLayout = new VerticalLayout();
+		vLayout.setSizeFull();
 
 		long sum = 0;
 		for (Map.Entry<String, Pair<Article, Integer>> entry : cartContent
 				.entrySet()) {
 			HorizontalLayout rowLayout = new HorizontalLayout();
 			rowLayout.setWidth("100%");
-			HorizontalButtonGroup buttonGroup = new HorizontalButtonGroup();
+			HorizontalLayout buttonGroup = new HorizontalLayout();
+			buttonGroup.setSpacing(true);
 			// + gomb
 			ExtendedButton increaseItemNumberButton = new ExtendedButton(null,
 					FontAwesome.PLUS, entry.getValue().getFirst());
@@ -121,6 +122,7 @@ public class ShoppingCart extends Popover {
 		contentLayout.addComponent(vLayout);
 		contentLayout.addComponent(sumLabel);
 		contentLayout.addComponent(orderButton);
+		contentLayout.setComponentAlignment(orderButton, Alignment.BOTTOM_LEFT);
 		contentLayout.setComponentAlignment(sumLabel, Alignment.BOTTOM_LEFT);
 		
 		this.setContent(contentLayout);
