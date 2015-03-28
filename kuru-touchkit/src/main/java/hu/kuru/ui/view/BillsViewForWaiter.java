@@ -19,6 +19,7 @@ public class BillsViewForWaiter extends NavigationView {
 	public BillsViewForWaiter(NavigationManager manager, long customerId) {
 		super();
 		this.manager = manager;
+		this.manager.setSizeFull();
 		this.customerId = customerId;
 		this.setRightComponent(createBackButton());
 		this.setLeftComponent(new VerticalLayout());

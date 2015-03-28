@@ -2,19 +2,15 @@ package hu.kuru.ui.component;
 
 import hu.kuru.bean.ItemBean;
 import hu.kuru.bill.Bill;
-import hu.kuru.customer.Customer;
 import hu.kuru.item.Item;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -27,12 +23,12 @@ public class BillBox extends CustomComponent {
 
 	private Bill bill;
 	private Panel panel;
-	
+
 	public BillBox(Bill bill) {
 		this.bill = bill;
 		this.setCompositionRoot(buildComponent());
 	}
-	
+
 	private Component buildComponent() {
 		VerticalLayout box = new VerticalLayout();
 		box.setSizeFull();
@@ -49,7 +45,7 @@ public class BillBox extends CustomComponent {
 		panel.setContent(box);
 		return panel;
 	}
-	
+
 	private Component buildHeader() {
 		HorizontalLayout layout = new HorizontalLayout();
 		layout.setSizeUndefined();
@@ -60,22 +56,24 @@ public class BillBox extends CustomComponent {
 		layout.addComponent(openDate);
 		return layout;
 	}
-	
+
 	private Component buildTable() {
 		Table table = new Table();
 		table.setSizeFull();
-		table.setContainerDataSource(new BeanItemContainer<ItemBean>(ItemBean.class));
+		table.setContainerDataSource(new BeanItemContainer<ItemBean>(
+				ItemBean.class));
 		table.setColumnHeader("name", "Név");
 		table.setColumnHeader("code", "Kód");
 		table.setColumnHeader("amount", "Mennyiség");
 		table.setColumnAlignment("amount", Align.RIGHT);
 		table.setVisibleColumns("code", "name", "amount");
-		BeanItemContainer<ItemBean> container = (BeanItemContainer) table.getContainerDataSource();
+		BeanItemContainer<ItemBean> container = (BeanItemContainer) table
+				.getContainerDataSource();
 		container.removeAllItems();
 		container.addAll(getItemList());
 		return table;
 	}
-	
+
 	private Component buildFooter() {
 		HorizontalLayout footer = new HorizontalLayout();
 		footer.setSizeUndefined();
@@ -83,12 +81,12 @@ public class BillBox extends CustomComponent {
 		HorizontalLayout priceLayout = new HorizontalLayout();
 
 		int priceSum = 0;
-		//TODO:
+		// TODO:
 		List<Item> itemList = Item.findByBill(bill.getId());
 		for (Item item : itemList) {
 			priceSum += item.getArticle().getPrice();
 		}
-		
+
 		Label price = new Label("Ár: " + priceSum + " " + bill.getCurrency());
 		price.setStyleName(ValoTheme.LABEL_BOLD);
 		priceLayout.addComponent(price);
@@ -100,10 +98,11 @@ public class BillBox extends CustomComponent {
 
 	private List<ItemBean> getItemList() {
 		List<ItemBean> beanList = new ArrayList<>();
-		//TODO:
+		// TODO:
 		List<Item> itemList = Item.findByBill(bill.getId());
 		for (Item item : itemList) {
-			beanList.add(new ItemBean(item.getArticle().getCode(), item.getArticle().getName(), item.getAmount() + " "
+			beanList.add(new ItemBean(item.getArticle().getCode(), item
+					.getArticle().getName(), item.getAmount() + " "
 					+ item.getArticle().getUnit()));
 		}
 		return beanList;

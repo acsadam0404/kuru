@@ -9,16 +9,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.vaadin.alump.masonry.MasonryLayout;
-
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
 public class BillComponent extends CustomComponent {
 
-	private MasonryLayout billsLayout;
+	private HorizontalLayout billsLayout;
 	private List<BillBox> bills;
 	private long customerId;
 
@@ -34,7 +33,7 @@ public class BillComponent extends CustomComponent {
 		main.setSpacing(true);
 		main.setMargin(true);
 
-		billsLayout = new MasonryLayout();
+		billsLayout = new HorizontalLayout();
 		billsLayout.setSizeFull();
 
 		List<Bill> billList = ServiceLocator.getBean(BillRepo.class)
@@ -55,9 +54,15 @@ public class BillComponent extends CustomComponent {
 		}
 		main.addComponent(billsLayout);
 		Responsive.makeResponsive(main);
-		return main;
+		return billsLayout;
 	}
 
+	/**
+	 * Számlák comparatora
+	 * 
+	 * @author
+	 *
+	 */
 	private static class BillComparator implements Comparator<Bill> {
 
 		@Override

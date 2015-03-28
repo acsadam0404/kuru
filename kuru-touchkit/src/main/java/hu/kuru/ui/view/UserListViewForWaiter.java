@@ -8,7 +8,7 @@ import java.util.Map;
 import hu.kuru.article.Article;
 import hu.kuru.customer.Customer;
 import hu.kuru.security.Authentication;
-import hu.kuru.ui.component.SearchComboBox;
+import hu.kuru.ui.component.SearchField;
 import hu.kuru.ui.component.ShoppingCart;
 import hu.kuru.ui.layout.ArticleLayout;
 import hu.kuru.util.Pair;
@@ -17,9 +17,12 @@ import com.vaadin.addon.touchkit.ui.NavigationManager;
 import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -59,26 +62,26 @@ public class UserListViewForWaiter extends NavigationView {
 	 * @return
 	 */
 	private Component createSearchField() {
-		SearchComboBox searchCombo = new SearchComboBox(Customer.findAll());
-		searchCombo.addValueChangeListener(new ValueChangeListener() {
-
+		SearchField searchField = new SearchField("Keresés: ");
+		searchField.addTextChangeListener(new TextChangeListener() {
+			
 			@Override
-			public void valueChange(Property.ValueChangeEvent event) {
+			public void textChange(TextChangeEvent event) {
 				//TODO: sokkal szebben kell ennél !!!
 				List<Customer> customerList = Customer.findAll();
 				List<Customer> newCustomerList = new ArrayList<Customer>();
-				UserListViewForWaiter.this.removeAllComponents();
 				for (Customer customer : customerList) {
-					if (customer.getName().contains(event.getProperty().toString())) {
+					if (customer.getName().toLowerCase().contains(event.getText().toLowerCase())) {
 						newCustomerList.add(customer);
 					}
 				}
 				BeanItemContainer<Customer> container = (BeanItemContainer) customerTable.getContainerDataSource();
 				container.removeAllItems();
-				container.addAll(Customer.findAll());
+				container.addAll(newCustomerList);
+				
 			}
 		});
-		return searchCombo;
+		return searchField;
 	}
 	
 	/**
