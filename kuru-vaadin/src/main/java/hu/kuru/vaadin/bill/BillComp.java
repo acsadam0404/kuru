@@ -2,6 +2,9 @@ package hu.kuru.vaadin.bill;
 
 import hu.kuru.ServiceLocator;
 import hu.kuru.UIExceptionHandler;
+import hu.kuru.bean.ArticleForClosedBill;
+import hu.kuru.bean.ClosedBill;
+import hu.kuru.bean.ItemListForClosedBill;
 import hu.kuru.bill.Bill;
 import hu.kuru.bill.BillRepo;
 import hu.kuru.customer.Customer;

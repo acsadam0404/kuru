@@ -30,7 +30,7 @@ class Item extends BaseEntity {
 	Bill bill
 	
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	Article article
 	
 	@NotNull

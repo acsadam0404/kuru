@@ -2,7 +2,10 @@ package hu.kuru.vaadin.bill;
 
 import hu.kuru.ServiceLocator;
 import hu.kuru.UIEventBus;
+import hu.kuru.bean.ArticleForClosedBill;
+import hu.kuru.bean.ClosedBill;
 import hu.kuru.bean.ItemBean;
+import hu.kuru.bean.ItemListForClosedBill;
 import hu.kuru.bill.Bill;
 import hu.kuru.enums.Currency;
 import hu.kuru.eventbus.BillClosedEvent;
@@ -18,10 +21,14 @@ import hu.si.vaadin.converter.AbstractCustomizableStringToNumberConverter;
 import hu.si.vaadin.converter.StringToDoubleConverter;
 import hu.si.vaadin.converter.StringToIntegerConverter;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +64,8 @@ public class BillBox extends CustomComponent {
 	private Component buildTable(List<Item> itemList) {
 		Table table = new Table();
 		table.setWidth("99%");
-		table.setContainerDataSource(new BeanItemContainer<>(ItemBean.class, getItemList(itemList)));
+		table.setContainerDataSource(new BeanItemContainer<>(ItemBean.class,
+				getItemList(itemList)));
 		table.setColumnHeader("name", "Név");
 		table.setColumnHeader("code", "Kód");
 		table.setColumnHeader("amount", "Mennyiség");
@@ -73,13 +81,14 @@ public class BillBox extends CustomComponent {
 		box.setSizeFull();
 		box.setSpacing(true);
 		box.setMargin(true);
-		//TODO ez mi? mér nem currnetBill.items? 
+		// TODO ez mi? mér nem currnetBill.items?
 		List<Item> itemList = Item.findByBill(currentBill.getId());
 		box.addComponent(buildHeader());
 		box.addComponent(buildTable(itemList));
 		box.addComponent(buildFooter(getSum(itemList)));
 
-		panel = new Panel(currentBill.getCustomer().getCode() + " - " + currentBill.getCustomer().getName());
+		panel = new Panel(currentBill.getCustomer().getCode() + " - "
+				+ currentBill.getCustomer().getName());
 		panel.setSizeFull();
 		panel.addStyleName(ValoTheme.PANEL_BORDERLESS);
 		panel.addStyleName("billbox");
@@ -142,13 +151,14 @@ public class BillBox extends CustomComponent {
 	}
 
 	private String getChangedSum(int sum) {
-		
+
 		DecimalFormat format = new DecimalFormat("#.##");
 		double result = 0;
 		String currency = currentBill.getCurrency();
 		try {
 			if (!Currency.HUF.name().equals(currency)) {
-				List<ExchangeRate> list = ServiceLocator.getBean(MNBExchangeRateService.class).getExchangeRates();
+				List<ExchangeRate> list = ServiceLocator.getBean(
+						MNBExchangeRateService.class).getExchangeRates();
 				if (Currency.EUR.name().equals(currency)) {
 					result = sum / getRate(list, Currency.EUR.name());
 				} else if (Currency.GBP.name().equals(currency)) {
@@ -156,21 +166,31 @@ public class BillBox extends CustomComponent {
 				} else if (Currency.USD.name().equals(currency)) {
 					result = sum / getRate(list, Currency.USD.name());
 				}
-				result = Double.valueOf(format.format(result).replace(",", "."));
+				result = Double
+						.valueOf(format.format(result).replace(",", "."));
 			} else {
-				return new StringToIntegerConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(sum) + " Ft";
+				return new StringToIntegerConverter(
+						AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY)
+						.convertToPresentation(sum)
+						+ " Ft";
 			}
 		} catch (MNBServiceException e) {
-			new KNotification("Sikertelen MNB árfolyam lekérdezés.").withDescription("A árak forintban jelennek meg.");
+			new KNotification("Sikertelen MNB árfolyam lekérdezés.")
+					.withDescription("A árak forintban jelennek meg.");
 			return "Sikertelen";
 		}
-		return new StringToDoubleConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(result) + " " + currency;
+		return new StringToDoubleConverter(
+				AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY)
+				.convertToPresentation(result)
+				+ " " + currency;
 	}
 
-	private double getRate(List<ExchangeRate> list, String name) throws MNBServiceException {
+	private double getRate(List<ExchangeRate> list, String name)
+			throws MNBServiceException {
 		for (ExchangeRate exchangeRate : list) {
 			if (exchangeRate.getCurr().equals(name)) {
-				return Double.valueOf(exchangeRate.getValue().replace(",", "."));
+				return Double
+						.valueOf(exchangeRate.getValue().replace(",", "."));
 			}
 		}
 		throw new MNBServiceException();
@@ -179,7 +199,8 @@ public class BillBox extends CustomComponent {
 	private List<ItemBean> getItemList(List<Item> itemList) {
 		List<ItemBean> beanList = new ArrayList<>();
 		for (Item item : itemList) {
-			beanList.add(new ItemBean(item.getArticle().getCode(), item.getArticle().getName(), item.getAmount() + " "
+			beanList.add(new ItemBean(item.getArticle().getCode(), item
+					.getArticle().getName(), item.getAmount() + " "
 					+ item.getArticle().getUnit()));
 		}
 		return beanList;
@@ -200,9 +221,42 @@ public class BillBox extends CustomComponent {
 				public void buttonClick(ClickEvent event) {
 					currentBill.setCloseDate(new Date());
 					currentBill.save();
-					UIEventBus.post(new BillClosedEvent(currentBill.getCustomer(), BillBox.this));
+					UIEventBus.post(new BillClosedEvent(currentBill
+							.getCustomer(), BillBox.this));
+					createBillPdf(currentBill);
 				}
 			});
+		}
+	}
+
+	/**
+	 * nyomtatható számla előállítását végző függvény
+	 */
+	private void createBillPdf(Bill currentBill) {
+		ClosedBill closedBillPOJO = new ClosedBill();
+		ItemListForClosedBill itemListPOJO = new ItemListForClosedBill();
+		itemListPOJO.setArticles(new ArrayList<ArticleForClosedBill>());
+		// TODO: ez mi? mértnem bill.getimes
+		List<Item> itemList = Item.findByBill(currentBill.getId());
+		for (Item item : itemList) {
+			ArticleForClosedBill article = new ArticleForClosedBill();
+			article.setName(item.getArticle().getName());
+			article.setAmount(item.getAmount());
+			article.setPrice(item.getArticle().getPrice());
+			itemListPOJO.getArticles().add(article);
+		}
+		closedBillPOJO.setItemListForClosedBill(itemListPOJO);
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(ClosedBill.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			//TODO: hova tegye az xml-t?
+			jaxbMarshaller.marshal(closedBillPOJO, new File(
+					"C:/jaxbxml/closedBill.xml"));
+		} catch (Exception e) {
+			LOG.error("Hiba az XML generálás során!");
 		}
 	}
 
@@ -214,7 +268,8 @@ public class BillBox extends CustomComponent {
 				@Override
 				public void buttonClick(ClickEvent event) {
 					final KWindow window = new KWindow("Új tétel");
-					ItemAdditionalComp comp = ItemAdditionalComp.fromBill(currentBill);
+					ItemAdditionalComp comp = ItemAdditionalComp
+							.fromBill(currentBill);
 					comp.setWindow(window);
 					window.setContent(comp);
 					UI.getCurrent().addWindow(window);
