@@ -1,20 +1,23 @@
 package hu.kuru.ui.view;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import hu.kuru.article.Article;
+import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.ui.component.ShoppingCart;
 import hu.kuru.ui.layout.ArticleLayout;
 import hu.kuru.util.Pair;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.vaadin.addon.touchkit.ui.NavigationManager;
 import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 
 public class ArticleViewForWaiter extends NavigationView {
 
@@ -34,7 +37,7 @@ public class ArticleViewForWaiter extends NavigationView {
 	}
 
 	private Component buildContent() {
-		return new ArticleLayout(cartContent);
+		return new ArticleLayout(customer, cartContent);
 	}
 
 	private Component createShoppingBasketComponent() {
@@ -44,7 +47,10 @@ public class ArticleViewForWaiter extends NavigationView {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				new ShoppingCart(basketButton, cartContent,customer);
+				if (Bill.hasOpenBillByCustomer(customer.getId()))
+					new ShoppingCart(basketButton, cartContent, customer);
+				else
+					Notification.show("Önnek nincs nyitott számlája!", "Kérjen segítséget a pincérektől!", Type.ERROR_MESSAGE);
 			}
 		});
 

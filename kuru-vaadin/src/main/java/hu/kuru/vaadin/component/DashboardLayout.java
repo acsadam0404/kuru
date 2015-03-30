@@ -13,6 +13,8 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class DashboardLayout extends CssLayout {
@@ -30,7 +32,6 @@ public class DashboardLayout extends CssLayout {
 		final CssLayout slot = new CssLayout();
 		slot.setWidth("100%");
 		slot.addStyleName("dashboard-panel-slot");
-
 		CssLayout card = new CssLayout();
 		card.setWidth("100%");
 		card.addStyleName(ValoTheme.LAYOUT_CARD);

@@ -1,6 +1,8 @@
 package hu.kuru.ui.layout;
 
 import hu.kuru.article.Article;
+import hu.kuru.bill.Bill;
+import hu.kuru.customer.Customer;
 import hu.kuru.ui.interaction.ExtendedButton;
 import hu.kuru.util.Pair;
 
@@ -29,13 +31,14 @@ import com.vaadin.ui.VerticalLayout;
 public class ArticleLayout extends MasonryLayout {
 
 	private Map<String, Pair<Article, Integer>> cartContent;
+	private Customer customer;
 
-	public ArticleLayout(Map<String, Pair<Article, Integer>> cartContent) {
+	public ArticleLayout(Customer customer, Map<String, Pair<Article, Integer>> cartContent) {
 		super();
 		this.setSizeFull();
-
 		this.setImmediate(true);
 		this.cartContent = cartContent;
+		this.customer = customer;
 
 		this.buildContent();
 	}
@@ -52,30 +55,26 @@ public class ArticleLayout extends MasonryLayout {
 			Label articleName = new Label(article.getName());
 			hLayoutForTitleAndPicture.addComponent(articleName);
 			hLayoutForTitleAndPicture.setComponentAlignment(articleName, Alignment.TOP_CENTER);
-			hLayoutForTitleAndPicture.addComponent(new Image("",
-					new ThemeResource(article.getIcon())));
+			hLayoutForTitleAndPicture.addComponent(new Image("", new ThemeResource(article.getIcon())));
 			vLayout.addComponent(hLayoutForTitleAndPicture);
-			Label price = new Label("Ár: " + article.getPrice() + " / "
-					+ article.getUnit());
+			Label price = new Label("Ár: " + article.getPrice() + " / " + article.getUnit());
 			vLayout.addComponent(price);
-			ExtendedButton cartButton = new ExtendedButton("",new ThemeResource("img/cart.png"), article);
+			ExtendedButton cartButton = new ExtendedButton("", new ThemeResource("img/cart.png"), article);
 			cartButton.addClickListener(new ClickListener() {
 
 				@Override
 				public void buttonClick(ClickEvent event) {
-					Article article = ((ExtendedButton) event.getButton())
-							.getArticle();
-					if (cartContent.containsKey(article.getCode())) {
-						cartContent.get(article.getCode())
-								.setSecond(
-										cartContent.get(article.getCode())
-												.getSecond() + 1);
+					if (Bill.hasOpenBillByCustomer(customer.getId())) {
+						Article article = ((ExtendedButton) event.getButton()).getArticle();
+						if (cartContent.containsKey(article.getCode())) {
+							cartContent.get(article.getCode()).setSecond(cartContent.get(article.getCode()).getSecond() + 1);
+						} else {
+							cartContent.put(article.getCode(), new Pair<Article, Integer>(article, 1));
+						}
+						Notification.show("A cikk bekerült a kosárba!", Type.WARNING_MESSAGE);
 					} else {
-						cartContent.put(article.getCode(),
-								new Pair<Article, Integer>(article, 1));
+						Notification.show("Önnek nincs nyitott számlája!", "Kérjen segítséget a pincérektől!", Type.ERROR_MESSAGE);
 					}
-					Notification.show("A cikk bekerült a kosárba!",
-							Type.WARNING_MESSAGE);
 				}
 			});
 			cartButton.setWidth("50px");

@@ -1,6 +1,7 @@
 package hu.kuru.ui.view;
 
 import hu.kuru.article.Article;
+import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.security.Authentication;
 import hu.kuru.ui.component.ShoppingCart;
@@ -16,6 +17,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 
 /**
  * Fő képernyő a vendég felhasználóknak
@@ -34,11 +37,9 @@ public class MainViewForCustomer extends NavigationView {
 	public MainViewForCustomer() {
 		super();
 		authentication = new Authentication();
-		customer = Customer.findByCode(
-				String.valueOf(VaadinSession.getCurrent().getAttribute(
-						"customerCode")));
+		customer = Customer.findByCode(String.valueOf(VaadinSession.getCurrent().getAttribute("customerCode")));
 		this.setCaption(customer.getName());
-		
+
 		this.setLeftComponent(createShoppingBasketComponent());
 		this.setRightComponent(createLogoutButton());
 
@@ -52,7 +53,7 @@ public class MainViewForCustomer extends NavigationView {
 	 * @return
 	 */
 	private Component buildContent() {
-		return new ArticleLayout(cartContent);
+		return new ArticleLayout(customer, cartContent);
 	}
 
 	/**
@@ -67,7 +68,10 @@ public class MainViewForCustomer extends NavigationView {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				new ShoppingCart(basketButton, cartContent, MainViewForCustomer.this.customer);
+				if (Bill.hasOpenBillByCustomer(customer.getId()))
+					new ShoppingCart(basketButton, cartContent, MainViewForCustomer.this.customer);
+				else
+					Notification.show("Önnek nincs nyitott számlája!", "Kérjen segítséget a pincérektől!", Type.ERROR_MESSAGE);
 			}
 		});
 
