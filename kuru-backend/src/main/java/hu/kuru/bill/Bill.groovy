@@ -6,7 +6,7 @@ import hu.kuru.ServiceLocator
 import hu.kuru.customer.Customer
 import hu.kuru.item.Item
 
-import javax.persistence.CascadeType;
+import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.ManyToOne
@@ -47,15 +47,19 @@ class Bill extends BaseEntity {
 		repo.countOpenBills()
 	}
 
+	static Boolean hasOpenBillByCustomer(long customerId) {
+		repo.hasOpenBillByCustomer(customerId)
+	}
+
 	Bill save() {
 		repo.save(this)
 	}
-	
+
 	boolean isClosed() {
 		closeDate != null
 	}
-	
+
 	static Bill getOpenBillByCustomerId(Long customerId) {
-		repo.getOpenBillByCustomerId(customerId)	
+		repo.getOpenBillByCustomerId(customerId)
 	}
 }
