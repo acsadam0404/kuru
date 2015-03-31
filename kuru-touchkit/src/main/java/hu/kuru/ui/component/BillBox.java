@@ -1,9 +1,19 @@
 package hu.kuru.ui.component;
 
+import hu.kuru.ServiceLocator;
 import hu.kuru.bean.ItemBean;
 import hu.kuru.bill.Bill;
+import hu.kuru.enums.Currency;
+import hu.kuru.external.mnb.ExchangeRate;
+import hu.kuru.external.mnb.MNBExchangeRateService;
+import hu.kuru.external.mnb.MNBServiceException;
 import hu.kuru.item.Item;
+import hu.si.touchkit.converter.AbstractCustomizableStringToNumberConverter;
+import hu.si.touchkit.converter.StringToDoubleConverter;
+import hu.si.touchkit.converter.StringToIntegerConverter;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +23,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.Align;
@@ -55,10 +66,10 @@ public class BillBox extends CustomComponent {
 		layout.setSizeUndefined();
 		layout.setWidth("100%");
 		layout.setSpacing(true);
-		Label openDate = new Label("Nyitás dátuma: " + bill.getOpenDate());
+		Label openDate = new Label("Nyitás dátuma: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(bill.getOpenDate()));
 		HorizontalLayout priceLayout = new HorizontalLayout();
 		priceLayout.setSizeUndefined();
-		Label priceLabel = new Label("Ár: " + getPrice() + " " + bill.getCurrency());
+		Label priceLabel = new Label("Ár: " + getPrice());
 		priceLayout.addComponent(priceLabel);
 		layout.addComponent(openDate);
 		layout.addComponent(priceLayout);
@@ -66,14 +77,66 @@ public class BillBox extends CustomComponent {
 		return layout;
 	}
 
-	private int getPrice() {
+	/**
+	 * Összesített ár lekérdezése
+	 * 
+	 * @return
+	 */
+	private String getPrice() {
 		int priceSum = 0;
 		// TODO:
 		List<Item> itemList = Item.findByBill(bill.getId());
 		for (Item item : itemList) {
 			priceSum += item.getArticle().getPrice();
 		}
-		return priceSum;
+		
+		return getChangedSum(priceSum);
+	}
+	
+	private String getChangedSum(int sum) {
+
+		DecimalFormat format = new DecimalFormat("#.##");
+		double result = 0;
+		String currency = bill.getCurrency();
+		try {
+			if (!Currency.HUF.name().equals(currency)) {
+				List<ExchangeRate> list = ServiceLocator.getBean(
+						MNBExchangeRateService.class).getExchangeRates();
+				if (Currency.EUR.name().equals(currency)) {
+					result = sum / getRate(list, Currency.EUR.name());
+				} else if (Currency.GBP.name().equals(currency)) {
+					result = sum / getRate(list, Currency.GBP.name());
+				} else if (Currency.USD.name().equals(currency)) {
+					result = sum / getRate(list, Currency.USD.name());
+				}
+				result = Double
+						.valueOf(format.format(result).replace(",", "."));
+			} else {
+				return new StringToIntegerConverter(
+						AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY)
+						.convertToPresentation(sum)
+						+ " Ft";
+			}
+		} catch (MNBServiceException e) {
+			Notification.show("Sikertelen MNB árfolyam lekérdezés. Az árak forintban jelennek meg!");
+			return "Sikertelen";
+		}
+		return new StringToDoubleConverter(
+				AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY)
+				.convertToPresentation(result)
+				+ " " + currency;
+	}
+	
+
+	private double getRate(List<ExchangeRate> list, String name)
+			throws MNBServiceException {
+		for (ExchangeRate exchangeRate : list) {
+			if (exchangeRate.getCurr().equals(name)) {
+				return Double
+						.valueOf(exchangeRate.getValue().replace(",", "."));
+			}
+		}
+		throw new MNBServiceException();
 	}
 
 	private Component buildTable() {
