@@ -106,7 +106,6 @@ public class UserListViewForWaiter extends NavigationView {
 		layout.setMargin(true);
 		customerTable = new Table();
 		customerTable.setSizeFull();
-		customerTable.setWidth("80%");
 		Container container = new BeanItemContainer<Customer>(Customer.class);
 		customerTable.setContainerDataSource(container);
 		customerTable.setVisibleColumns(Customer.NAME, Customer.CODE);

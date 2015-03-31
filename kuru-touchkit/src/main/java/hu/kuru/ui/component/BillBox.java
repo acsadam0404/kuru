@@ -53,7 +53,7 @@ public class BillBox extends CustomComponent {
 	private Component buildHeader() {
 		HorizontalLayout layout = new HorizontalLayout();
 		layout.setSizeUndefined();
-		layout.setWidth("80%");
+		layout.setWidth("100%");
 		layout.setSpacing(true);
 		Label openDate = new Label("Nyitás dátuma: " + bill.getOpenDate());
 		HorizontalLayout priceLayout = new HorizontalLayout();
@@ -79,7 +79,6 @@ public class BillBox extends CustomComponent {
 	private Component buildTable() {
 		Table table = new Table();
 		table.setSizeFull();
-		table.setWidth("80%");
 		table.setContainerDataSource(new BeanItemContainer<ItemBean>(ItemBean.class));
 		table.setColumnHeader("name", "Név");
 		table.setColumnHeader("code", "Kód");
