@@ -1,16 +1,17 @@
 package hu.kuru.ui.view
 
+import groovy.transform.TypeChecked
 import hu.kuru.security.Authentication
 
 import org.vaadin.spring.navigator.annotation.VaadinView
 
 import com.vaadin.addon.touchkit.ui.HorizontalButtonGroup
-import com.vaadin.addon.touchkit.ui.NavigationManager
 import com.vaadin.addon.touchkit.ui.NavigationView
-import com.vaadin.addon.touchkit.ui.VerticalComponentGroup
+import com.vaadin.server.Responsive
 import com.vaadin.ui.Alignment
 import com.vaadin.ui.Button
 import com.vaadin.ui.Component
+import com.vaadin.ui.HorizontalLayout
 import com.vaadin.ui.Label
 import com.vaadin.ui.PasswordField
 import com.vaadin.ui.TextField
@@ -18,89 +19,83 @@ import com.vaadin.ui.VerticalLayout
 import com.vaadin.ui.Button.ClickEvent
 import com.vaadin.ui.Button.ClickListener
 
-/**
- * Bejelentkező felületet megvalósító osztály
- * 
- * @author 
- *
- */
+@TypeChecked
 @VaadinView(name = LoginView.NAME)
 class LoginView extends NavigationView {
 	public static final String NAME = "LoginView"
 
 	private Authentication authentication
 
-	/**
-	 * Konstruktor a Login képernyőt megvalósító objektum létrehozásához
-	 */
 	LoginView() {
 		super("KURU")
+		Responsive.makeResponsive(this)
+		setSizeFull()
 		authentication = new Authentication()
 		setContent(build())
 	}
-
-	/**
-	 * Tartalom létrehozását végző függvény
-	 * 
-	 * @author
-	 *
-	 */
+	
 	private Component build() {
-		setSizeFull()
-
 		def layout = new VerticalLayout()
-		layout.setWidth("100%");
 		layout.setMargin(true)
+		layout.setSizeFull()
 
-		//Vendég bejelentkezés
-		VerticalComponentGroup vertCompGroupGuest = new VerticalComponentGroup()
-		vertCompGroupGuest.setWidth("80%")
-		Label customerLoginLabel = new Label("Vendég bejelentkezés")
-		customerLoginLabel.setStyleName("loginTitle")
-		vertCompGroupGuest.addComponent(customerLoginLabel)
-		TextField customerCodeField = new TextField("Kód:")
-		vertCompGroupGuest.addComponent(customerCodeField)
-		HorizontalButtonGroup buttons = new HorizontalButtonGroup()
-		Button guestLoginButton = new Button("Bejelentkezés")
-		guestLoginButton.setStyleName("loginButton")
-		guestLoginButton.addClickListener(new ClickListener() {
-					@Override
-					public void buttonClick(final ClickEvent event) {
-						authentication.loginByCustomer(customerCodeField.getValue())
-					}
-				});
-		buttons.addComponent(guestLoginButton)
-		vertCompGroupGuest.addComponent(buttons)
+		def guestComp = buildGuestComp()
+		layout.addComponent(guestComp)
+		def waiterComp = buildWaiterComp()
+		layout.addComponent(waiterComp)
 
-		//dolgozó bejelentkezés
-		VerticalComponentGroup vertCompGroupWaiter = new VerticalComponentGroup()
-		vertCompGroupWaiter.setWidth("80%")
-		Label waiterLoginLabel = new Label("Alkalmazott bejelentkezés")
-		waiterLoginLabel.setStyleName("loginTitle")
-		vertCompGroupWaiter.addComponent(waiterLoginLabel)
-		TextField waiterUserNameField = new TextField("Felhasználónév:")
-		vertCompGroupWaiter.addComponent(waiterUserNameField)
-		PasswordField waiterPasswordField = new PasswordField("Jelszó:")
-		vertCompGroupWaiter.addComponent(waiterPasswordField)
-
-		HorizontalButtonGroup buttonsForWaiter = new HorizontalButtonGroup()
-		Button waiterLoginButton = new Button("Bejelentkezés")
-		waiterLoginButton.setStyleName("loginButton")
-		buttonsForWaiter.addComponent(waiterLoginButton)
-		waiterLoginButton.addClickListener(new ClickListener() {
-					@Override
-					public void buttonClick(final ClickEvent event) {
-						authentication.login(waiterUserNameField.getValue(), waiterPasswordField.getValue())
-					}
-				});
-		vertCompGroupWaiter.addComponent(buttonsForWaiter)
-
-		layout.addComponent(vertCompGroupGuest)
-		layout.addComponent(vertCompGroupWaiter)
-
-		layout.setComponentAlignment(vertCompGroupGuest, Alignment.TOP_CENTER)
-		layout.setComponentAlignment(vertCompGroupWaiter, Alignment.TOP_CENTER)
+		layout.setComponentAlignment(guestComp, Alignment.MIDDLE_CENTER)
+		layout.setComponentAlignment(waiterComp, Alignment.MIDDLE_CENTER)
 
 		return layout
+	}
+
+	private Component buildGuestComp() {
+		//Vendég bejelentkezés
+		def l = new VerticalLayout()
+		l.setWidth("80%")
+		l.setSpacing(true)
+		def customerLoginLabel = new Label("Vendég bejelentkezés")
+		customerLoginLabel.setStyleName("loginTitle")
+
+		l.addComponent(customerLoginLabel)
+		TextField customerCodeField = new TextField("Kód:")
+		l.addComponent(customerCodeField)
+		Button loginButton = new Button("Bejelentkezés")
+		loginButton.setStyleName("loginButton")
+		loginButton.addClickListener((ClickListener){ e ->
+			authentication.loginByCustomer(customerCodeField.getValue())
+		});
+		l.addComponent(loginButton)
+
+		for (Component c : l) {
+			c.setSizeFull()
+		}
+		return l
+	}
+
+	private Component buildWaiterComp() {
+		def l = new VerticalLayout()
+		l.setWidth("80%")
+		l.setSpacing(true)
+		
+		def waiterLabel = new Label("Alkalmazott bejelentkezés")
+		waiterLabel.setStyleName("loginTitle")
+		l.addComponent(waiterLabel)
+		def waiterUserNameField = new TextField("Felhasználónév:")
+		l.addComponent(waiterUserNameField)
+		def waiterPasswordField = new PasswordField("Jelszó:")
+		l.addComponent(waiterPasswordField)
+
+		Button loginButton = new Button("Bejelentkezés")
+		loginButton.setStyleName("loginButton")
+		loginButton.addClickListener((ClickListener) { e->
+			authentication.login(waiterUserNameField.value, waiterPasswordField.value)
+		});
+		l.addComponent(loginButton)
+		for (Component c : l) {
+			c.setSizeFull()
+		}
+		return l
 	}
 }

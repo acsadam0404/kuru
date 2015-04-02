@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.vaadin.alump.masonry.MasonryLayout;
 
+import com.vaadin.server.Responsive;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button.ClickEvent;
@@ -34,13 +35,13 @@ public class ArticleLayout extends MasonryLayout {
 	private Customer customer;
 
 	public ArticleLayout(Customer customer, Map<String, Pair<Article, Integer>> cartContent) {
-		super();
-		this.setSizeFull();
-		this.setImmediate(true);
+		setSizeFull();
+		setImmediate(true);
 		this.cartContent = cartContent;
 		this.customer = customer;
 
-		this.buildContent();
+		buildContent();
+		Responsive.makeResponsive(this);
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class ArticleLayout extends MasonryLayout {
 			cartButton.setStyleName("cartButton");
 			vLayout.addComponent(cartButton);
 
-			this.addComponent(vLayout);
+			addComponent(vLayout);
 		}
 	}
 }

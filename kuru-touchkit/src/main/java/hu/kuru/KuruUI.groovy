@@ -35,7 +35,7 @@ import org.vaadin.spring.touchkit.annotation.TouchKitUI
  *
  */
 @VaadinUI
-@Theme("kurutouchkittheme")
+@Theme("tests-valo-light")
 @Widgetset("hu.kuru.Widgetset")
 @TouchKitUI
 class KuruUI extends UI{
