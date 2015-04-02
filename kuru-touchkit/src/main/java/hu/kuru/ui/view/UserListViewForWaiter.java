@@ -1,5 +1,6 @@
 package hu.kuru.ui.view;
 
+import hu.kuru.KuruUI;
 import hu.kuru.customer.Customer;
 import hu.kuru.security.Authentication;
 import hu.kuru.ui.component.SearchField;
@@ -7,19 +8,20 @@ import hu.kuru.ui.component.SearchField;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vaadin.addon.touchkit.ui.NavigationManager;
-import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
@@ -31,28 +33,10 @@ import com.vaadin.ui.VerticalLayout;
  * @author
  *
  */
-public class UserListViewForWaiter extends NavigationView {
+public class UserListViewForWaiter extends CustomComponent implements View{
 
-	private NavigationManager manager;
 	private Table customerTable;
-	private Authentication authentication;
 
-	public UserListViewForWaiter(NavigationManager manager) {
-		super();
-		authentication = new Authentication();
-		this.manager = manager;
-		this.setSizeFull();
-		this.setLeftComponent(createSearchField());
-		this.setRightComponent(createLogoutButton());
-		this.setContent(buildContent());
-		this.refresh();
-	}
-
-	/**
-	 * Keresőmező felépítését végző függvény
-	 * 
-	 * @return
-	 */
 	private Component createSearchField() {
 		SearchField searchField = new SearchField();
 		searchField.addTextChangeListener(new TextChangeListener() {
@@ -88,7 +72,7 @@ public class UserListViewForWaiter extends NavigationView {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				authentication.logout("username");
+				Authentication.logout("username");
 			}
 		});
 
@@ -100,10 +84,15 @@ public class UserListViewForWaiter extends NavigationView {
 	 * 
 	 * @return
 	 */
-	private Component buildContent() {
-		VerticalLayout layout = new VerticalLayout();
-		layout.setSizeFull();
-		layout.setMargin(true);
+	private Component build() {
+		VerticalLayout root = new VerticalLayout();
+		root.setSizeFull();
+		root.setMargin(true);
+		
+		HorizontalLayout actions = new HorizontalLayout();
+		actions.addComponent(createSearchField());
+		actions.addComponent(createLogoutButton());
+		
 		customerTable = new Table();
 		customerTable.setSizeFull();
 		Container container = new BeanItemContainer<Customer>(Customer.class);
@@ -129,7 +118,7 @@ public class UserListViewForWaiter extends NavigationView {
 					public void buttonClick(ClickEvent event) {
 						// TODO: nem jó itt kivenni eggyel lejebb is ez van
 						Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
-						UserListViewForWaiter.this.manager.navigateTo(new ArticleViewForWaiter(manager, customer));
+						KuruUI.getCurrent().getNavigator().navigateTo(ArticleViewForWaiter.NAME);
 					}
 				});
 				navigateToArticleViewButton.setIcon(FontAwesome.BOOK);
@@ -143,7 +132,7 @@ public class UserListViewForWaiter extends NavigationView {
 					@Override
 					public void buttonClick(ClickEvent event) {
 						Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
-						UserListViewForWaiter.this.manager.navigateTo(new BillsViewForWaiter(manager, customer.getId()));
+						KuruUI.getCurrent().getNavigator().navigateTo(ArticleViewForWaiter.NAME);
 					}
 				});
 				navigateToBillsViewButton.setIcon(FontAwesome.BRIEFCASE);
@@ -154,17 +143,20 @@ public class UserListViewForWaiter extends NavigationView {
 			}
 		});
 
-		layout.addComponent(customerTable);
-		layout.setComponentAlignment(customerTable, Alignment.TOP_CENTER);
-		return layout;
+		root.addComponent(customerTable);
+		root.setComponentAlignment(customerTable, Alignment.TOP_CENTER);
+		return root;
 	}
 
-	/**
-	 * Tartalom betöltése a táblázatba
-	 */
 	private void refresh() {
 		BeanItemContainer<Customer> container = (BeanItemContainer) customerTable.getContainerDataSource();
 		container.removeAllItems();
 		container.addAll(Customer.findAll());
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		setCompositionRoot(build());
+		refresh();
 	}
 }

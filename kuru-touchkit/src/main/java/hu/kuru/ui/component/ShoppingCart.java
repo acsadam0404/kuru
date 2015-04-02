@@ -10,13 +10,13 @@ import hu.kuru.util.Pair;
 import java.util.Date;
 import java.util.Map;
 
-import com.vaadin.addon.touchkit.ui.Popover;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -27,7 +27,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author
  *
  */
-public class ShoppingCart extends Popover {
+public class ShoppingCart extends CustomComponent {
 
 	private VerticalLayout contentLayout;
 	private VerticalLayout vLayout;
@@ -46,7 +46,6 @@ public class ShoppingCart extends Popover {
 	 * @param cartContent
 	 */
 	public ShoppingCart(Component relativeTo, Map<String, Pair<Article, Integer>> cartContent, Customer customer) {
-		super();
 		this.setHeight("300px");
 		this.setWidth("420px");
 		this.relativeTo = relativeTo;
@@ -68,7 +67,7 @@ public class ShoppingCart extends Popover {
 
 		this.refreshItemContent();
 
-		this.showRelativeTo(relativeTo);
+		setVisible(true);
 	}
 
 	private void refreshItemContent() {
@@ -115,7 +114,7 @@ public class ShoppingCart extends Popover {
 		contentLayout.setComponentAlignment(orderButton, Alignment.BOTTOM_LEFT);
 		contentLayout.setComponentAlignment(sumLabel, Alignment.BOTTOM_LEFT);
 
-		this.setContent(contentLayout);
+		setCompositionRoot(contentLayout);
 	}
 
 	/**

@@ -5,11 +5,13 @@ import hu.kuru.security.Authentication
 
 import org.vaadin.spring.navigator.annotation.VaadinView
 
-import com.vaadin.addon.touchkit.ui.NavigationView
+import com.vaadin.navigator.View
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent
 import com.vaadin.server.Responsive
 import com.vaadin.ui.Alignment
 import com.vaadin.ui.Button
 import com.vaadin.ui.Component
+import com.vaadin.ui.CustomComponent
 import com.vaadin.ui.Label
 import com.vaadin.ui.PasswordField
 import com.vaadin.ui.TextField
@@ -19,19 +21,14 @@ import com.vaadin.ui.themes.ValoTheme
 
 @TypeChecked
 @VaadinView(name = LoginView.NAME)
-class LoginView extends NavigationView {
+class LoginView extends CustomComponent implements View {
 	public static final String NAME = "LoginView"
 
-	private Authentication authentication
-
 	LoginView() {
-		super("KURU")
+		setCompositionRoot(build())
 		Responsive.makeResponsive(this)
 		setSizeFull()
-		authentication = new Authentication()
-		setContent(build())
 	}
-	
 	private Component build() {
 		def layout = new VerticalLayout()
 		layout.setMargin(true)
@@ -62,7 +59,7 @@ class LoginView extends NavigationView {
 		l.addComponent(customerCodeField)
 		Button loginButton = new Button("Bejelentkezés")
 		loginButton.addClickListener((ClickListener){ e ->
-			authentication.loginByCustomer(customerCodeField.getValue())
+			Authentication.loginByCustomer(customerCodeField.getValue())
 		});
 		l.addComponent(loginButton)
 
@@ -89,12 +86,19 @@ class LoginView extends NavigationView {
 
 		Button loginButton = new Button("Bejelentkezés")
 		loginButton.addClickListener((ClickListener) { e->
-			authentication.login(waiterUserNameField.value, waiterPasswordField.value)
+			Authentication.login(waiterUserNameField.value, waiterPasswordField.value)
 		});
 		l.addComponent(loginButton)
 		for (Component c : l) {
 			c.setSizeFull()
 		}
 		return l
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+//		setCompositionRoot(build())
+//		Responsive.makeResponsive(this)
+//		setSizeFull()
 	}
 }

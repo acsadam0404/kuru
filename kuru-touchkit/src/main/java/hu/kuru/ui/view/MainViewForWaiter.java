@@ -2,8 +2,10 @@ package hu.kuru.ui.view;
 
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
-import com.vaadin.addon.touchkit.ui.NavigationManager;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 
 /**
  * Fő képernyő dolgozóknak
@@ -12,22 +14,17 @@ import com.vaadin.ui.Component;
  *
  */
 @VaadinView(name = MainViewForWaiter.NAME)
-public class MainViewForWaiter extends NavigationManager {
+public class MainViewForWaiter extends CustomComponent implements View {
 
 	public static final String NAME = "MainViewForWaiter";
 	
-	private NavigationManager manager;
-	
-	public MainViewForWaiter() {
-		navigateTo(build());
-	}
-	
 	private Component build() {
-		manager = new NavigationManager();
-		manager.setSizeFull();
-		UserListViewForWaiter mainView = new UserListViewForWaiter(manager);
-		manager.navigateTo(mainView);
-		return manager;
+		return new UserListViewForWaiter();
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		setCompositionRoot(build());
 	}
 
 }

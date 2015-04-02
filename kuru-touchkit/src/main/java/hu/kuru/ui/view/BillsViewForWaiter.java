@@ -2,35 +2,32 @@ package hu.kuru.ui.view;
 
 import hu.kuru.ui.component.BillComponent;
 
-import com.vaadin.addon.touchkit.ui.NavigationManager;
-import com.vaadin.addon.touchkit.ui.NavigationView;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
 
-public class BillsViewForWaiter extends NavigationView {
+public class BillsViewForWaiter extends CustomComponent implements View {
 
-	private NavigationManager manager;
-	private VerticalLayout contentLayout;
 	private long customerId;
 	
-	public BillsViewForWaiter(NavigationManager manager, long customerId) {
-		super();
-		this.manager = manager;
-		this.manager.setSizeFull();
+	public BillsViewForWaiter(long customerId) {
 		this.customerId = customerId;
-		this.setRightComponent(createBackButton());
-		this.setLeftComponent(new VerticalLayout());
-		this.setContent(buildContent());
 	}
 	
-	private Component buildContent() {
-		contentLayout = new VerticalLayout();
-		contentLayout.setSizeFull();
-		contentLayout.addComponent(new BillComponent(customerId));
-		return this.contentLayout;
+	private Component build() {
+		VerticalLayout root = new VerticalLayout();
+		root.setSizeFull();
+		HorizontalLayout actions = new HorizontalLayout();
+		actions.addComponent(createBackButton());
+		root.addComponent(actions);
+		root.addComponent(new BillComponent(customerId));
+		return root;
 	}
 	
 	//TODO: máshol is van ugyanez a gomb használva közösbe kivenni!!
@@ -41,10 +38,16 @@ public class BillsViewForWaiter extends NavigationView {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				BillsViewForWaiter.this.manager.navigateBack();
 			}
 		});
 		
 		return backButton;
 	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		setCompositionRoot(build());
+	}
+	
+	
 }

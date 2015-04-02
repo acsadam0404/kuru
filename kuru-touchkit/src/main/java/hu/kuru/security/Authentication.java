@@ -15,7 +15,7 @@ import com.vaadin.server.VaadinSession;
  */
 public class Authentication {
 
-	public Authentication() {
+	private Authentication() {
 	}
 
 	/**
@@ -24,7 +24,7 @@ public class Authentication {
 	 * @param username
 	 * @param password
 	 */
-	public void login(String username, String password) {
+	public static void login(String username, String password) {
 		User user = User.findByUsername(username);
 		if (user != null) {
 			if (password.equals(user.getPassword())) {
@@ -43,7 +43,7 @@ public class Authentication {
 	 * 
 	 * @param customerCode
 	 */
-	public void loginByCustomer(String customerCode) {
+	public static void loginByCustomer(String customerCode) {
 		Customer customer = Customer.findByCode(customerCode);
 		if (customer != null) {
 			VaadinSession.getCurrent().setAttribute("customerCode",
@@ -59,16 +59,16 @@ public class Authentication {
 	 * 
 	 * @param attribute
 	 */
-	public void logout(String attribute) {
+	public static void logout(String attribute) {
 		VaadinSession.getCurrent().setAttribute(attribute, null);
 		UIEventBus.post(new LoginEvent(null, null));
 	}
 
-	public boolean isAuthenticated() {
+	public static boolean isAuthenticated() {
 		return getUsernameFromSession() != null;
 	}
 
-	public boolean isAuthenticatedByCustomer() {
+	public static boolean isAuthenticatedByCustomer() {
 		return getCustomerCodeFromSession() != null;
 	}
 

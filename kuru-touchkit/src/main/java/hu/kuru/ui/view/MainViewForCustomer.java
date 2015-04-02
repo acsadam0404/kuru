@@ -11,13 +11,17 @@ import hu.kuru.util.Pair;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.vaadin.addon.touchkit.ui.NavigationView;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Notification.Type;
 
 /**
@@ -26,33 +30,28 @@ import com.vaadin.ui.Notification.Type;
  * @author
  *
  */
-public class MainViewForCustomer extends NavigationView {
+public class MainViewForCustomer extends CustomComponent implements View {
 
 	public static final String NAME = "MainViewForCustomer";
 
-	private Authentication authentication;
-	private Map<String, Pair<Article, Integer>> cartContent;
+	private Map<String, Pair<Article, Integer>> cartContent = new HashMap<>();
 	private Customer customer;
 
 	public MainViewForCustomer() {
-		super();
-		authentication = new Authentication();
 		customer = Customer.findByCode(String.valueOf(VaadinSession.getCurrent().getAttribute("customerCode")));
-		this.setCaption(customer.getName());
-
-		this.setLeftComponent(createShoppingBasketComponent());
-		this.setRightComponent(createLogoutButton());
-
-		cartContent = new HashMap<String, Pair<Article, Integer>>();
-		setContent(buildContent());
+		setCaption(customer.getName());
 	}
 
-	/**
-	 * Tartalom felépítését végző függvény
-	 * 
-	 * @return
-	 */
-	private Component buildContent() {
+	private Component build() {
+		VerticalLayout l = new VerticalLayout();
+		l.setSizeFull();
+		l.setMargin(true);
+		l.setSpacing(true);
+		
+		HorizontalLayout actions = new HorizontalLayout();
+		actions.addComponent(createShoppingBasketComponent());
+		actions.addComponent(createLogoutButton());
+		
 		return new ArticleLayout(customer, cartContent);
 	}
 
@@ -90,10 +89,15 @@ public class MainViewForCustomer extends NavigationView {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				authentication.logout("customerCode");
+				Authentication.logout("customerCode");
 			}
 		});
 
 		return logoutButton;
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		setCompositionRoot(build());		
 	}
 }

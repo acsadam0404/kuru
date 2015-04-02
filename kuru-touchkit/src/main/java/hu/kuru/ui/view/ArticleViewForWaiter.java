@@ -1,5 +1,6 @@
 package hu.kuru.ui.view;
 
+import hu.kuru.KuruUI;
 import hu.kuru.article.Article;
 import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
@@ -10,34 +11,43 @@ import hu.kuru.util.Pair;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.vaadin.addon.touchkit.ui.NavigationManager;
-import com.vaadin.addon.touchkit.ui.NavigationView;
+import org.vaadin.spring.navigator.annotation.VaadinView;
+
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Notification.Type;
 
-public class ArticleViewForWaiter extends NavigationView {
+@VaadinView(name = ArticleViewForWaiter.NAME)
+public class ArticleViewForWaiter extends CustomComponent implements View {
 
-	// TODO: közösbe kivenni a managert nem jó átadogatva
-	private NavigationManager manager;
-	private Map<String, Pair<Article, Integer>> cartContent;
+	public static final String NAME = "ArticleWaiter";
+	private Map<String, Pair<Article, Integer>> cartContent = new HashMap<>();
 	private Customer customer;
 
-	public ArticleViewForWaiter(NavigationManager manager, Customer customer) {
-		super();
-		this.manager = manager;
+	public ArticleViewForWaiter(Customer customer) {
 		this.customer = customer;
-		this.cartContent = new HashMap<String, Pair<Article, Integer>>();
-		this.setRightComponent(createBackButton());
-		this.setLeftComponent(createShoppingBasketComponent());
-		this.setContent(buildContent());
 	}
 
-	private Component buildContent() {
-		return new ArticleLayout(customer, cartContent);
+	private Component build() {
+		VerticalLayout l = new VerticalLayout();
+		
+		l.setSizeFull();
+		
+		HorizontalLayout actions = new HorizontalLayout();
+		actions.addComponent(createBackButton());
+		actions.addComponent(createShoppingBasketComponent());
+		l.addComponent(actions);
+		
+		l.addComponent(new ArticleLayout(customer, cartContent));
+		return l;
 	}
 
 	private Component createShoppingBasketComponent() {
@@ -64,10 +74,14 @@ public class ArticleViewForWaiter extends NavigationView {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ArticleViewForWaiter.this.manager.navigateBack();
 			}
 		});
 
 		return backButton;
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		this.setCompositionRoot(build());		
 	}
 }
