@@ -6,15 +6,15 @@ import hu.kuru.security.Authentication;
 import hu.kuru.ui.component.SearchField;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -29,12 +29,16 @@ import com.vaadin.ui.VerticalLayout;
 /**
  * Pincér főképernyő (az a tartalom ami bejelentkezéskor a mainviewforwaiter
  * contentje)
- * 
- * @author
  *
  */
-public class UserListViewForWaiter extends CustomComponent implements View{
+public class UserListForWaiter extends CustomComponent {
 
+	
+	public UserListForWaiter() {
+		setCompositionRoot(build());
+		refresh();
+	}
+	public static final String NAME = "UserListViewForWaiter";
 	private Table customerTable;
 
 	private Component createSearchField() {
@@ -111,33 +115,37 @@ public class UserListViewForWaiter extends CustomComponent implements View{
 				buttonLayout.setSpacing(true);
 
 				// cikkek képernyőre navigálást végző gomb
-				Button navigateToArticleViewButton = new Button();
-				navigateToArticleViewButton.addClickListener(new ClickListener() {
+				Button articlesButton = new Button();
+				articlesButton.addClickListener(new ClickListener() {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
 						// TODO: nem jó itt kivenni eggyel lejebb is ez van
 						Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
-						KuruUI.getCurrent().getNavigator().navigateTo(ArticleViewForWaiter.NAME);
+						Map<String, Object> params = new HashMap<>();
+						params.put(Customer.CODE, customer.getCode());
+						KuruUI.getCurrent().getNavigator().navigateTo(ArticleViewForWaiter.NAME, params);
 					}
 				});
-				navigateToArticleViewButton.setIcon(FontAwesome.BOOK);
-				buttonLayout.addComponent(navigateToArticleViewButton);
-				buttonLayout.setComponentAlignment(navigateToArticleViewButton, Alignment.MIDDLE_RIGHT);
+				articlesButton.setIcon(FontAwesome.BOOK);
+				buttonLayout.addComponent(articlesButton);
+				buttonLayout.setComponentAlignment(articlesButton, Alignment.MIDDLE_RIGHT);
 
 				// számlák képernyőre navigálást végző ikon
-				Button navigateToBillsViewButton = new Button();
-				navigateToBillsViewButton.addClickListener(new ClickListener() {
+				Button billsButton = new Button();
+				billsButton.addClickListener(new ClickListener() {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
 						Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
-						KuruUI.getCurrent().getNavigator().navigateTo(ArticleViewForWaiter.NAME);
+						Map<String, Object> params = new HashMap<>();
+						params.put(Customer.CODE, customer.getCode());
+						KuruUI.getCurrent().getNavigator().navigateTo(BillsViewForWaiter.NAME, params);
 					}
 				});
-				navigateToBillsViewButton.setIcon(FontAwesome.BRIEFCASE);
-				buttonLayout.addComponent(navigateToBillsViewButton);
-				buttonLayout.setComponentAlignment(navigateToBillsViewButton, Alignment.MIDDLE_RIGHT);
+				billsButton.setIcon(FontAwesome.BRIEFCASE);
+				buttonLayout.addComponent(billsButton);
+				buttonLayout.setComponentAlignment(billsButton, Alignment.MIDDLE_RIGHT);
 
 				return buttonLayout;
 			}
@@ -154,9 +162,4 @@ public class UserListViewForWaiter extends CustomComponent implements View{
 		container.addAll(Customer.findAll());
 	}
 
-	@Override
-	public void enter(ViewChangeEvent event) {
-		setCompositionRoot(build());
-		refresh();
-	}
 }

@@ -63,6 +63,11 @@ class KuruUI extends UI{
 		super.getCurrent()
 	}
 
+	@Override
+	TouchkitNavigator getNavigator() {
+		return super.navigator
+	}
+	
 	@Subscribe
 	void handleLoginEventForWaiter(LoginEvent loginEvent) {
 		if(loginEvent.getUsername() == null && loginEvent.getCustomerCode() == null) {

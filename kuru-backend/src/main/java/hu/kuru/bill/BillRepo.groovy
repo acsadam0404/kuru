@@ -1,5 +1,6 @@
 package hu.kuru.bill
 
+import hu.kuru.customer.Customer
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -7,8 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 
 interface BillRepo extends JpaRepository<Bill, Long> {
 
-	@Query("select b from Bill b join fetch b.customer where b.customer.id = ?1")
-	List<Bill> findByCustomer(Long customerId)
+	List<Bill> findByCustomer(Customer customer)
 
 	@Query("select b.id from Bill b where b.customer.id = ?1")
 	List<Long> findIdsByCustomer(Long customerId)

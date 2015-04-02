@@ -29,9 +29,8 @@ import com.vaadin.ui.VerticalLayout;
  */
 public class ShoppingCart extends CustomComponent {
 
-	private VerticalLayout contentLayout;
+	private VerticalLayout root;
 	private VerticalLayout vLayout;
-	private Component relativeTo;
 	private Map<String, Pair<Article, Integer>> cartContent;
 	private ClickListener removeButtonClickListener;
 	private ClickListener increaseButtonClickListener;
@@ -45,33 +44,33 @@ public class ShoppingCart extends CustomComponent {
 	 * @param relativeTo
 	 * @param cartContent
 	 */
-	public ShoppingCart(Component relativeTo, Map<String, Pair<Article, Integer>> cartContent, Customer customer) {
-		this.setHeight("300px");
-		this.setWidth("420px");
-		this.relativeTo = relativeTo;
+	public ShoppingCart(Map<String, Pair<Article, Integer>> cartContent, Customer customer) {
+		setHeight("300px");
+		setWidth("420px");
 		this.cartContent = cartContent;
 		this.customer = customer;
 
-		buildContent();
+		root = build();
 	}
 
 	/**
 	 * Bevásárló kosár felület felépítése
 	 */
-	private void buildContent() {
-		contentLayout = new VerticalLayout();
-		contentLayout.setMargin(true);
-		contentLayout.setSizeFull();
+	private VerticalLayout build() {
+		VerticalLayout l = new VerticalLayout();
+		l.setMargin(true);
+		l.setSizeFull();
 
 		createButtonHandlers();
 
 		this.refreshItemContent();
 
 		setVisible(true);
+		return l;
 	}
 
 	private void refreshItemContent() {
-		contentLayout.removeAllComponents();
+		root.removeAllComponents();
 		vLayout = new VerticalLayout();
 		vLayout.setSizeFull();
 
@@ -108,13 +107,13 @@ public class ShoppingCart extends CustomComponent {
 		Button orderButton = new Button("Megrendelés", orderButtonClickListener);
 		orderButton.setWidth("200px");
 
-		contentLayout.addComponent(vLayout);
-		contentLayout.addComponent(sumLabel);
-		contentLayout.addComponent(orderButton);
-		contentLayout.setComponentAlignment(orderButton, Alignment.BOTTOM_LEFT);
-		contentLayout.setComponentAlignment(sumLabel, Alignment.BOTTOM_LEFT);
+		root.addComponent(vLayout);
+		root.addComponent(sumLabel);
+		root.addComponent(orderButton);
+		root.setComponentAlignment(orderButton, Alignment.BOTTOM_LEFT);
+		root.setComponentAlignment(sumLabel, Alignment.BOTTOM_LEFT);
 
-		setCompositionRoot(contentLayout);
+		setCompositionRoot(root);
 	}
 
 	/**

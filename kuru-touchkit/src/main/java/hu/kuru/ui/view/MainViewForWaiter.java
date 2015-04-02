@@ -19,12 +19,13 @@ public class MainViewForWaiter extends CustomComponent implements View {
 	public static final String NAME = "MainViewForWaiter";
 	
 	private Component build() {
-		return new UserListViewForWaiter();
+		return new UserListForWaiter();
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		setCompositionRoot(build());
+		setSizeFull();
 	}
 
 }

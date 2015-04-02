@@ -1,6 +1,7 @@
 package hu.kuru.ui.view;
 
 import hu.kuru.KuruUI;
+import hu.kuru.TouchkitNavigator;
 import hu.kuru.article.Article;
 import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
@@ -18,22 +19,25 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.PopupView.Content;
 
 @VaadinView(name = ArticleViewForWaiter.NAME)
 public class ArticleViewForWaiter extends CustomComponent implements View {
 
-	public static final String NAME = "ArticleWaiter";
+	public static final String NAME = "ArticleViewForWaiter";
 	private Map<String, Pair<Article, Integer>> cartContent = new HashMap<>();
 	private Customer customer;
+	private PopupView cartPopup;
 
-	public ArticleViewForWaiter(Customer customer) {
-		this.customer = customer;
+	public ArticleViewForWaiter() {
 	}
 
 	private Component build() {
@@ -42,10 +46,26 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 		l.setSizeFull();
 		
 		HorizontalLayout actions = new HorizontalLayout();
+		actions.setSizeFull();
 		actions.addComponent(createBackButton());
-		actions.addComponent(createShoppingBasketComponent());
+		Component cartComp = createShoppingBasketComponent();
+		actions.addComponent(cartComp);
+		actions.setComponentAlignment(cartComp, Alignment.MIDDLE_RIGHT);
 		l.addComponent(actions);
-		
+
+		cartPopup = new PopupView(new Content() {
+
+			@Override
+			public String getMinimizedValueAsHTML() {
+				return "";
+			}
+
+			@Override
+			public Component getPopupComponent() {
+				return new ShoppingCart(cartContent, customer);
+			}
+		});
+		l.addComponent(cartPopup);
 		l.addComponent(new ArticleLayout(customer, cartContent));
 		return l;
 	}
@@ -57,10 +77,12 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				if (Bill.hasOpenBillByCustomer(customer.getId()))
-					new ShoppingCart(basketButton, cartContent, customer);
-				else
+				if (Bill.hasOpenBillByCustomer(customer.getId())) {
+					cartPopup.setPopupVisible(true);
+				}
+				else {
 					Notification.show("Önnek nincs nyitott számlája!", "Kérjen segítséget a pincérektől!", Type.ERROR_MESSAGE);
+				}
 			}
 		});
 
@@ -74,6 +96,7 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				KuruUI.getCurrent().getNavigator().navigateTo(MainViewForWaiter.NAME);
 			}
 		});
 
@@ -82,6 +105,9 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		this.setCompositionRoot(build());		
+		Map<String, String> params = TouchkitNavigator.paramsToMap(event.getParameters());
+		customer = Customer.findByCode(params.get(Customer.CODE));
+		
+		setCompositionRoot(build());		
 	}
 }

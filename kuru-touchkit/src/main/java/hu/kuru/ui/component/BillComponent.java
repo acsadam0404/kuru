@@ -3,6 +3,7 @@ package hu.kuru.ui.component;
 import hu.kuru.ServiceLocator;
 import hu.kuru.bill.Bill;
 import hu.kuru.bill.BillRepo;
+import hu.kuru.customer.Customer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,11 +20,11 @@ public class BillComponent extends CustomComponent {
 
 	private HorizontalLayout billsLayout;
 	private List<BillBox> bills;
-	private long customerId;
+	private String customerCode;
 
-	public BillComponent(long customerId) {
+	public BillComponent(String customerCode) {
 		setSizeFull();
-		this.customerId = customerId;
+		this.customerCode = customerCode;
 		setCompositionRoot(build());
 	}
 
@@ -36,8 +37,7 @@ public class BillComponent extends CustomComponent {
 		billsLayout = new HorizontalLayout();
 		billsLayout.setSizeFull();
 
-		List<Bill> billList = ServiceLocator.getBean(BillRepo.class)
-				.findByCustomer(customerId);
+		List<Bill> billList = ServiceLocator.getBean(BillRepo.class).findByCustomer(Customer.findByCode(customerCode));
 		bills = new ArrayList<BillBox>();
 		if (billList != null) {
 			Collections.sort(billList, new BillComparator());

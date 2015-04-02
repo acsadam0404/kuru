@@ -46,8 +46,7 @@ public class Authentication {
 	public static void loginByCustomer(String customerCode) {
 		Customer customer = Customer.findByCode(customerCode);
 		if (customer != null) {
-			VaadinSession.getCurrent().setAttribute("customerCode",
-					customerCode);
+			VaadinSession.getCurrent().setAttribute("customerCode",customerCode);
 			UIEventBus.post(new LoginEvent(null, customerCode));
 		} else {
 			System.out.println("no such customer");
