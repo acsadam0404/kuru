@@ -5,19 +5,17 @@ import hu.kuru.security.Authentication
 
 import org.vaadin.spring.navigator.annotation.VaadinView
 
-import com.vaadin.addon.touchkit.ui.HorizontalButtonGroup
 import com.vaadin.addon.touchkit.ui.NavigationView
 import com.vaadin.server.Responsive
 import com.vaadin.ui.Alignment
 import com.vaadin.ui.Button
 import com.vaadin.ui.Component
-import com.vaadin.ui.HorizontalLayout
 import com.vaadin.ui.Label
 import com.vaadin.ui.PasswordField
 import com.vaadin.ui.TextField
 import com.vaadin.ui.VerticalLayout
-import com.vaadin.ui.Button.ClickEvent
 import com.vaadin.ui.Button.ClickListener
+import com.vaadin.ui.themes.ValoTheme
 
 @TypeChecked
 @VaadinView(name = LoginView.NAME)
@@ -56,13 +54,13 @@ class LoginView extends NavigationView {
 		l.setWidth("80%")
 		l.setSpacing(true)
 		def customerLoginLabel = new Label("Vendég bejelentkezés")
-		customerLoginLabel.setStyleName("loginTitle")
+		customerLoginLabel.setStyleName(ValoTheme.LABEL_H1)
 
 		l.addComponent(customerLoginLabel)
-		TextField customerCodeField = new TextField("Kód:")
+		TextField customerCodeField = new TextField("Kód")
+		customerCodeField.setStyleName(ValoTheme.TEXTFIELD_HUGE)
 		l.addComponent(customerCodeField)
 		Button loginButton = new Button("Bejelentkezés")
-		loginButton.setStyleName("loginButton")
 		loginButton.addClickListener((ClickListener){ e ->
 			authentication.loginByCustomer(customerCodeField.getValue())
 		});
@@ -80,15 +78,16 @@ class LoginView extends NavigationView {
 		l.setSpacing(true)
 		
 		def waiterLabel = new Label("Alkalmazott bejelentkezés")
-		waiterLabel.setStyleName("loginTitle")
+		waiterLabel.setStyleName(ValoTheme.LABEL_H1)
 		l.addComponent(waiterLabel)
-		def waiterUserNameField = new TextField("Felhasználónév:")
+		def waiterUserNameField = new TextField("Felhasználónév")
+		waiterUserNameField.setStyleName(ValoTheme.TEXTFIELD_HUGE)
 		l.addComponent(waiterUserNameField)
-		def waiterPasswordField = new PasswordField("Jelszó:")
+		def waiterPasswordField = new PasswordField("Jelszó")
+		waiterPasswordField.setStyleName(ValoTheme.TEXTFIELD_HUGE)
 		l.addComponent(waiterPasswordField)
 
 		Button loginButton = new Button("Bejelentkezés")
-		loginButton.setStyleName("loginButton")
 		loginButton.addClickListener((ClickListener) { e->
 			authentication.login(waiterUserNameField.value, waiterPasswordField.value)
 		});
