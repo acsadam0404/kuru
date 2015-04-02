@@ -37,9 +37,6 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 	private Customer customer;
 	private PopupView cartPopup;
 
-	public ArticleViewForWaiter() {
-	}
-
 	private Component build() {
 		VerticalLayout l = new VerticalLayout();
 		

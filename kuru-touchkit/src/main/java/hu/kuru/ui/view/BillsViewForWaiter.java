@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
+import hu.kuru.KuruUI;
 import hu.kuru.TouchkitNavigator;
 import hu.kuru.customer.Customer;
 import hu.kuru.ui.component.BillComponent;
@@ -41,6 +42,7 @@ public class BillsViewForWaiter extends CustomComponent implements View {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				KuruUI.getCurrent().getNavigator().navigateTo(MainViewForWaiter.NAME);
 			}
 		});
 
