@@ -15,11 +15,11 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * Bevásárló kosarat reprezentáló osztály
@@ -27,7 +27,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author
  *
  */
-public class ShoppingCart extends CustomComponent {
+public class ShoppingCart extends Panel {
 
 	private VerticalLayout root;
 	private VerticalLayout vLayout;
@@ -45,12 +45,13 @@ public class ShoppingCart extends CustomComponent {
 	 * @param cartContent
 	 */
 	public ShoppingCart(Map<String, Pair<Article, Integer>> cartContent, Customer customer) {
+		setStyleName(ValoTheme.PANEL_BORDERLESS);
 		setHeight("300px");
 		setWidth("420px");
 		this.cartContent = cartContent;
 		this.customer = customer;
-
 		root = build();
+		this.refreshItemContent();
 	}
 
 	/**
@@ -58,13 +59,9 @@ public class ShoppingCart extends CustomComponent {
 	 */
 	private VerticalLayout build() {
 		VerticalLayout l = new VerticalLayout();
-		l.setMargin(true);
 		l.setSizeFull();
-
+		l.setMargin(true);
 		createButtonHandlers();
-
-		this.refreshItemContent();
-
 		setVisible(true);
 		return l;
 	}
@@ -81,11 +78,14 @@ public class ShoppingCart extends CustomComponent {
 			HorizontalLayout buttonGroup = new HorizontalLayout();
 			buttonGroup.setSpacing(true);
 			// + gomb
-			ExtendedButton increaseItemNumberButton = new ExtendedButton(null, FontAwesome.PLUS, entry.getValue().getFirst());
+			ExtendedButton increaseItemNumberButton = new ExtendedButton(null, FontAwesome.PLUS, entry.getValue().getFirst())
+					.withBiggerSize();
 			// - gomb
-			ExtendedButton decreaseItemNumberButton = new ExtendedButton(null, FontAwesome.MINUS, entry.getValue().getFirst());
+			ExtendedButton decreaseItemNumberButton = new ExtendedButton(null, FontAwesome.MINUS, entry.getValue().getFirst())
+					.withBiggerSize();
 			// Törlés gomb
-			ExtendedButton removeArticleButton = new ExtendedButton(null, FontAwesome.TRASH_O, entry.getValue().getFirst());
+			ExtendedButton removeArticleButton = new ExtendedButton(null, FontAwesome.TRASH_O, entry.getValue().getFirst())
+					.withBiggerSize();
 			increaseItemNumberButton.addClickListener(increaseButtonClickListener);
 			decreaseItemNumberButton.addClickListener(decreaseButtonClickListener);
 			removeArticleButton.addClickListener(removeButtonClickListener);
@@ -94,6 +94,7 @@ public class ShoppingCart extends CustomComponent {
 			buttonGroup.addComponent(removeArticleButton);
 			Label l = new Label(entry.getValue().getFirst().getName() + " " + entry.getValue().getSecond());
 			rowLayout.addComponent(l);
+			rowLayout.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 			rowLayout.addComponent(buttonGroup);
 			rowLayout.setComponentAlignment(buttonGroup, Alignment.TOP_RIGHT);
 			sum += entry.getValue().getSecond() * entry.getValue().getFirst().getPrice();
@@ -113,7 +114,7 @@ public class ShoppingCart extends CustomComponent {
 		root.setComponentAlignment(orderButton, Alignment.BOTTOM_LEFT);
 		root.setComponentAlignment(sumLabel, Alignment.BOTTOM_LEFT);
 
-		setCompositionRoot(root);
+		setContent(root);
 	}
 
 	/**

@@ -2,9 +2,6 @@ package hu.kuru.vaadin.bill;
 
 import hu.kuru.ServiceLocator;
 import hu.kuru.UIExceptionHandler;
-import hu.kuru.bean.ArticleForClosedBill;
-import hu.kuru.bean.ClosedBill;
-import hu.kuru.bean.ItemListForClosedBill;
 import hu.kuru.bill.Bill;
 import hu.kuru.bill.BillRepo;
 import hu.kuru.customer.Customer;
@@ -117,7 +114,7 @@ public class BillComp extends CustomComponent {
 	}
 
 	private void addCustomerToLayout(Customer customer, boolean isFirstLoading) {
-		List<Bill> billList = ServiceLocator.getBean(BillRepo.class).findByCustomer(customer.getId());
+		List<Bill> billList = Bill.findByCustomer(customer.getId());
 		List<BillBox> components = new ArrayList<>();
 		if (billList != null) {
 			Collections.sort(billList, new BillComparator());

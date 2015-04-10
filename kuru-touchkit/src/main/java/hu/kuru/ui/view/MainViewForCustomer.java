@@ -11,24 +11,28 @@ import hu.kuru.util.Pair;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.context.annotation.Scope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.PopupView;
 import com.vaadin.ui.PopupView.Content;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
+@Scope("prototype")
 @VaadinView(name = MainViewForCustomer.NAME)
 public class MainViewForCustomer extends CustomComponent implements View {
 
@@ -39,12 +43,10 @@ public class MainViewForCustomer extends CustomComponent implements View {
 
 	private PopupView cartPopup;
 
-	public MainViewForCustomer() {
-		customer = Customer.findByCode(String.valueOf(VaadinSession.getCurrent().getAttribute("customerCode")));
-		setCaption(customer.getName());
-	}
-
 	private Component build() {
+		Panel panel = new Panel();
+		panel.setSizeFull();
+		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
 		VerticalLayout l = new VerticalLayout();
 		l.setSizeFull();
 		l.setMargin(true);
@@ -72,8 +74,8 @@ public class MainViewForCustomer extends CustomComponent implements View {
 		});
 		l.addComponent(cartPopup);
 		l.addComponent(new ArticleLayout(customer, cartContent));
-
-		return l;
+		panel.setContent(l);
+		return panel;
 	}
 
 	/**
@@ -90,8 +92,7 @@ public class MainViewForCustomer extends CustomComponent implements View {
 			public void buttonClick(ClickEvent event) {
 				if (Bill.hasOpenBillByCustomer(customer.getId())) {
 					cartPopup.setPopupVisible(true);
-				}
-				else {
+				} else {
 					Notification.show("Önnek nincs nyitott számlája!", "Kérjen segítséget a pincérektől!", Type.ERROR_MESSAGE);
 				}
 			}
@@ -100,11 +101,6 @@ public class MainViewForCustomer extends CustomComponent implements View {
 		return basketButton;
 	}
 
-	/**
-	 * Logout gomb felépítését végző függvény
-	 * 
-	 * @return
-	 */
 	private Component createLogoutButton() {
 		Button logoutButton = new Button("Kijelentkezés");
 
@@ -121,6 +117,8 @@ public class MainViewForCustomer extends CustomComponent implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		customer = Customer.findByCode(String.valueOf(VaadinSession.getCurrent().getAttribute("customerCode")));
+		setCaption(customer.getName());
 		setCompositionRoot(build());
 	}
 }

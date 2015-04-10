@@ -33,11 +33,12 @@ import com.vaadin.ui.VerticalLayout;
  */
 public class UserListForWaiter extends CustomComponent {
 
-	
 	public UserListForWaiter() {
+		setSizeFull();
 		setCompositionRoot(build());
 		refresh();
 	}
+
 	public static final String NAME = "UserListViewForWaiter";
 	private Table customerTable;
 
@@ -91,14 +92,14 @@ public class UserListForWaiter extends CustomComponent {
 	private Component build() {
 		VerticalLayout root = new VerticalLayout();
 		root.setSizeFull();
-		root.setMargin(true);
-		
+
 		HorizontalLayout actions = new HorizontalLayout();
 		actions.addComponent(createSearchField());
 		actions.addComponent(createLogoutButton());
-		
+
 		customerTable = new Table();
 		customerTable.setSizeFull();
+		customerTable.setPageLength(0);
 		Container container = new BeanItemContainer<Customer>(Customer.class);
 		customerTable.setContainerDataSource(container);
 		customerTable.setVisibleColumns(Customer.NAME, Customer.CODE);
@@ -152,7 +153,6 @@ public class UserListForWaiter extends CustomComponent {
 		});
 
 		root.addComponent(customerTable);
-		root.setComponentAlignment(customerTable, Alignment.TOP_CENTER);
 		return root;
 	}
 

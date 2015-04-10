@@ -3,6 +3,7 @@ package hu.kuru.ui.view
 import groovy.transform.TypeChecked
 import hu.kuru.security.Authentication
 
+import org.springframework.context.annotation.Scope
 import org.vaadin.spring.navigator.annotation.VaadinView
 
 import com.vaadin.navigator.View
@@ -13,12 +14,14 @@ import com.vaadin.ui.Button
 import com.vaadin.ui.Component
 import com.vaadin.ui.CustomComponent
 import com.vaadin.ui.Label
+import com.vaadin.ui.Panel
 import com.vaadin.ui.PasswordField
 import com.vaadin.ui.TextField
 import com.vaadin.ui.VerticalLayout
 import com.vaadin.ui.Button.ClickListener
 import com.vaadin.ui.themes.ValoTheme
 
+@Scope("prototype")
 @TypeChecked
 @VaadinView(name = LoginView.NAME)
 class LoginView extends CustomComponent implements View {
@@ -29,10 +32,14 @@ class LoginView extends CustomComponent implements View {
 		Responsive.makeResponsive(this)
 		setSizeFull()
 	}
+
 	private Component build() {
+		def panel = new Panel()
+		panel.setSizeFull()
+
 		def layout = new VerticalLayout()
-		layout.setMargin(true)
 		layout.setSizeFull()
+		layout.setHeight("80%")
 
 		def guestComp = buildGuestComp()
 		layout.addComponent(guestComp)
@@ -42,7 +49,8 @@ class LoginView extends CustomComponent implements View {
 		layout.setComponentAlignment(guestComp, Alignment.MIDDLE_CENTER)
 		layout.setComponentAlignment(waiterComp, Alignment.MIDDLE_CENTER)
 
-		return layout
+		panel.setContent(layout)
+		return panel
 	}
 
 	private Component buildGuestComp() {
@@ -73,7 +81,7 @@ class LoginView extends CustomComponent implements View {
 		def l = new VerticalLayout()
 		l.setWidth("80%")
 		l.setSpacing(true)
-		
+
 		def waiterLabel = new Label("Alkalmazott bejelentkezés")
 		waiterLabel.setStyleName(ValoTheme.LABEL_H1)
 		l.addComponent(waiterLabel)
@@ -97,8 +105,8 @@ class LoginView extends CustomComponent implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-//		setCompositionRoot(build())
-//		Responsive.makeResponsive(this)
-//		setSizeFull()
+		//		setCompositionRoot(build())
+		//		Responsive.makeResponsive(this)
+		//		setSizeFull()
 	}
 }

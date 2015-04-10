@@ -12,23 +12,27 @@ import hu.kuru.util.Pair;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.context.annotation.Scope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.PopupView;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.PopupView.Content;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
+@Scope("prototype")
 @VaadinView(name = ArticleViewForWaiter.NAME)
 public class ArticleViewForWaiter extends CustomComponent implements View {
 
@@ -38,16 +42,19 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 	private PopupView cartPopup;
 
 	private Component build() {
+		Panel panel = new Panel();
+		panel.setSizeFull();
+		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
 		VerticalLayout l = new VerticalLayout();
-		
 		l.setSizeFull();
-		
+		l.setMargin(true);
+
 		HorizontalLayout actions = new HorizontalLayout();
 		actions.setSizeFull();
-		actions.addComponent(createBackButton());
-		Component cartComp = createShoppingBasketComponent();
-		actions.addComponent(cartComp);
-		actions.setComponentAlignment(cartComp, Alignment.MIDDLE_RIGHT);
+		Component backBtn = createBackButton();
+		actions.addComponent(createShoppingBasketComponent());
+		actions.addComponent(backBtn);
+		actions.setComponentAlignment(backBtn, Alignment.MIDDLE_RIGHT);
 		l.addComponent(actions);
 
 		cartPopup = new PopupView(new Content() {
@@ -64,7 +71,8 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 		});
 		l.addComponent(cartPopup);
 		l.addComponent(new ArticleLayout(customer, cartContent));
-		return l;
+		panel.setContent(l);
+		return panel;
 	}
 
 	private Component createShoppingBasketComponent() {
@@ -76,8 +84,7 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 			public void buttonClick(ClickEvent event) {
 				if (Bill.hasOpenBillByCustomer(customer.getId())) {
 					cartPopup.setPopupVisible(true);
-				}
-				else {
+				} else {
 					Notification.show("Önnek nincs nyitott számlája!", "Kérjen segítséget a pincérektől!", Type.ERROR_MESSAGE);
 				}
 			}
@@ -104,7 +111,7 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 	public void enter(ViewChangeEvent event) {
 		Map<String, String> params = TouchkitNavigator.paramsToMap(event.getParameters());
 		customer = Customer.findByCode(params.get(Customer.CODE));
-		
-		setCompositionRoot(build());		
+
+		setCompositionRoot(build());
 	}
 }

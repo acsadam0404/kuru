@@ -23,7 +23,6 @@ public class BillComponent extends CustomComponent {
 	private String customerCode;
 
 	public BillComponent(String customerCode) {
-		setSizeFull();
 		this.customerCode = customerCode;
 		setCompositionRoot(build());
 	}
@@ -32,7 +31,6 @@ public class BillComponent extends CustomComponent {
 		VerticalLayout main = new VerticalLayout();
 		main.setSizeFull();
 		main.setSpacing(true);
-		main.setMargin(true);
 
 		billsLayout = new HorizontalLayout();
 		billsLayout.setSizeFull();

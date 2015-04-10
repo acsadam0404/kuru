@@ -1,0 +1,879 @@
+/*Az override-oknak meg kell előzni az importot*/
+
+$v-layout-margin-top: 10px; 
+$v-layout-margin-right: 10px; 
+$v-layout-margin-bottom: 10px; 
+$v-layout-margin-left: 10px;
+
+
+
+$v-background-color: #354A5D;
+$v-app-background-color: #FFFFFF;
+
+$v-default-field-width: 235px;
+
+
+$v-app-loading-text: "";
+/*
+$v-font-family: "Source Sans Pro", sans-serif;
+*/
+$v-app-background-color: #fff;
+$v-background-color: #354A5D;
+$v-focus-color: #0072C6;
+$v-focus-style: 0 0 0 1px $v-focus-color;
+$valo-menu-background-color: darken($v-focus-color, 10%);
+$v-border: 0 solid v-shade;
+$v-border-radius: 0px;
+$v-bevel: false;
+$v-gradient: false;
+$v-shadow: false;
+$v-textfield-bevel: false;
+$v-textfield-shadow: false;
+$v-textfield-border: 1px solid v-shade;
+$v-link-text-decoration: none;
+$v-overlay-shadow: 0 0 0 2px #000;
+$v-overlay-border-width: 2px; // For IE8
+$v-window-shadow: $v-overlay-shadow;
+$v-selection-overlay-background-color: #fff;
+$v-selection-overlay-padding-horizontal: 0;
+$v-selection-overlay-padding-vertical: 6px;
+$v-panel-border: 0px solid v-shade;
+/*
+*/
+
+
+@import "../valo/valo.scss";
+
+@font-face {
+	font-family: "Open Sans";
+	src: url(font/OpenSans-Light.ttf);
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Open Sans";
+	src: url(font/OpenSans-Regular.ttf);
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Open Sans";
+	src: url(font/OpenSans-Semibold.ttf);
+	font-weight: 600;
+	font-style: normal;
+}
+
+@mixin ndtaktheme {
+  @include valo;
+
+  /* An actual theme rule */
+ 
+body{
+	background:#5F6F81!important;
+} 
+
+.centered-content{
+	z-index:1;
+}
+
+.v-loading-indicator{
+	-webkit-animation: none!important;
+	-moz-animation: none!important;
+	animation: none!important;
+}
+
+.v-loading-indicator[style*="none"]:before {
+		display: none;
+}
+
+.v-loading-indicator-delay:before,
+.v-loading-indicator-wait:before {
+
+	content: "";
+	position: fixed;
+	opacity: 1 !important;
+	background: rgba(0,0,0,.5);
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: auto;
+	cursor: wait;
+
+        /*
+        A középen megjelenő gifet kivettem, mert 2-3 betöltés után FF-ben nem animál.*/
+        
+        
+        background-repeat: no-repeat;
+    	background-position: 50%;
+    	background-image: url(img/wait.png); 
+}
+
+
+.padding-0 {
+    background: #CCC;
+    margin: 0px 3px;
+    position: relative;
+}
+
+.padding-0:after {
+    top: 50%;
+    content: ". . .";
+    height: 0;
+    width: 0;
+    position: absolute;
+    font-size: 200%;
+    transform: rotate(90deg);
+    transform-origin: left top 0;
+    left: 336%;
+    color: #354A5D;
+}
+
+.v-button {
+    font-size: 80%;
+    color: #FFF;
+}
+
+.v-button-quiet {
+    color: rgb(53, 74, 93) !important;
+}
+
+.v-button-quiet:hover {
+    background: transparent !important;
+}
+
+.v-icon {
+    color: #fff;
+}
+
+.v-button-primary {
+    background: #5F6F81;
+}
+
+.v-button-link {
+    color: #354A5D !important;
+}
+
+.v-button-link:hover {
+    color: #5F6F81;
+}
+
+.v-button:focus:after {
+    -webkit-box-shadow: 0 0 0 0px;
+    box-shadow: 0 0 0 0px;
+}
+
+.v-button-primary:focus:after {
+    -webkit-box-shadow: 0 0 0 0px;
+    box-shadow: 0 0 0 0px;
+}
+
+.v-button-danger:focus:after {
+    -webkit-box-shadow: 0 0 0 0px;
+    box-shadow: 0 0 0 0px;
+}
+
+.v-button:focus:after {
+    -webkit-box-shadow: 0 0 0 0px;
+    box-shadow: 0 0 0 0px;
+}
+
+.v-button-icon-align-right .v-icon {
+    color: #354A5D;
+}
+
+.v-button.v-disabled {
+    opacity: 1;
+    background: #c0c0c0;
+}
+
+.v-button.v-disabled:hover {
+    background: #c0c0c0;
+    color: #FFF !important;
+}
+
+.v-button.v-disabled:hover span {
+    color: #FFF !important;
+}
+
+.v-filterselect [class$="button"] {
+    background: #5F6F81;
+    color: #FFF
+}
+
+.v-panel, .window-layout {
+    background: #e2e2e2;
+}
+
+.v-panel-caption {
+    color: #FFF;
+    text-transform: uppercase;
+}
+
+.v-caption {
+    text-transform: uppercase;
+}
+
+.v-captiontext {
+    text-transform: uppercase;
+}
+
+.v-filterselect-suggestpopup [class$="suggestmenu"] {
+    box-shadow: 0 0 10px 0px rgba(50, 50, 50, 0.13);
+    -webkit-box-shadow: 0 0 10px 0px rgba(50, 50, 50, 0.1);
+}
+
+.v-filterselect-suggestpopup .gwt-MenuItem-selected {
+    background: #354A5D;
+}
+
+.v-filterselect-suggestpopup [class$="status"] {
+    color: #FFF;
+    font-weight: 400;
+}
+
+.v-datefield [class*="button"] {
+    border-right: 0 !important;
+    background: #5F6F81 !important;
+    color: #FFF !important;
+}
+
+.v-tree {
+    background: #5F6F81;
+    color: #FFF;
+    text-transform: uppercase;
+    font-size: 95%;
+    font-weight: 400;
+}
+
+.v-tree-node-children {
+    margin-left: -19px;
+    padding-left: 29px;
+    background: #FBFBFB;
+    color: #363636;
+    text-transform: capitalize;
+    border-bottom: 1px solid #eee;
+}
+
+.v-tree-node-caption {
+    height: 30px;
+    line-height: 31px;
+}
+
+.v-table-caption-container {
+    border-left: 1px solid #EEE;
+}
+
+.v-tree-node-caption::after {
+    border: 0px;
+}
+
+.v-table-header-wrap {
+    text-transform: uppercase;
+    background: #354A5D;
+    font-weight: 400;
+}
+
+.v-table-row {
+    background-color: #FFF !important;
+}
+
+.v-table-row-odd {
+    background-color: #EEE !important;
+}
+
+.v-table-body {
+    background-color: #eee;
+    color: #363636;
+    font-weight: 400;
+}
+
+.v-table [class*="-row"].v-selected {
+    background: #5F6F81 !important;
+}
+
+.v-table-column-selector {
+    right: 0px;
+    top: 0px;
+    background: #FFF;
+    border-radius: 0 0 0 50%;
+}
+
+.v-table-column-selector:before {
+    color: #354a5d;
+}
+
+.v-table-focus {
+    outline: 0px solid #354a5d;
+}
+
+filterselect-small [class*="input"] {
+    background: #FBFBFB;
+}
+
+.v-tabsheet-tabitemcell .v-caption .v-captiontext {
+    color: #363636;
+}
+
+.v-tabsheet-tabitemcell .v-caption .v-captiontext:hover {
+    color: #5F6F81;
+}
+
+.v-tabsheet-tabcontainer:before {
+    border-top: 1px solid #BBB;
+}
+
+.v-label {
+    font-weight: 400;
+}
+
+.v-tabsheet-tabitemcell .v-tabsheet-tabitem-selected .v-caption.v-caption {
+    border-bottom-color: #5F6F81;
+    color: #5F6F81;
+}
+
+.v-label-reminderDataLabel {
+    font-style: normal !important;
+    color: #5F6F81;
+    white-space: normal;
+}
+
+.v-label-reminderData {
+    color: #000 !important;
+    text-transform: uppercase;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+v-filterselect-suggestpopup [class$="status"] {
+    background: rgba(95, 111, 129, 1);
+}
+
+.v-datefield-popup {
+    color: #363636;
+    background-color: #FBFBFB;
+    box-shadow: 0 0 10px 0px rgba(50, 50, 50, 0.1);
+    -webkit-box-shadow: 0 0 10px 0px rgba(50, 50, 50, 0.1);
+}
+
+.v-datefield-popup td.v-datefield-calendarpanel-month {
+    color: #324556;
+    background: transparent;
+}
+
+.v-datefield-popup td[class$="year"] button:hover {
+    color: #354A5D;
+}
+
+.v-datefield-popup .v-datefield-calendarpanel-day-offmonth {
+    color: #5F6F81;
+    background: transparent !important;
+}
+
+.v-datefield-calendarpanel-day {
+    background: #ccc !important;
+}
+
+.v-datefield-popup .v-datefield-calendarpanel-day.v-datefield-calendarpanel-day-selected {
+    background: #354A5D !important;
+    color: #fff;
+}
+
+.v-datefield-popup .v-datefield-calendarpanel-day:hover {
+    color: #5F6F81;
+}
+
+.v-datefield-popup .v-datefield-calendarpanel-day-today {
+    color: #354A5D;
+}
+
+.ndtaktheme .v-datefield-popup .v-datefield-calendarpanel-day:hover {
+    color: #354A5D;
+}
+
+.v-gridlayout-well {
+    background: #ccc;
+    border: 1px solid #FFF;
+    box-shadow: 0 0 10px 0px rgba(50, 50, 50, 0.1);
+    -webkit-box-shadow: 0 0 10px 0px rgba(50, 50, 50, 0.1);
+    font-weight: 400;
+}
+
+.v-tree-node-caption span:hover:after {
+    content: "\00a0";
+    background: #354A5D;
+    position: absolute;
+    right: 0px;
+    width: 5px;
+}
+
+.v-tree-node-caption span:active:after {
+    content: "\00a0";
+    background: #354A5D;
+    position: absolute;
+    right: 0px;
+    width: 5px;
+}
+
+.v-filterselect-small [class*="input"] {
+    background: #FFF;
+}
+
+.wizard-progress-bar .v-progressbar-indicator {
+    background: #5F8FB8;
+    background: -webkit-gradient(linear, left top, left bottom, from(#5f8fb8), to(#354A5D)) top left repeat-x !important;
+    background-image: -moz-linear-gradient(bottom, #354A5D 15%, #5f8fb8 85%);
+}
+
+.v-panel-well {
+    color: #354a5d
+}
+
+.v-radiobutton label {
+    text-transform: uppercase;
+    font-size: 90%;
+    font-weight: 400;
+}
+
+.v-radiobutton > input ~ label:before {
+    background: #FFF !important;
+    border: 1px solid #5f6f81 !important;
+}
+
+.v-radiobutton > input:checked ~ label:after {
+    background: #354a5d !important;
+}
+
+.v-checkbox label {
+    text-transform: uppercase;
+    font-size: 85%;
+    font-weight: 400;
+}
+
+.v-checkbox > input ~ label:before {
+    background: #FFF !important;
+    border: 1px solid #354a5b !important;
+}
+
+.v-checkbox > input:checked ~ label:after {
+    color: #354A5D !important;
+}
+
+.v-checkbox > input:focus ~ label:before {
+    box-shadow: 0 0 0 0px #0072C6 !important;
+    -webkit-box-shadow: 0 0 0 0px !important;
+}
+
+.v-tabsheet-tabcontainer {
+    margin-bottom: 10px;
+}
+
+.v-textfield[class*="prompt"] {
+    color: #354a5d;
+    text-transform: uppercase;
+    font-size: 80%;
+}
+
+.v-button-breadcrumb {
+    color: #5F6F81 !important;
+}
+
+.adv-tree {
+    background: #eee !important;
+    color: #354A5D;
+}
+
+.v-tree-node-selected:after {
+    height: 38px;
+    margin-top: -38px;
+    background: #5F6F81;
+}
+
+.v-tree-node-caption .v-icon {
+    color: #354A5D;
+}
+
+.v-filterselect [class*="input"]:focus {
+    box-shadow: 0 0 0 0px #354a5d !important;
+    -webkit-box-shadow: 0 0 0 0px #354a5d !important;
+}
+
+.v-filterselect-no-input [class*="input"] {
+    background: #FFF;
+}
+
+.v-filterselect-no-input [class*="input"]:focus {
+    box-shadow: 0 0 0 0px !important;
+    -webkit-box-shadow: 0 0 0 0px !important;
+}
+
+.v-window {
+    box-shadow: 0 0 0;
+    -webkit-box-shadow: 0 0 0;
+}
+
+.v-contextmenu {
+    box-shadow: 0 0 10px rgba(51, 51, 51, 0.5);
+    -webkit-box-shadow: 0 0 10px rgba(51, 51, 51, 0.5);
+}
+
+.v-window-contents > .v-scrollable:before {
+    border-top: 0px;
+}
+
+.v-textarea {
+    border: 0px;
+    color: #363636;
+    font-style: italic;
+    background: eee;
+}
+
+.v-textarea.v-disabled {
+    opacity: 0.8;
+    color: #363636;
+}
+
+.v-textarea:focus {
+    box-shadow: 0 0 0 0px #E2E2E2 !important;
+    -webkit-box-shadow: 0 0 0 0px #E2E2E2 !important;
+    box-shadow: 0 0 0 0px #E2E2E2 !important;
+    -webkit-box-shadow: 0 0 0 0px #E2E2E2 !important;
+}
+
+.v-textfield:focus {
+    box-shadow: 0 0 0 0px !important;
+    -webkit-box-shadow: 0 0 0 0px !important;
+} 
+  
+  
+.v-splitpanel-hsplitter, 
+.v-splitpanel-hsplitter-locked {
+	font-size: 1px;
+	width: 1px;
+	background-color: #c8c9ca;
+}
+
+.v-tabsheet-tabitem .v-captiontext {
+	font-size: 12pt;
+	background: transparent;
+}
+
+.v-splitpanel-vsplitter-locked,
+.v-splitpanel-vsplitter-locked div {
+	font-size: 1px;
+	height: 1px;
+	background-color: #c8c9ca;
+}
+
+.v-button-greenButton:hover { 
+    background: #CCFFCC;
+    color:#363636;
+}
+.v-button-greenButton:hover span{
+	color:#363636;
+}
+
+.v-button-blueButton:hover { 
+    background: #99CCFF;
+    color:#363636;
+}
+.v-button-blueButton:hover span{
+	color:#363636;
+}
+
+.v-button-orangeButton:hover { 
+    background: #FDFDAA;
+    color:#363636;
+}
+.v-button-orangeButton:hover span{
+	color:#363636;
+}
+
+.v-button-redButton:hover { 
+    background: #FF0000;
+    color:#363636;
+}
+.v-button-redButton:hover span{
+	color:#363636;
+}
+
+.v-button-purpleButton:hover { 
+    background: #FDFDAA;
+    color:#363636;
+}
+.v-button-purpleButton:hover span{
+	color:#363636;
+}
+
+.v-button-pinkButton:hover { 
+    background: #FDFDAA;
+    color:#363636;
+}
+.v-button-pinkButton:hover span{
+	color:#363636;
+}
+
+.v-button-grayButton:hover { 
+    background: #FDFDAA;
+    color:#363636;
+}
+.v-button-grayButton:hover span{
+	color:#363636;
+}
+
+.v-button-grayButton:hover { 
+    background: #999999;
+}
+
+.v-tree-parent-menu div span {
+    background: #FFCC99; 
+}
+
+.v-label-reminderDataLabel {
+	font-style: italic !important;
+}
+
+.v-label-reminderData {
+	color: #0066FF;
+}
+
+.reminderPanel {
+	padding-top: 15px;
+	padding-right: 15px;
+	padding-bottom: 15px;
+	padding-left: 15px;
+}
+
+.v-button-breadcrumb {
+	border: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	background: none;
+	color: inherit;
+	cursor: pointer;
+	color: #197de1;
+	text-decoration: underline;
+	font-weight: inherit;
+	padding: 0;
+}
+
+.v-button-breadcrumb:hover:after {
+	background: none;
+}
+
+.v-button-breadcrumb:active {
+	opacity: 0.7;
+	filter: alpha(opacity=70) ;
+}
+
+.v-button-breadcrumb:active:after {
+	background: none;
+}
+
+.v-button-breadcrumb:hover {
+	color: #000000;
+}
+
+.v-button-breadcrumb-none {
+	border: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+	font-weight: inherit;
+	padding: 0;
+}
+
+.v-button-breadcrumb-none:hover:after {
+	background: none;
+}
+
+.v-button-breadcrumb-none:active {
+	opacity: 0.7;
+	filter: alpha(opacity=70) ;
+}
+
+.v-button-breadcrumb-none:active:after {
+	background: none;
+}
+
+.v-button-breadcrumb-none:hover {
+	color: #000000;
+}
+
+.v-button-breadcrumb:focus:after {
+	box-shadow: none;
+}
+
+.v-button-breadcrumb-none:focus:after {
+	box-shadow: none;
+}
+
+.v-button-quicksearch {
+	color: #ff0000;
+}
+
+/************************************************/
+.centered-content{
+    margin: 0 auto;  
+    display: block;
+    width: 1260px;
+    
+}
+
+.help-button{
+	font-size: 20px;
+}
+
+.ws-nowrap{
+	white-space: nowrap;
+}
+
+  .padding-0{
+    padding: 0;  
+  }
+  
+
+.top-bottom-margin{
+	margin-top: $v-layout-margin-top;
+	margin-bottom: $v-layout-margin-bottom;
+}
+
+.left-right-margin{
+	margin-left: $v-layout-margin-left;
+	margin-right: $v-layout-margin-right;
+}
+
+.overflow-y-scroll{
+	overflow-y: scroll;
+}
+
+.v-table-row-disabled-row{
+  	color: gray !important;
+   	font-style: italic;
+}
+
+.v-table-row-disabled-row{
+  	color: gray !important;
+   	font-style: italic;
+}
+
+.v-table-row-disabled-row.v-selected{
+  	color: white !important;
+}
+
+.bc-last{
+	color: black;
+    font-weight: normal;
+    color:#FFF;
+}
+
+.adv-tree{
+	background: $v-background-color;
+		overflow: auto;
+	display: inline-table;
+}
+
+.clickable-content{
+	cursor: pointer;
+}
+
+.wrapped-row-table .v-table-cell-wrapper{
+	padding: 3px 12px;
+	white-space: normal;
+	line-height: 1.5;
+} 
+
+.invert-button-help span{
+	color:#354a5d!important;
+}
+
+.invert-button-breadcrumb{
+	/*a bc-last osztály van az utolsó aktív breadcrumbon*/
+	background:none!important;
+}
+
+.invert-button-advsearch span{
+	color:#354a5d!important;
+}
+.v-button.v-disabled.invert-button-pager {
+	background:none;
+}
+.invert-button-pager span{
+	color:#354a5d!important;
+}
+
+.align-with-bc{
+	position: relative;
+	top: -46px;
+	z-index:1;
+}
+.v-layout.v-horizontal{
+	position:relative;
+	z-index:99;
+	font-weight:bold;
+}
+
+.default-field-width{
+	width: $v-default-field-width;
+}
+
+.bc-layout{
+/*Ez a breadcrumb gombok containere*/
+	box-sizing: border-box;
+	background-color: rgb(53, 74, 93);
+	text-shadow: rgba(0, 0, 0, 0.0470588) 0px -1px 0px;
+	border-radius: 0px;
+	width: 80%;
+	text-transform: uppercase;
+	font-size: 113%;
+	font-weight: 100!important;
+	top: 0px;
+	position: relative;
+	padding: 0px;
+	color:#FFF!important;
+}
+.bc-layout .v-button-link{
+	color:#FFF!important;
+}
+.bc-layout .v-button-link span{
+	color:#FFF!important;
+}
+
+.chk-top-caption{
+	/* Labelekre, melyek chkboxok fölé kerölnek caption-ként */
+	text-transform: uppercase;
+	font-size: 85%;
+}
+
+.weekend-holiday-day {
+        background-color: lightgrey;
+}
+
+.official-holiday-day {
+        background-color: lightsalmon;
+}
+
+.other-holiday-day {
+        background-color: lightgreen;
+}
+
+.business-day-type{
+        background-color: white;
+}
+
+.business-day-type{
+        background-color: white;
+}
+
+.centered-label{
+    text-align: center;
+    white-space: normal;
+}
+  
+/************************************************/
+
+}

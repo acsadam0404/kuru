@@ -13,16 +13,22 @@ import com.vaadin.ui.Button;
  */
 public class ExtendedButton extends Button {
 
-	//TODO: object vagy osztály átnevezés
+	// TODO: object vagy osztály átnevezés
 	private Article article;
-	
+
 	public ExtendedButton(String caption, Resource imageResource, Article article) {
-		super(caption,imageResource);
+		super(caption, imageResource);
 		this.article = article;
 	}
-	
+
 	public Article getArticle() {
 		return this.article;
+	}
+
+	public ExtendedButton withBiggerSize() {
+		setWidth("150%");
+		setHeight("150%");
+		return this;
 	}
 
 }

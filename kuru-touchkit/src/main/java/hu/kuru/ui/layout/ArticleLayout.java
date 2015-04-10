@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.vaadin.alump.masonry.MasonryLayout;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
@@ -51,6 +52,7 @@ public class ArticleLayout extends MasonryLayout {
 		List<Article> articleList = Article.findAll();
 		for (Article article : articleList) {
 			VerticalLayout vLayout = new VerticalLayout();
+			vLayout.setSizeFull();
 			HorizontalLayout hLayoutForTitleAndPicture = new HorizontalLayout();
 			hLayoutForTitleAndPicture.setSizeFull();
 			Label articleName = new Label(article.getName());
@@ -60,7 +62,7 @@ public class ArticleLayout extends MasonryLayout {
 			vLayout.addComponent(hLayoutForTitleAndPicture);
 			Label price = new Label("Ár: " + article.getPrice() + " / " + article.getUnit());
 			vLayout.addComponent(price);
-			ExtendedButton cartButton = new ExtendedButton("", new ThemeResource("img/cart.png"), article);
+			ExtendedButton cartButton = new ExtendedButton("Kosárba", FontAwesome.SHOPPING_CART, article);
 			cartButton.addClickListener(new ClickListener() {
 
 				@Override
@@ -78,8 +80,6 @@ public class ArticleLayout extends MasonryLayout {
 					}
 				}
 			});
-			cartButton.setWidth("50px");
-			cartButton.setStyleName("cartButton");
 			vLayout.addComponent(cartButton);
 
 			addComponent(vLayout);

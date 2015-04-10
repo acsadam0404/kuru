@@ -36,6 +36,7 @@ public class BillBox extends CustomComponent {
 	private Panel panel;
 
 	public BillBox(Bill bill) {
+		setSizeFull();
 		this.bill = bill;
 		this.setCompositionRoot(buildComponent());
 	}
@@ -44,15 +45,10 @@ public class BillBox extends CustomComponent {
 		VerticalLayout box = new VerticalLayout();
 		box.setSizeFull();
 		box.setSpacing(true);
-		box.setMargin(true);
-		Component header = buildHeader();
+		box.addComponent(buildHeader());
 		Component table = buildTable();
-
-		box.addComponent(header);
+		table.setSizeFull();
 		box.addComponent(table);
-		box.setComponentAlignment(header, Alignment.TOP_CENTER);
-		box.setComponentAlignment(table, Alignment.TOP_CENTER);
-
 		panel = new Panel();
 		panel.setSizeFull();
 		panel.addStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -89,10 +85,10 @@ public class BillBox extends CustomComponent {
 		for (Item item : itemList) {
 			priceSum += item.getArticle().getPrice();
 		}
-		
+
 		return getChangedSum(priceSum);
 	}
-	
+
 	private String getChangedSum(int sum) {
 
 		DecimalFormat format = new DecimalFormat("#.##");
@@ -100,8 +96,7 @@ public class BillBox extends CustomComponent {
 		String currency = bill.getCurrency();
 		try {
 			if (!Currency.HUF.name().equals(currency)) {
-				List<ExchangeRate> list = ServiceLocator.getBean(
-						MNBExchangeRateService.class).getExchangeRates();
+				List<ExchangeRate> list = ServiceLocator.getBean(MNBExchangeRateService.class).getExchangeRates();
 				if (Currency.EUR.name().equals(currency)) {
 					result = sum / getRate(list, Currency.EUR.name());
 				} else if (Currency.GBP.name().equals(currency)) {
@@ -109,31 +104,23 @@ public class BillBox extends CustomComponent {
 				} else if (Currency.USD.name().equals(currency)) {
 					result = sum / getRate(list, Currency.USD.name());
 				}
-				result = Double
-						.valueOf(format.format(result).replace(",", "."));
+				result = Double.valueOf(format.format(result).replace(",", "."));
 			} else {
-				return new StringToIntegerConverter(
-						AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY)
-						.convertToPresentation(sum)
+				return new StringToIntegerConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(sum)
 						+ " Ft";
 			}
 		} catch (MNBServiceException e) {
 			Notification.show("Sikertelen MNB árfolyam lekérdezés. Az árak forintban jelennek meg!");
 			return "Sikertelen";
 		}
-		return new StringToDoubleConverter(
-				AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY)
-				.convertToPresentation(result)
-				+ " " + currency;
+		return new StringToDoubleConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(result) + " "
+				+ currency;
 	}
-	
 
-	private double getRate(List<ExchangeRate> list, String name)
-			throws MNBServiceException {
+	private double getRate(List<ExchangeRate> list, String name) throws MNBServiceException {
 		for (ExchangeRate exchangeRate : list) {
 			if (exchangeRate.getCurr().equals(name)) {
-				return Double
-						.valueOf(exchangeRate.getValue().replace(",", "."));
+				return Double.valueOf(exchangeRate.getValue().replace(",", "."));
 			}
 		}
 		throw new MNBServiceException();
@@ -142,6 +129,7 @@ public class BillBox extends CustomComponent {
 	private Component buildTable() {
 		Table table = new Table();
 		table.setSizeFull();
+		table.setPageLength(0);
 		table.setContainerDataSource(new BeanItemContainer<ItemBean>(ItemBean.class));
 		table.setColumnHeader("name", "Név");
 		table.setColumnHeader("code", "Kód");
