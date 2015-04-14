@@ -66,7 +66,7 @@ public class BillsViewForWaiter extends CustomComponent implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		Map<String, String> params = TouchkitNavigator.paramsToMap(event.getParameters());
-		customerCode = params.get(Customer.CODE);
+		customerCode = params.get("code");
 		setCompositionRoot(build());
 	}
 

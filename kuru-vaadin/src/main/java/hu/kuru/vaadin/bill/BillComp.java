@@ -114,7 +114,7 @@ public class BillComp extends CustomComponent {
 	}
 
 	private void addCustomerToLayout(Customer customer, boolean isFirstLoading) {
-		List<Bill> billList = Bill.findByCustomer(customer.getId());
+		List<Bill> billList = Bill.findByCustomer(customer);
 		List<BillBox> components = new ArrayList<>();
 		if (billList != null) {
 			Collections.sort(billList, new BillComparator());

@@ -110,7 +110,7 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		Map<String, String> params = TouchkitNavigator.paramsToMap(event.getParameters());
-		customer = Customer.findByCode(params.get(Customer.CODE));
+		customer = Customer.findByCode(params.get("code"));
 
 		setCompositionRoot(build());
 	}

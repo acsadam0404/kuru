@@ -36,11 +36,10 @@ class Bill extends BaseEntity {
 	Long sum
 	@NotNull
 	String currency
-	//TODO: visszairni Lazy.re kell egy query ahol be lesz fetchelve mert lazy loading kĂĽlĂ¶nben
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bill")
 	List<Item> items
-	static List<Bill> findByCustomer(long customerId) {
-		repo.findByCustomer(customerId)
+	static List<Bill> findByCustomer(Customer customer) {
+		repo.findByCustomer(customer)
 	}
 
 	static Long countOpenBills() {

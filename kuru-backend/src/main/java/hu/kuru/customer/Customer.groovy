@@ -17,15 +17,9 @@ import javax.validation.constraints.NotNull
 @EqualsAndHashCode(includes = ["code"])
 class Customer extends BaseEntity {
 
-	public static final String CODE = "code"
-	public static final String NAME = "name"
 	
 	private static CustomerRepo repo
 
-	/**
-	 * setrepo kéne helyette
-	 */
-	@Deprecated
 	Customer() {
 		if (ServiceLocator.loaded && !repo)  {
 			repo = ServiceLocator.getBean(CustomerRepo)
@@ -39,10 +33,12 @@ class Customer extends BaseEntity {
 	@NotNull
 	@Column(unique = true)
 	String code
+	
 	@NotNull
 	String name
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-	List<Bill> bills
+	Set<Bill> bills = []
 
 	static Customer findByCode(String code) {
 		repo.findByCode(code)

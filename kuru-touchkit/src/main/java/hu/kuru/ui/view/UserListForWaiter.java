@@ -102,10 +102,10 @@ public class UserListForWaiter extends CustomComponent {
 		customerTable.setPageLength(0);
 		Container container = new BeanItemContainer<Customer>(Customer.class);
 		customerTable.setContainerDataSource(container);
-		customerTable.setVisibleColumns(Customer.NAME, Customer.CODE);
+		customerTable.setVisibleColumns("name", "code");
 
-		customerTable.setColumnHeader(Customer.NAME, "Vendég neve");
-		customerTable.setColumnHeader(Customer.CODE, "Vendég kódja");
+		customerTable.setColumnHeader("name", "Vendég neve");
+		customerTable.setColumnHeader("code", "Vendég kódja");
 		customerTable.setColumnHeader("buttons", "");
 
 		customerTable.addGeneratedColumn("buttons", new Table.ColumnGenerator() {
@@ -124,7 +124,7 @@ public class UserListForWaiter extends CustomComponent {
 						// TODO: nem jó itt kivenni eggyel lejebb is ez van
 						Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
 						Map<String, Object> params = new HashMap<>();
-						params.put(Customer.CODE, customer.getCode());
+						params.put("code", customer.getCode());
 						KuruUI.getCurrent().getNavigator().navigateTo(ArticleViewForWaiter.NAME, params);
 					}
 				});
@@ -140,7 +140,7 @@ public class UserListForWaiter extends CustomComponent {
 					public void buttonClick(ClickEvent event) {
 						Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
 						Map<String, Object> params = new HashMap<>();
-						params.put(Customer.CODE, customer.getCode());
+						params.put("code", customer.getCode());
 						KuruUI.getCurrent().getNavigator().navigateTo(BillsViewForWaiter.NAME, params);
 					}
 				});

@@ -52,7 +52,6 @@ public class CustomerMaintComp extends CustomComponent {
 		name.setImmediate(true);
 		code.setImmediate(true);
 
-		// TODO nullrepresentation aspectből kell majd
 		name.setNullRepresentation("");
 		code.setNullRepresentation("");
 		setValidationVisible(false);
