@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "bill")
-@EqualsAndHashCode
 class Bill extends BaseEntity {
 
 	private static BillRepo repo
@@ -37,7 +36,7 @@ class Bill extends BaseEntity {
 	@NotNull
 	String currency
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bill")
-	List<Item> items
+	Set<Item> items = []
 	static List<Bill> findByCustomer(Customer customer) {
 		repo.findByCustomer(customer)
 	}
@@ -61,4 +60,60 @@ class Bill extends BaseEntity {
 	static Bill getOpenBillByCustomerId(Long customerId) {
 		repo.getOpenBillByCustomerId(customerId)
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((closeDate == null) ? 0 : closeDate.hashCode());
+		result = prime * result + ((currency == null) ? 0 : currency.hashCode());
+		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
+		result = prime * result + ((openDate == null) ? 0 : openDate.hashCode());
+		result = prime * result + ((sum == null) ? 0 : sum.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this.is(obj))
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Bill other = (Bill) obj;
+		if (closeDate == null) {
+			if (other.closeDate != null)
+				return false;
+		}
+		else if (!closeDate.equals(other.closeDate))
+			return false;
+		if (currency == null) {
+			if (other.currency != null)
+				return false;
+		}
+		else if (!currency.equals(other.currency))
+			return false;
+		if (customer == null) {
+			if (other.customer != null)
+				return false;
+		}
+		else if (!customer.equals(other.customer))
+			return false;
+		if (openDate == null) {
+			if (other.openDate != null)
+				return false;
+		}
+		else if (!openDate.equals(other.openDate))
+			return false;
+		if (sum == null) {
+			if (other.sum != null)
+				return false;
+		}
+		else if (!sum.equals(other.sum))
+			return false;
+		return true;
+	}
+	
+	
 }

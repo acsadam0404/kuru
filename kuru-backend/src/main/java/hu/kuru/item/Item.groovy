@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "item")
-@EqualsAndHashCode
 class Item extends BaseEntity {
 
 	private static ItemRepo repo
@@ -60,4 +59,49 @@ class Item extends BaseEntity {
 	Item save() {
 		repo.save(this)
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (int) (amount ^ (amount >>> 32));
+		result = prime * result + ((article == null) ? 0 : article.hashCode());
+		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
+		result = prime * result + ((outDate == null) ? 0 : outDate.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this.is(obj))
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (amount != other.amount)
+			return false;
+		if (article == null) {
+			if (other.article != null)
+				return false;
+		}
+		else if (!article.equals(other.article))
+			return false;
+		if (createDate == null) {
+			if (other.createDate != null)
+				return false;
+		}
+		else if (!createDate.equals(other.createDate))
+			return false;
+		if (outDate == null) {
+			if (other.outDate != null)
+				return false;
+		}
+		else if (!outDate.equals(other.outDate))
+			return false;
+		return true;
+	}
+	
+	
 }

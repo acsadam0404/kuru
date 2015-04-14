@@ -15,6 +15,13 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>hu.si</groupId>
+			<artifactId>si-birt</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>

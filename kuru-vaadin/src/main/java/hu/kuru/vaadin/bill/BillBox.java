@@ -17,11 +17,15 @@ import hu.kuru.external.mnb.MNBServiceException;
 import hu.kuru.item.Item;
 import hu.kuru.vaadin.component.KNotification;
 import hu.kuru.vaadin.component.KWindow;
+import hu.si.birt.SIRenderOption;
+import hu.si.birt.XmlReportExecutor;
 import hu.si.vaadin.converter.AbstractCustomizableStringToNumberConverter;
 import hu.si.vaadin.converter.StringToDoubleConverter;
 import hu.si.vaadin.converter.StringToIntegerConverter;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.StringWriter;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -166,17 +170,12 @@ public class BillBox extends CustomComponent {
 				} else if (Currency.USD.name().equals(currency)) {
 					result = sum / getRate(list, Currency.USD.name());
 				}
-				result = Double
-						.valueOf(format.format(result).replace(",", "."));
+				result = Double.valueOf(format.format(result).replace(",", "."));
 			} else {
-				return new StringToIntegerConverter(
-						AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY)
-						.convertToPresentation(sum)
-						+ " Ft";
+				return new StringToIntegerConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(sum)+ " Ft";
 			}
 		} catch (MNBServiceException e) {
-			new KNotification("Sikertelen MNB árfolyam lekérdezés.")
-					.withDescription("A árak forintban jelennek meg.");
+			new KNotification("Sikertelen MNB árfolyam lekérdezés.").withDescription("A árak forintban jelennek meg.");
 			return "Sikertelen";
 		}
 		return new StringToDoubleConverter(
@@ -230,13 +229,12 @@ public class BillBox extends CustomComponent {
 	}
 
 	/**
-	 * nyomtatható számla előállítását végző függvény
+	 * számla nyomtatás
 	 */
 	private void createBillPdf(Bill currentBill) {
 		ClosedBill closedBillPOJO = new ClosedBill();
 		ItemListForClosedBill itemListPOJO = new ItemListForClosedBill();
 		itemListPOJO.setArticles(new ArrayList<ArticleForClosedBill>());
-		// TODO: ez mi? mértnem bill.getimes
 		List<Item> itemList = Item.findByBill(currentBill.getId());
 		for (Item item : itemList) {
 			ArticleForClosedBill article = new ArticleForClosedBill();
@@ -247,16 +245,18 @@ public class BillBox extends CustomComponent {
 		}
 		closedBillPOJO.setItemListForClosedBill(itemListPOJO);
 		try {
+			StringWriter sw = new StringWriter();
 			JAXBContext jaxbContext = JAXBContext.newInstance(ClosedBill.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
+			jaxbMarshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
-			//TODO: hova tegye az xml-t?
-			jaxbMarshaller.marshal(closedBillPOJO, new File(
-					"C:/jaxbxml/closedBill.xml"));
+			jaxbMarshaller.marshal(closedBillPOJO, sw);
+			XmlReportExecutor reportExecutor = new XmlReportExecutor(Paths.get("c:/tmp/kuru"), Paths.get("C:/tmp/kuru"));
+			reportExecutor.execute(getClass().getResourceAsStream("/invoice.rptdesign"), new ByteArrayInputStream(sw.toString().getBytes("UTF-8")), SIRenderOption.PDF, "invoice1.pdf");
 		} catch (Exception e) {
-			LOG.error("Hiba az XML generálás során!");
+			LOG.error("Hiba az XML generálás során!", e);
 		}
 	}
 
@@ -268,8 +268,7 @@ public class BillBox extends CustomComponent {
 				@Override
 				public void buttonClick(ClickEvent event) {
 					final KWindow window = new KWindow("Új tétel");
-					ItemAdditionalComp comp = ItemAdditionalComp
-							.fromBill(currentBill);
+					ItemAdditionalComp comp = ItemAdditionalComp.fromBill(currentBill);
 					comp.setWindow(window);
 					window.setContent(comp);
 					UI.getCurrent().addWindow(window);
