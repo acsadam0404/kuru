@@ -247,14 +247,16 @@ public class BillBox extends CustomComponent {
 		}
 		closedBillPOJO.setItemListForClosedBill(itemListPOJO);
 		try {
+			StringWriter sw = new StringWriter();
 			JAXBContext jaxbContext = JAXBContext.newInstance(ClosedBill.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
+			jaxbMarshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
-			//TODO: hova tegye az xml-t?
-			jaxbMarshaller.marshal(closedBillPOJO, new File(
-					"C:/jaxbxml/closedBill.xml"));
+			jaxbMarshaller.marshal(closedBillPOJO, sw);
+			XmlReportExecutor reportExecutor = new XmlReportExecutor(Paths.get("c:/tmp/kuru"), Paths.get("C:/tmp/kuru"));
+			reportExecutor.execute(getClass().getResourceAsStream("/invoice.rptdesign"), new ByteArrayInputStream(sw.toString().getBytes("UTF-8")), SIRenderOption.PDF, "invoice1.pdf");
 		} catch (Exception e) {
 			LOG.error("Hiba az XML generálás során!");
 		}
