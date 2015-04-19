@@ -3,7 +3,6 @@ package hu.kuru.vaadin.article;
 import hu.kuru.Icon;
 import hu.kuru.ServiceLocator;
 import hu.kuru.UIEventBus;
-import hu.kuru.UIExceptionHandler;
 import hu.kuru.article.Article;
 import hu.kuru.article.ArticleService;
 import hu.kuru.eventbus.ArticlesRefreshEvent;
@@ -29,6 +28,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -62,7 +63,11 @@ public class ArticleMaintComp extends CustomComponent {
 						window.close();
 						UIEventBus.post(new ArticlesRefreshEvent());
 						new KNotification("Sikeres mentés!").showSuccess();
-					} catch (Exception e) {
+					} 
+					catch (IllegalArgumentException e) {
+						Notification.show(e.getMessage(), Type.ERROR_MESSAGE);
+					}
+					catch (Exception e) {
 						setValidationVisible(true);
 					}
 				}

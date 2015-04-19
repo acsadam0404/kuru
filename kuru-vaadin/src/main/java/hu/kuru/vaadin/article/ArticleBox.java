@@ -32,6 +32,7 @@ public class ArticleBox extends CustomComponent {
 
 	private Component buildBox(final Article article) {
 		main = new VerticalLayout();
+		main.setWidth("400px");
 		main.setMargin(true);
 		main.addStyleName("articlebox");
 		main.setSizeFull();
