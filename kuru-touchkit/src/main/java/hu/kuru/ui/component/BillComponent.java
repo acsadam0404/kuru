@@ -55,12 +55,6 @@ public class BillComponent extends CustomComponent {
 		return billsLayout;
 	}
 
-	/**
-	 * Számlák comparatora
-	 * 
-	 * @author
-	 *
-	 */
 	private static class BillComparator implements Comparator<Bill> {
 
 		@Override

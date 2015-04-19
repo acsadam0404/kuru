@@ -7,11 +7,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 
-/**
- * Kereső mező
- * 
- * @author
- */
 public class SearchField extends CustomComponent {
 
 	TextField searchField;

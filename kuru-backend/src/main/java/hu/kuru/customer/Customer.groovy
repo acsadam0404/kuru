@@ -37,7 +37,7 @@ class Customer extends BaseEntity {
 	@NotNull
 	String name
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
 	Set<Bill> bills = []
 
 	static Customer findByCode(String code) {
@@ -59,5 +59,9 @@ class Customer extends BaseEntity {
 	@Override
 	String toString() {
 		code + " - " + name
+	}
+
+	public boolean hasActiveBill() {
+		return bills.find { bill -> !bill.isClosed() }
 	}
 }

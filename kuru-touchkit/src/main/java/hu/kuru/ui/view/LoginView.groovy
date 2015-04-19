@@ -39,7 +39,6 @@ class LoginView extends CustomComponent implements View {
 
 		def layout = new VerticalLayout()
 		layout.setSizeFull()
-		layout.setHeight("80%")
 
 		def guestComp = buildGuestComp()
 		layout.addComponent(guestComp)

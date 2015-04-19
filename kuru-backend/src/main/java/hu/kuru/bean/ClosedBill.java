@@ -22,8 +22,7 @@ public class ClosedBill {
 		return itemListForClosedBill;
 	}
 
-	public void setItemListForClosedBill(
-			ItemListForClosedBill itemListForClosedBill) {
+	public void setItemListForClosedBill(ItemListForClosedBill itemListForClosedBill) {
 		this.itemListForClosedBill = itemListForClosedBill;
 	}
 

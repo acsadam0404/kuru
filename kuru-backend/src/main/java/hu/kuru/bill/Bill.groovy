@@ -30,14 +30,20 @@ class Bill extends BaseEntity {
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
 	Customer customer
+	
 	@NotNull
 	Date openDate
+	
 	Date closeDate
+	
 	Long sum
+	
 	@NotNull
 	String currency
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bill")
-	List<Item> items
+	List<Item> items = []
+	
 	static List<Bill> findByCustomer(Customer customer) {
 		repo.findByCustomer(customer)
 	}

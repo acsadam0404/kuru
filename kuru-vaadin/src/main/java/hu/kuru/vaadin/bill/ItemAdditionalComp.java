@@ -39,11 +39,13 @@ public class ItemAdditionalComp extends CustomComponent {
 		article = new ComboBox("Cikk név");
 		article.addValidator(new NullValidator("Kötelező kitölteni!", false));
 		article.setItemCaptionPropertyId("name");
+		article.setValidationVisible(false);
 		article.setContainerDataSource(new BeanItemContainer<>(Article.class, Article.findAllActive()));
 		amount = new TextField("Mennyiség");
 		amount.setNullRepresentation("");
 		amount.setImmediate(true);
 		amount.addValidator(new NullValidator("Kötelező kitölteni!", false));
+		amount.setValidationVisible(false);
 		amount.setConverter(new StringToLongConverter());
 		main.addComponent(article);
 		main.addComponent(amount);
@@ -80,7 +82,8 @@ public class ItemAdditionalComp extends CustomComponent {
 						window.close();
 						UIEventBus.post(new ItemAddedEvent(bill.getId()));
 					} catch (InvalidValueException e) {
-						new KNotification("Minden mező kitöltése kötelező!").showError();
+						article.setValidationVisible(true);
+						amount.setValidationVisible(true);
 					}
 				}
 			});

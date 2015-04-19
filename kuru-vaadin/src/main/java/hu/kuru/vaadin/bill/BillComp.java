@@ -218,7 +218,6 @@ public class BillComp extends CustomComponent {
 			setCaption(null);
 			setWidth("300px");
 			setIcon(FontAwesome.SEARCH);
-			setItemCaptionPropertyId("name");
 			addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 			addStyleName(ValoTheme.COMBOBOX_ALIGN_RIGHT);
 			setContainerDataSource(new BeanItemContainer<Customer>(Customer.class, customerList));

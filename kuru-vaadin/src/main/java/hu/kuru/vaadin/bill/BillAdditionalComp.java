@@ -67,7 +67,6 @@ public class BillAdditionalComp extends CustomComponent {
 						window.close();
 					} catch (Exception e) {
 						currency.setValidationVisible(true);
-						UIExceptionHandler.handleException(e);
 					}
 				}
 			});

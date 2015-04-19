@@ -17,12 +17,6 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-/**
- * Fő képernyő dolgozóknak
- * 
- * @author
- *
- */
 @Scope("prototype")
 @VaadinView(name = MainViewForWaiter.NAME)
 public class MainViewForWaiter extends CustomComponent implements View {

@@ -23,6 +23,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
@@ -48,7 +49,6 @@ public class UserListForWaiter extends CustomComponent {
 
 			@Override
 			public void textChange(TextChangeEvent event) {
-				// TODO: sokkal szebben kell ennél !!!
 				List<Customer> customerList = Customer.findAll();
 				List<Customer> newCustomerList = new ArrayList<Customer>();
 				for (Customer customer : customerList) {
@@ -112,6 +112,10 @@ public class UserListForWaiter extends CustomComponent {
 
 			@Override
 			public Object generateCell(final Table source, final Object itemId, Object columnId) {
+				final Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
+				if (!customer.hasActiveBill()) {
+					return new Label("Nincs nyitott számla");
+				}
 				HorizontalLayout buttonLayout = new HorizontalLayout();
 				buttonLayout.setSpacing(true);
 
@@ -121,8 +125,7 @@ public class UserListForWaiter extends CustomComponent {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
-						// TODO: nem jó itt kivenni eggyel lejebb is ez van
-						Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
+						
 						Map<String, Object> params = new HashMap<>();
 						params.put("code", customer.getCode());
 						KuruUI.getCurrent().getNavigator().navigateTo(ArticleViewForWaiter.NAME, params);
@@ -138,7 +141,6 @@ public class UserListForWaiter extends CustomComponent {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
-						Customer customer = (Customer) ((BeanItem) source.getItem(itemId)).getBean();
 						Map<String, Object> params = new HashMap<>();
 						params.put("code", customer.getCode());
 						KuruUI.getCurrent().getNavigator().navigateTo(BillsViewForWaiter.NAME, params);

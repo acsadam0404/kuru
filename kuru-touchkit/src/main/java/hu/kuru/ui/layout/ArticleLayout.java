@@ -74,7 +74,7 @@ public class ArticleLayout extends MasonryLayout {
 						} else {
 							cartContent.put(article.getCode(), new Pair<Article, Integer>(article, 1));
 						}
-						Notification.show("A cikk bekerült a kosárba!", Type.WARNING_MESSAGE);
+						Notification.show("A cikk bekerült a kosárba!", Type.TRAY_NOTIFICATION);
 					} else {
 						Notification.show("Önnek nincs nyitott számlája!", "Kérjen segítséget a pincérektől!", Type.ERROR_MESSAGE);
 					}

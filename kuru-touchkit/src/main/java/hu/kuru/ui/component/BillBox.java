@@ -62,7 +62,7 @@ public class BillBox extends CustomComponent {
 		layout.setSizeUndefined();
 		layout.setWidth("100%");
 		layout.setSpacing(true);
-		Label openDate = new Label("Nyitás dátuma: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(bill.getOpenDate()));
+		Label openDate = new Label("Nyitás dátuma: " + new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(bill.getOpenDate()));
 		HorizontalLayout priceLayout = new HorizontalLayout();
 		priceLayout.setSizeUndefined();
 		Label priceLabel = new Label("Ár: " + getPrice());
@@ -80,10 +80,10 @@ public class BillBox extends CustomComponent {
 	 */
 	private String getPrice() {
 		int priceSum = 0;
-		// TODO:
-		List<Item> itemList = Item.findByBill(bill.getId());
+		
+		List<Item> itemList = bill.getItems();
 		for (Item item : itemList) {
-			priceSum += item.getArticle().getPrice();
+			priceSum += item.getArticle().getPrice() * item.getAmount();
 		}
 
 		return getChangedSum(priceSum);
@@ -106,8 +106,7 @@ public class BillBox extends CustomComponent {
 				}
 				result = Double.valueOf(format.format(result).replace(",", "."));
 			} else {
-				return new StringToIntegerConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(sum)
-						+ " Ft";
+				return new StringToIntegerConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(sum)+ " Ft";
 			}
 		} catch (MNBServiceException e) {
 			Notification.show("Sikertelen MNB árfolyam lekérdezés. Az árak forintban jelennek meg!");
@@ -144,8 +143,7 @@ public class BillBox extends CustomComponent {
 
 	private List<ItemBean> getItemList() {
 		List<ItemBean> beanList = new ArrayList<>();
-		// TODO:
-		List<Item> itemList = Item.findByBill(bill.getId());
+		List<Item> itemList = bill.getItems();
 		for (Item item : itemList) {
 			beanList.add(new ItemBean(item.getArticle().getCode(), item.getArticle().getName(), item.getAmount() + " "
 					+ item.getArticle().getUnit()));

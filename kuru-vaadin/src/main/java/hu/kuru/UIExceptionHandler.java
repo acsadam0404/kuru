@@ -20,9 +20,6 @@ public class UIExceptionHandler {
 		if (e instanceof IllegalArgumentException) {
 			LOG.warn(e.getMessage(), e);
 			new KNotification(ERROR_MESSAGE).withDescription(e.getMessage()).showError();
-		} else if (e instanceof CommitException || e instanceof InvalidValueException) {
-			LOG.warn(e.getMessage(), e);
-			new KNotification(ERROR_MESSAGE).withDescription("Ellenőrizze, hogy minden kötelező mezőt helyesen töltött-e ki!").showError();
 		} else {
 			LOG.warn(e.getMessage(), e);
 			new KNotification(ERROR_MESSAGE).showError();

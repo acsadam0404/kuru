@@ -64,7 +64,6 @@ public class ArticleMaintComp extends CustomComponent {
 						new KNotification("Sikeres mentés!").showSuccess();
 					} catch (Exception e) {
 						setValidationVisible(true);
-						UIExceptionHandler.handleException(e);
 					}
 				}
 			});

@@ -92,7 +92,6 @@ public class CustomerMaintComp extends CustomComponent {
 						UIEventBus.post(new AddCustomerEvent(customer, isNew));
 					} catch (Exception e) {
 						setValidationVisible(true);
-						UIExceptionHandler.handleException(e);
 					}
 				}
 			});

@@ -29,6 +29,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:META-INF/database.properties</value>
+				<value>classpath:application.properties</value>
 			</list>
 		</property>
 	</bean>

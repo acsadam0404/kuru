@@ -102,4 +102,8 @@ public class StringToBigDecimalConverter implements Converter<String, BigDecimal
 		return instance;
 	}
 
+	public String convertToPresentation(BigDecimal result) {
+		return convertToPresentation(result, String.class, null);
+	}
+
 }

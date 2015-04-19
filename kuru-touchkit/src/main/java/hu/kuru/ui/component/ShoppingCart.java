@@ -6,6 +6,8 @@ import hu.kuru.customer.Customer;
 import hu.kuru.item.Item;
 import hu.kuru.ui.interaction.ExtendedButton;
 import hu.kuru.util.Pair;
+import hu.si.touchkit.converter.AbstractCustomizableStringToNumberConverter;
+import hu.si.touchkit.converter.StringToIntegerConverter;
 
 import java.util.Date;
 import java.util.Map;
@@ -17,6 +19,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -32,9 +36,9 @@ public class ShoppingCart extends Panel {
 	private VerticalLayout root;
 	private VerticalLayout vLayout;
 	private Map<String, Pair<Article, Integer>> cartContent;
-	private ClickListener removeButtonClickListener;
-	private ClickListener increaseButtonClickListener;
-	private ClickListener decreaseButtonClickListener;
+	private ClickListener removeButtonCL;
+	private ClickListener increaseButtonCL;
+	private ClickListener decreaseButtonCL;
 	private ClickListener orderButtonClickListener;
 	private Customer customer;
 
@@ -46,8 +50,8 @@ public class ShoppingCart extends Panel {
 	 */
 	public ShoppingCart(Map<String, Pair<Article, Integer>> cartContent, Customer customer) {
 		setStyleName(ValoTheme.PANEL_BORDERLESS);
-		setHeight("300px");
-		setWidth("420px");
+		setHeight("500px");
+		setWidth("500px");
 		this.cartContent = cartContent;
 		this.customer = customer;
 		root = build();
@@ -69,50 +73,50 @@ public class ShoppingCart extends Panel {
 	private void refreshItemContent() {
 		root.removeAllComponents();
 		vLayout = new VerticalLayout();
-		vLayout.setSizeFull();
+		vLayout.setWidth("100%");;
+		vLayout.setSpacing(true);
 
-		long sum = 0;
+		int sum = 0;
 		for (Map.Entry<String, Pair<Article, Integer>> entry : cartContent.entrySet()) {
+			Article article = entry.getValue().getFirst();
+			Integer quantity = entry.getValue().getSecond();
+			
 			HorizontalLayout rowLayout = new HorizontalLayout();
 			rowLayout.setWidth("100%");
 			HorizontalLayout buttonGroup = new HorizontalLayout();
 			buttonGroup.setSpacing(true);
-			// + gomb
-			ExtendedButton increaseItemNumberButton = new ExtendedButton(null, FontAwesome.PLUS, entry.getValue().getFirst())
-					.withBiggerSize();
-			// - gomb
-			ExtendedButton decreaseItemNumberButton = new ExtendedButton(null, FontAwesome.MINUS, entry.getValue().getFirst())
-					.withBiggerSize();
-			// Törlés gomb
-			ExtendedButton removeArticleButton = new ExtendedButton(null, FontAwesome.TRASH_O, entry.getValue().getFirst())
-					.withBiggerSize();
-			increaseItemNumberButton.addClickListener(increaseButtonClickListener);
-			decreaseItemNumberButton.addClickListener(decreaseButtonClickListener);
-			removeArticleButton.addClickListener(removeButtonClickListener);
-			buttonGroup.addComponent(decreaseItemNumberButton);
-			buttonGroup.addComponent(increaseItemNumberButton);
-			buttonGroup.addComponent(removeArticleButton);
-			Label l = new Label(entry.getValue().getFirst().getName() + " " + entry.getValue().getSecond());
+			ExtendedButton increaseButton = new ExtendedButton(null, FontAwesome.PLUS, article).withBiggerSize();
+			ExtendedButton decreaseButton = new ExtendedButton(null, FontAwesome.MINUS, article).withBiggerSize();
+			ExtendedButton removeButton = new ExtendedButton(null, FontAwesome.TRASH_O, article).withBiggerSize();
+			increaseButton.addClickListener(increaseButtonCL);
+			decreaseButton.addClickListener(decreaseButtonCL);
+			removeButton.addClickListener(removeButtonCL);
+			buttonGroup.addComponent(decreaseButton);
+			buttonGroup.addComponent(increaseButton);
+			buttonGroup.addComponent(removeButton);
+			Label l = new Label(article.getName() + ": " + quantity + " " + article.getUnit());
 			rowLayout.addComponent(l);
 			rowLayout.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 			rowLayout.addComponent(buttonGroup);
 			rowLayout.setComponentAlignment(buttonGroup, Alignment.TOP_RIGHT);
-			sum += entry.getValue().getSecond() * entry.getValue().getFirst().getPrice();
+			sum += quantity * article.getPrice();
 			vLayout.addComponent(rowLayout);
 		}
 
-		// TODO: ezt nem biztos hogy itt kéne
-		Label sumLabel = new Label("Összesen: " + sum + " Ft");
+		Label sumLabel = new Label("Összesen: " + new StringToIntegerConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(sum) + " Ft");
+		sumLabel.addStyleName(ValoTheme.LABEL_BOLD);
 		sumLabel.setHeight("20px");
 
 		Button orderButton = new Button("Megrendelés", orderButtonClickListener);
 		orderButton.setWidth("200px");
 
+		
 		root.addComponent(vLayout);
-		root.addComponent(sumLabel);
-		root.addComponent(orderButton);
-		root.setComponentAlignment(orderButton, Alignment.BOTTOM_LEFT);
-		root.setComponentAlignment(sumLabel, Alignment.BOTTOM_LEFT);
+		HorizontalLayout bottom = new HorizontalLayout(sumLabel, orderButton);
+		bottom.setSizeFull();
+		root.addComponent(bottom);
+		bottom.setComponentAlignment(orderButton, Alignment.BOTTOM_RIGHT);
+		bottom.setComponentAlignment(sumLabel, Alignment.BOTTOM_LEFT);
 
 		setContent(root);
 	}
@@ -123,7 +127,7 @@ public class ShoppingCart extends Panel {
 	private void createButtonHandlers() {
 
 		// Törlés
-		removeButtonClickListener = new ClickListener() {
+		removeButtonCL = new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -134,7 +138,7 @@ public class ShoppingCart extends Panel {
 		};
 
 		// Növelés
-		increaseButtonClickListener = new ClickListener() {
+		increaseButtonCL = new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -145,7 +149,7 @@ public class ShoppingCart extends Panel {
 		};
 
 		// Csökkentés
-		decreaseButtonClickListener = new ClickListener() {
+		decreaseButtonCL = new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -176,6 +180,8 @@ public class ShoppingCart extends Panel {
 				}
 				cartContent.clear();
 				ShoppingCart.this.refreshItemContent();
+				Notification.show("Megrendelés sikeres", "Kérjük várjon még rendelését feldolgozzuk", Type.TRAY_NOTIFICATION);
+				
 			}
 
 		};
