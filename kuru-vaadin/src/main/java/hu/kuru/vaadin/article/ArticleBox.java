@@ -105,7 +105,6 @@ public class ArticleBox extends CustomComponent {
 
 	public static Component buildArticleBox(Article article) {
 		Component comp = new ArticleBox(article);
-		//TODO ezt miért?
 		comp.addAttachListener(new EventBusAttachListener(comp));
 		comp.addDetachListener(new EventBusDetachListener(comp));
 		return comp;

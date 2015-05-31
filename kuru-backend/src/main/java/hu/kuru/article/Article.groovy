@@ -5,6 +5,8 @@ import hu.kuru.BaseEntity
 import hu.kuru.ServiceLocator
 
 import javax.persistence.Entity
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
@@ -37,6 +39,9 @@ class Article extends BaseEntity {
 	String description
 	@NotNull
 	boolean active
+	@ManyToOne(fetch = FetchType.EAGER)
+	@NotNull
+	ArticleCategory articleCategory
 
 	static Article findByCode(String code) {
 		repo.findByCode(code)
@@ -57,9 +62,17 @@ class Article extends BaseEntity {
 	static List<Article> findAllActive() {
 		repo.findAllActive()
 	}
+	
+	static List<Article> findAllActiveByCategoryId(Long id) {
+		repo.findAllActiveByCategoryId(id);
+	}
 
 	Article save() {
 		repo.save(this)
+	}
+	
+	static isExistReferenceToArticleCategory(Long categoryId) {
+		repo.isExistReferenceToArticleCategory(categoryId)
 	}
 
 	@Override

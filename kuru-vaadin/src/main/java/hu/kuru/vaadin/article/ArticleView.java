@@ -21,10 +21,10 @@ public class ArticleView extends AbstractView implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Component comp = new ArticleComp();
-		comp.addAttachListener(new EventBusAttachListener(comp));
-		comp.addDetachListener(new EventBusDetachListener(comp));
-		setCompositionRoot(comp);
+		Component articleCategoryComp = new ArticleCategoryComp();
+		articleCategoryComp.addAttachListener(new EventBusAttachListener(articleCategoryComp));
+		articleCategoryComp.addDetachListener(new EventBusDetachListener(articleCategoryComp));
+		setCompositionRoot(articleCategoryComp);
 	}
 
 }

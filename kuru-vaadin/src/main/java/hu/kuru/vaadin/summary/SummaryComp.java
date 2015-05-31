@@ -9,9 +9,7 @@ import com.vaadin.server.Responsive;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 
 public class SummaryComp extends CustomComponent {
 
@@ -27,19 +25,7 @@ public class SummaryComp extends CustomComponent {
 		main.setMargin(true);
 		Responsive.makeResponsive(main);
 		main.addComponent(buildBoxLayout());
-		Component newItemsLayout = buildNewItemsLayout();
-		main.addComponent(newItemsLayout);
-		main.setExpandRatio(newItemsLayout, 1f);
 		return main;
-	}
-
-	private Component buildNewItemsLayout() {
-		Panel panel = new Panel("Kiadásra váró tételek");
-		panel.setSizeFull();
-		panel.addStyleName(ValoTheme.PANEL_BORDERLESS);
-		panel.addStyleName("to-be-issued");
-		panel.setContent(IssuedItemBox.createBoxItems(Item.findIssuedItems()));
-		return panel;
 	}
 
 	private Component buildBoxLayout() {
