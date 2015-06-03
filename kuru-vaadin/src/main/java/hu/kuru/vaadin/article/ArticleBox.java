@@ -5,13 +5,13 @@ import hu.kuru.article.Article;
 import hu.kuru.eventbus.ArticleSelectedEvent;
 import hu.kuru.eventbus.EventBusAttachListener;
 import hu.kuru.eventbus.EventBusDetachListener;
+import hu.kuru.util.KuruUtils;
 import hu.si.vaadin.converter.AbstractCustomizableStringToNumberConverter;
 import hu.si.vaadin.converter.StringToLongConverter;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
@@ -95,8 +95,8 @@ public class ArticleBox extends CustomComponent {
 
 		nameLayout.setComponentAlignment(nameLabel, Alignment.MIDDLE_RIGHT);
 		nameLayout.setComponentAlignment(codeLabel, Alignment.MIDDLE_RIGHT);
-
-		Image icon = new Image(null, new ThemeResource(article.getIcon()));
+		
+		Image icon = KuruUtils.getArticleImageFromFileSystem(article.getIcon());
 		headerLayout.addComponent(icon);
 		headerLayout.addComponent(nameLayout);
 		headerLayout.setComponentAlignment(nameLayout, Alignment.TOP_RIGHT);

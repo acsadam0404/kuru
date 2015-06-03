@@ -1,7 +1,6 @@
 package hu.kuru.vaadin.article;
 
 import hu.kuru.ServiceLocator;
-import hu.kuru.article.Article;
 import hu.kuru.article.ArticleCategory;
 import hu.kuru.article.ArticleCategoryService;
 import hu.kuru.eventbus.ArticleCategoriesRefreshEvent;
@@ -15,12 +14,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.Sort;
 import org.vaadin.alump.masonry.MasonryLayout;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.server.Responsive;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
@@ -34,7 +31,6 @@ public class ArticleCategoryComp extends CustomComponent {
 	
 	private MasonryLayout mainLayout;
 	private Map<ArticleCategory, Component> categoryMap;
-	private Map<Article, Component> articleMap;
 	
 	private Long selectedArticleCategoryId;
 	Button modifyBtn;
@@ -67,8 +63,7 @@ public class ArticleCategoryComp extends CustomComponent {
 		header.setWidth("100%");
 		header.setSpacing(true);
 
-		Button addBtn = new ModifyButton("Kategória hozzáadása", true);
-		Button addArticleButton = new ArticleModifyButton("Cikk hozzáadása", true, null);
+		Button addBtn = new ModifyButton("Cikkcsoport hozzáadása", true);
 		articlesBtn = new ArticlesButton("Cikkek");
 		modifyBtn = new ModifyButton("Módosítás", false);
 		deleteBtn = new DeleteButton();
@@ -79,7 +74,6 @@ public class ArticleCategoryComp extends CustomComponent {
 
 		header.addComponent(spacer);
 		header.addComponent(addBtn);
-		header.addComponent(addArticleButton);
 		header.addComponent(articlesBtn);
 		header.addComponent(modifyBtn);
 		header.addComponent(deleteBtn);

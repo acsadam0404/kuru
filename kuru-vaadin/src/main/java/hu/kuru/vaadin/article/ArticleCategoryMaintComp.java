@@ -8,6 +8,7 @@ import hu.kuru.article.ArticleCategoryService;
 import hu.kuru.eventbus.ArticleCategoriesRefreshEvent;
 import hu.kuru.eventbus.EventBusAttachListener;
 import hu.kuru.eventbus.EventBusDetachListener;
+import hu.kuru.util.ArticleImageUploaderComp;
 import hu.kuru.vaadin.KFieldGroup;
 import hu.kuru.vaadin.component.KNotification;
 import hu.kuru.vaadin.component.KTextField;
@@ -21,9 +22,10 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 public class ArticleCategoryMaintComp extends CustomComponent {
-	
+
 	private TextField code;
 	private TextField name;
+	private ArticleImageUploaderComp iconUpload;
 
 	private KFieldGroup<ArticleCategory> fg;
 	private Window window;
@@ -37,7 +39,10 @@ public class ArticleCategoryMaintComp extends CustomComponent {
 				public void buttonClick(ClickEvent event) {
 					try {
 						fg.commit();
-						ServiceLocator.getBean(ArticleCategoryService.class).save(fg.getItemDataSource().getBean());
+						ArticleCategory articleCategory = fg.getItemDataSource().getBean();
+						articleCategory.setIcon(iconUpload.getImageName());
+						ServiceLocator.getBean(ArticleCategoryService.class)
+								.save(fg.getItemDataSource().getBean());
 						window.close();
 						new KNotification("Sikeres mentés!").showSuccess();
 						UIEventBus.post(new ArticleCategoriesRefreshEvent());
@@ -61,17 +66,20 @@ public class ArticleCategoryMaintComp extends CustomComponent {
 	}
 
 	private void init() {
-		code = new KTextField("Kategória kód");
-		name = new KTextField("Kategória név");
-		
+		code = new KTextField("Cikkcsoport kód");
+		name = new KTextField("Cikkcsoport név");
+		iconUpload = new ArticleImageUploaderComp();
+
 		name.setSizeFull();
 		code.setSizeFull();
+		iconUpload.setSizeFull();
 		setValidationVisible(false);
 	}
 
 	private void setValidationVisible(boolean visible) {
 		name.setValidationVisible(visible);
 		code.setValidationVisible(visible);
+		iconUpload.setSizeFull();
 	}
 
 	private Component build() {
@@ -84,6 +92,7 @@ public class ArticleCategoryMaintComp extends CustomComponent {
 		details.setSpacing(true);
 		details.addComponent(code);
 		details.addComponent(name);
+		details.addComponent(iconUpload);
 
 		main.addComponent(details);
 		Button saveBtn = new SaveButton();
@@ -93,8 +102,8 @@ public class ArticleCategoryMaintComp extends CustomComponent {
 		return main;
 	}
 
-
 	public void setWindow(Window window) {
 		this.window = window;
 	}
+	
 }

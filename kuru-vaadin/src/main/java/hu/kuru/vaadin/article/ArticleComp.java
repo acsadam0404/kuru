@@ -7,7 +7,6 @@ import hu.kuru.article.ArticleService;
 import hu.kuru.eventbus.ArticleSelectedEvent;
 import hu.kuru.eventbus.ArticlesRefreshEvent;
 import hu.kuru.vaadin.component.KNotification;
-import hu.kuru.vaadin.component.KWindow;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,7 +25,6 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 

@@ -30,4 +30,5 @@ interface ArticleRepo extends JpaRepository<Article, Long>{
 	@Query("select case when (count(a) > 0) then true else false end from Article a where a.active = true and a.articleCategory.id = ?1")
 	Boolean isExistReferenceToArticleCategory(Long articleCategoryId)
 	
+	void delete(Article article);
 }

@@ -74,6 +74,10 @@ class Article extends BaseEntity {
 	static isExistReferenceToArticleCategory(Long categoryId) {
 		repo.isExistReferenceToArticleCategory(categoryId)
 	}
+	
+	void delete(Article article) {
+		repo.delete(article)
+	}
 
 	@Override
 	String toString() {

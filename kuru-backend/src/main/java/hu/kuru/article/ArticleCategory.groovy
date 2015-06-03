@@ -29,6 +29,8 @@ class ArticleCategory extends BaseEntity {
 	String code
 	@NotNull
 	String name
+	@NotNull
+	String icon
 
 	static ArticleCategory findByCode(String code) {
 		repo.findByCode(code)

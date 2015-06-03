@@ -5,6 +5,7 @@ import hu.kuru.article.ArticleCategory;
 import hu.kuru.eventbus.ArticleCategorySelectedEvent;
 import hu.kuru.eventbus.EventBusAttachListener;
 import hu.kuru.eventbus.EventBusDetachListener;
+import hu.kuru.util.KuruUtils;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
@@ -13,6 +14,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -78,8 +80,8 @@ public class ArticleCategoryBox extends CustomComponent {
 		nameLayout.setComponentAlignment(nameLabel, Alignment.MIDDLE_RIGHT);
 		nameLayout.setComponentAlignment(codeLabel, Alignment.MIDDLE_RIGHT);
 
-		// Image icon = new Image(null, new ThemeResource(article.getIcon()));
-		// headerLayout.addComponent(icon);
+		Image icon = KuruUtils.getArticleImageFromFileSystem(articleCategory.getIcon());
+		headerLayout.addComponent(icon);
 		headerLayout.addComponent(nameLayout);
 		headerLayout.setComponentAlignment(nameLayout, Alignment.TOP_RIGHT);
 		return headerLayout;

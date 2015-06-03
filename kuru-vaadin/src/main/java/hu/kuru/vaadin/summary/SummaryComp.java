@@ -8,7 +8,6 @@ import hu.si.vaadin.converter.StringToLongConverter;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
 public class SummaryComp extends CustomComponent {
@@ -29,7 +28,7 @@ public class SummaryComp extends CustomComponent {
 	}
 
 	private Component buildBoxLayout() {
-		HorizontalLayout boxLayout = new HorizontalLayout();
+		VerticalLayout boxLayout = new VerticalLayout();
 		boxLayout.setSizeUndefined();
 		boxLayout.setSpacing(true);
 		boxLayout.addComponent(SummaryBox.fromTitleAndValue("Nyitott számlák száma", Bill.countOpenBills().toString()));
