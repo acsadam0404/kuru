@@ -4,6 +4,7 @@ import hu.kuru.article.Article;
 import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.ui.interaction.ExtendedButton;
+import hu.kuru.util.KuruUtils;
 import hu.kuru.util.Pair;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class ArticleLayout extends MasonryLayout {
 			Label articleName = new Label(article.getName());
 			hLayoutForTitleAndPicture.addComponent(articleName);
 			hLayoutForTitleAndPicture.setComponentAlignment(articleName, Alignment.TOP_CENTER);
-			hLayoutForTitleAndPicture.addComponent(new Image("", new ThemeResource(article.getIcon())));
+			hLayoutForTitleAndPicture.addComponent(KuruUtils.getArticleImageFromFileSystem(article.getIcon()));
 			vLayout.addComponent(hLayoutForTitleAndPicture);
 			Label price = new Label("Ár: " + article.getPrice() + " / " + article.getUnit());
 			vLayout.addComponent(price);
