@@ -39,8 +39,11 @@ public class ArticleCategoryMaintComp extends CustomComponent {
 				public void buttonClick(ClickEvent event) {
 					try {
 						fg.commit();
-						ArticleCategory articleCategory = fg.getItemDataSource().getBean();
-						articleCategory.setIcon(iconUpload.getImageName());
+						ArticleCategory articleCategory = fg
+								.getItemDataSource().getBean();
+						if (iconUpload.getImageName() != null) {
+							articleCategory.setIcon(iconUpload.getImageName());
+						}
 						ServiceLocator.getBean(ArticleCategoryService.class)
 								.save(fg.getItemDataSource().getBean());
 						window.close();
@@ -105,5 +108,5 @@ public class ArticleCategoryMaintComp extends CustomComponent {
 	public void setWindow(Window window) {
 		this.window = window;
 	}
-	
+
 }

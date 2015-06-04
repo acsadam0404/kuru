@@ -38,11 +38,13 @@ class ArticleServiceImpl implements ArticleService {
 			Preconditions.checkArgument(!articleRepo.existMoreThanOneName(article.name, article.id), "Már létezik cikk ezzel a névvel!")
 			// régi cikk logikai törlése
 			article.setActive(false)
+			ArticleCategory originalCat = article.getArticleCategory()
 			article.setArticleCategory(ArticleCategory.findByCode("DUMMY"))
 			article.save()
 			// új cikk mentése
 			article.setId(null)
 			article.setActive(true)
+			article.setArticleCategory(originalCat)
 			article.save()
 		}
 	}

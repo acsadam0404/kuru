@@ -53,7 +53,9 @@ public class ArticleMaintComp extends CustomComponent {
 						fg.commit();
 						Article article = fg.getItemDataSource().getBean();
 						article.setActive(true);
-						article.setIcon(artiUploaderComp.getImageName());
+						if (artiUploaderComp.getImageName() != null) {
+							article.setIcon(artiUploaderComp.getImageName());
+						}
 						article.setArticleCategory((ArticleCategory) articleCategory
 								.getValue());
 						ServiceLocator.getBean(ArticleService.class).save(
@@ -101,7 +103,7 @@ public class ArticleMaintComp extends CustomComponent {
 		code.setSizeFull();
 		price.setSizeFull();
 		unit.setSizeFull();
-		
+
 		setValidationVisible(false);
 	}
 

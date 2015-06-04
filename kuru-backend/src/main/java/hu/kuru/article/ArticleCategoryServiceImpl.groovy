@@ -18,7 +18,9 @@ class ArticleCategoryServiceImpl implements ArticleCategoryService {
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(articleCategory.code), "Kötelező cikkcsoport kódot megadni!")
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(articleCategory.name), "Kötelező cikkcsoport nevet megadni!")
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(articleCategory.icon), "Kötelező ikont választani!")
-		Preconditions.checkArgument(!articleCategoryRepo.existCode(articleCategory.code), "Már létezik cikkcsoport ezzel a kóddal!")
+		if(articleCategory.id == null) {		
+			Preconditions.checkArgument(!articleCategoryRepo.existCode(articleCategory.code), "Már létezik cikkcsoport ezzel a kóddal!")		
+		}
 		articleCategory.save()
 	}
 
