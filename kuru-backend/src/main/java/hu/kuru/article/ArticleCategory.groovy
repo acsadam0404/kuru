@@ -60,4 +60,8 @@ class ArticleCategory extends BaseEntity {
 	void delete(ArticleCategory category) {
 		repo.delete(category)
 	}
+	
+	static List<ArticleCategory> findAllValidCategory() {
+		repo.findAllValidCategory();
+	}
 }

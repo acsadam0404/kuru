@@ -5,6 +5,7 @@ import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.security.Authentication;
 import hu.kuru.ui.component.ShoppingCart;
+import hu.kuru.ui.layout.ArticleCategoryLayout;
 import hu.kuru.ui.layout.ArticleLayout;
 import hu.kuru.util.Pair;
 
@@ -42,8 +43,9 @@ public class MainViewForCustomer extends CustomComponent implements View {
 	private Customer customer;
 
 	private PopupView cartPopup;
+	private ArticleCategoryLayout categoryLayout;
 
-	private Component build() {
+	private Component buildArticleLayout() {
 		Panel panel = new Panel();
 		panel.setSizeFull();
 		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -55,7 +57,7 @@ public class MainViewForCustomer extends CustomComponent implements View {
 		HorizontalLayout actions = new HorizontalLayout();
 		actions.setSizeFull();
 		actions.addComponent(createShoppingBasketComponent());
-		Component logoutButton = createLogoutButton();
+		Component logoutButton = createBackToCategoriesButton();
 		actions.addComponent(logoutButton);
 		actions.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT);
 
@@ -73,9 +75,23 @@ public class MainViewForCustomer extends CustomComponent implements View {
 			}
 		});
 		l.addComponent(cartPopup);
-		l.addComponent(new ArticleLayout(customer, cartContent));
+		l.addComponent(new ArticleLayout(customer, cartContent,categoryLayout.getSelectedArticleCategoryId()));
 		panel.setContent(l);
 		return panel;
+	}
+	
+	private Component createBackToCategoriesButton() {
+		Button backToCategoriesButton = new Button("Vissza");
+
+		backToCategoriesButton.addClickListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				MainViewForCustomer.this.setCompositionRoot(MainViewForCustomer.this.buildArticleCategoryLayout());
+			}
+		});
+
+		return backToCategoriesButton;
 	}
 
 	/**
@@ -119,6 +135,43 @@ public class MainViewForCustomer extends CustomComponent implements View {
 	public void enter(ViewChangeEvent event) {
 		customer = Customer.findByCode(String.valueOf(VaadinSession.getCurrent().getAttribute("customerCode")));
 		setCaption(customer.getName());
-		setCompositionRoot(build());
+		setCompositionRoot(buildArticleCategoryLayout());
+	}
+	
+	private Component buildArticleCategoryLayout() {
+		Panel panel = new Panel();
+		panel.setSizeFull();
+		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+		VerticalLayout l = new VerticalLayout();
+		l.setSizeFull();
+		l.setMargin(true);
+		l.setSpacing(true);
+
+		HorizontalLayout actions = new HorizontalLayout();
+		actions.setSizeFull();
+		actions.addComponent(createArticlesButton());
+		Component logoutButton = createLogoutButton();
+		actions.addComponent(logoutButton);
+		actions.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT);
+
+		l.addComponent(actions);
+		categoryLayout = new ArticleCategoryLayout(customer, cartContent);
+		l.addComponent(categoryLayout);
+		panel.setContent(l);
+		return panel;
+	}
+	
+	private Component createArticlesButton() {
+		Button articlesButton = new Button("Cikkek");
+
+		articlesButton.addClickListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				MainViewForCustomer.this.setCompositionRoot(buildArticleLayout());
+			}
+		});
+
+		return articlesButton;
 	}
 }

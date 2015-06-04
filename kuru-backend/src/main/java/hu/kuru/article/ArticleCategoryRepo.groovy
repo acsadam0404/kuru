@@ -15,4 +15,7 @@ interface ArticleCategoryRepo extends JpaRepository<ArticleCategory, Long>{
 	
 	@Query("select case when (count(a) > 0) then true else false end from ArticleCategory a where a.code = ?1")
 	Boolean existCode(String code)
+	
+	@Query("select ac from ArticleCategory ac where ac.code != 'DUMMY' order by ac.name ASC")
+	List<ArticleCategory> findAllValidCategory()
 }

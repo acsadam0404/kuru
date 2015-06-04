@@ -143,7 +143,7 @@ public class ArticleCategoryComp extends CustomComponent {
 	}
 	
 	private Component buildArticleCategoryLayout() {
-		List<ArticleCategory> categoryList = ArticleCategory.findAll();
+		List<ArticleCategory> categoryList = ArticleCategory.findAllValidCategory();
 		mainLayout = new MasonryLayout();
 		mainLayout.setSizeFull();
 		for (ArticleCategory category : categoryList) {
