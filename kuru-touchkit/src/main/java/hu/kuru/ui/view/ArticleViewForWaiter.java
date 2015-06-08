@@ -6,6 +6,7 @@ import hu.kuru.article.Article;
 import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.ui.component.ShoppingCart;
+import hu.kuru.ui.layout.ArticleCategoryLayout;
 import hu.kuru.ui.layout.ArticleLayout;
 import hu.kuru.util.Pair;
 
@@ -40,8 +41,9 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 	private Map<String, Pair<Article, Integer>> cartContent = new HashMap<>();
 	private Customer customer;
 	private PopupView cartPopup;
+	private ArticleCategoryLayout articleCategoryLayout;
 
-	private Component build() {
+	private Component build(Long selectedArticleCategoryId) {
 		Panel panel = new Panel();
 		panel.setSizeFull();
 		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -51,7 +53,7 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 
 		HorizontalLayout actions = new HorizontalLayout();
 		actions.setSizeFull();
-		Component backBtn = createBackButton();
+		Component backBtn = createBackToCategoriesButton();
 		actions.addComponent(createShoppingBasketComponent());
 		actions.addComponent(backBtn);
 		actions.setComponentAlignment(backBtn, Alignment.MIDDLE_RIGHT);
@@ -70,7 +72,7 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 			}
 		});
 		l.addComponent(cartPopup);
-		l.addComponent(new ArticleLayout(customer, cartContent));
+		l.addComponent(new ArticleLayout(customer, cartContent, selectedArticleCategoryId));
 		panel.setContent(l);
 		return panel;
 	}
@@ -106,12 +108,75 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 
 		return backButton;
 	}
+	
+	private Component createBackToCategoriesButton() {
+		Button backToCategoriesButton = new Button("Vissza");
+
+		backToCategoriesButton.addClickListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ArticleViewForWaiter.this.setCompositionRoot(ArticleViewForWaiter.this.buildArticleCategoryLayout());
+			}
+		});
+
+		return backToCategoriesButton;
+	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		Map<String, String> params = TouchkitNavigator.paramsToMap(event.getParameters());
 		customer = Customer.findByCode(params.get("code"));
 
-		setCompositionRoot(build());
+		setCompositionRoot(buildArticleCategoryLayout());
+	}
+	
+	private Component buildArticleCategoryLayout() {
+		Panel panel = new Panel();
+		panel.setSizeFull();
+		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+		VerticalLayout l = new VerticalLayout();
+		l.setSizeFull();
+		l.setMargin(true);
+
+		HorizontalLayout actions = new HorizontalLayout();
+		actions.setSizeFull();
+		Component backBtn = createBackButton();
+		actions.addComponent(createArticlesButton());
+		actions.addComponent(backBtn);
+		actions.setComponentAlignment(backBtn, Alignment.MIDDLE_RIGHT);
+		l.addComponent(actions);
+
+		cartPopup = new PopupView(new Content() {
+
+			@Override
+			public String getMinimizedValueAsHTML() {
+				return "";
+			}
+
+			@Override
+			public Component getPopupComponent() {
+				return new ShoppingCart(cartContent, customer);
+			}
+		});
+		l.addComponent(cartPopup);
+		articleCategoryLayout = new ArticleCategoryLayout(customer, cartContent);
+		l.addComponent(articleCategoryLayout);
+		panel.setContent(l);
+		return panel;
+	}
+	
+	private Component createArticlesButton() {
+		Button articlesButton = new Button("Cikkek");
+
+		articlesButton.addClickListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ArticleViewForWaiter.this.setCompositionRoot(build(articleCategoryLayout.getSelectedArticleCategoryId()));
+			}
+		});
+
+		return articlesButton;
 	}
 }

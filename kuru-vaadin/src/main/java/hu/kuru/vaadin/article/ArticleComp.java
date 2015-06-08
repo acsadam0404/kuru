@@ -7,7 +7,6 @@ import hu.kuru.article.ArticleService;
 import hu.kuru.eventbus.ArticleSelectedEvent;
 import hu.kuru.eventbus.ArticlesRefreshEvent;
 import hu.kuru.vaadin.component.KNotification;
-import hu.kuru.vaadin.component.KWindow;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,7 +25,6 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -35,13 +33,15 @@ public class ArticleComp extends CustomComponent {
 	private Map<Article, Component> articleMap;
 
 	private MasonryLayout articlesLayout;
-	private Button modifyBtn;
+	private ArticleModifyButton modifyBtn;
 	private Button deleteBtn;
 
 	private Long selectedArticleId;
+	private Long selectedArticleCategoryId;
 
-	public ArticleComp() {
+	public ArticleComp(Long articleCategoryId) {
 		articleMap = new LinkedHashMap<Article, Component>();
+		this.selectedArticleCategoryId = articleCategoryId;
 		setSizeFull();
 		setCompositionRoot(build());
 	}
@@ -49,6 +49,7 @@ public class ArticleComp extends CustomComponent {
 	@Subscribe
 	public void handleArticleSelect(ArticleSelectedEvent event) {
 		selectedArticleId = event.getArticleId();
+		modifyBtn.setSelectedArticleId(selectedArticleId);
 		boolean showBtn = selectedArticleId != null;
 		modifyBtn.setEnabled(showBtn);
 		deleteBtn.setEnabled(showBtn);
@@ -93,7 +94,7 @@ public class ArticleComp extends CustomComponent {
 	}
 
 	private Component buildArticlesLayout() {
-		List<Article> activeList = Article.findAllActive();
+		List<Article> activeList = Article.findAllActiveByCategoryId(selectedArticleCategoryId);
 		articlesLayout = new MasonryLayout();
 		articlesLayout.setSizeFull();
 		for (Article article : activeList) {
@@ -121,8 +122,8 @@ public class ArticleComp extends CustomComponent {
 		header.setWidth("100%");
 		header.setSpacing(true);
 
-		Button addBtn = new ModifyButton("Hozzáadás", true);
-		modifyBtn = new ModifyButton("Módosítás", false);
+		Button addBtn = new ArticleModifyButton("Hozzáadás", true, selectedArticleId, selectedArticleCategoryId);
+		modifyBtn = new ArticleModifyButton("Módosítás", false, selectedArticleId);
 		deleteBtn = new DeleteButton();
 
 		modifyBtn.setEnabled(false);
@@ -160,22 +161,6 @@ public class ArticleComp extends CustomComponent {
 				@Override
 				public void textChange(TextChangeEvent event) {
 					searchInArticles(event.getText());
-				}
-			});
-		}
-	}
-
-	private class ModifyButton extends Button {
-		private ModifyButton(final String caption, final boolean isNew) {
-			super(caption);
-			addClickListener(new ClickListener() {
-				@Override
-				public void buttonClick(ClickEvent event) {
-					final KWindow window = new KWindow(caption);
-					ArticleMaintComp comp = new ArticleMaintComp(isNew ? new Article() : Article.findOne(selectedArticleId));
-					comp.setWindow(window);
-					window.setContent(comp);
-					UI.getCurrent().addWindow(window);
 				}
 			});
 		}

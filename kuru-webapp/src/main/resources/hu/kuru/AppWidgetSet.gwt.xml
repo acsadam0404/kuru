@@ -28,4 +28,6 @@
     <inherits name="org.vaadin.alump.gofullscreen.gwt.GoFullScreenWidgetSet" />
 
     
+
+    <inherits name="pl.exsio.plupload.PluploadWidgetSet" />
 </module>

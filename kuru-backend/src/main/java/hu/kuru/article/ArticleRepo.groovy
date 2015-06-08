@@ -23,4 +23,12 @@ interface ArticleRepo extends JpaRepository<Article, Long>{
 
 	@Query("select case when (count(a) > 0) then true else false end from Article a where a.active = true and a.code = ?1 and a.id <> ?2")
 	Boolean existMoreThanOneCode(String code, Long articleId)
+	
+	@Query("select a from Article a where a.active = true and a.articleCategory.id = ?1 order by a.name")
+	List<Article> findAllActiveByCategoryId(Long categoryId)
+	
+	@Query("select case when (count(a) > 0) then true else false end from Article a where a.active = true and a.articleCategory.id = ?1")
+	Boolean isExistReferenceToArticleCategory(Long articleCategoryId)
+	
+	void delete(Article article);
 }
