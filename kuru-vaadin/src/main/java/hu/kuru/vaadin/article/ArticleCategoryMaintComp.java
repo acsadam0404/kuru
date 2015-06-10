@@ -63,6 +63,9 @@ public class ArticleCategoryMaintComp extends CustomComponent {
 		init();
 		fg.bindMemberFields(this);
 		fg.setItemDataSource(articleCategory);
+		if (code.getValue() != null) {
+			code.setReadOnly(true);
+		}
 		setCompositionRoot(build());
 		addAttachListener(new EventBusAttachListener(this));
 		addDetachListener(new EventBusDetachListener(this));

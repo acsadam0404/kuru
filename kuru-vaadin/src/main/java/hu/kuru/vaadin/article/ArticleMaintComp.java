@@ -77,6 +77,9 @@ public class ArticleMaintComp extends CustomComponent {
 		init(article.getIcon());
 		fg.bindMemberFields(this);
 		fg.setItemDataSource(article);
+		if(code.getValue() != null) {
+			code.setReadOnly(true);
+		}
 		setCompositionRoot(build());
 		articleCategory.setValue(article.getArticleCategory());
 		articleCategory.setReadOnly(true);

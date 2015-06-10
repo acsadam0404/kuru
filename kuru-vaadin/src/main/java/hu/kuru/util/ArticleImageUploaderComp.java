@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 import pl.exsio.plupload.Plupload;
 import pl.exsio.plupload.PluploadError;
@@ -46,7 +47,7 @@ public class ArticleImageUploaderComp extends CustomComponent {
 			public void onFileUploaded(PluploadFile file) {
 				try {
 					File filed = (File) file.getUploadedFile();
-					ArticleImageUploaderComp.this.imageName = file.getName();
+					ArticleImageUploaderComp.this.imageName = UUID.randomUUID().toString();
 					Path uploaded = filed.toPath();
 					Path root = Paths.get(KuruUtils
 							.getArticlePicturePathFromFileSystem());
