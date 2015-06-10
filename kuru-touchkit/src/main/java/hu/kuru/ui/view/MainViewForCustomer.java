@@ -4,7 +4,10 @@ import hu.kuru.article.Article;
 import hu.kuru.bill.Bill;
 import hu.kuru.customer.Customer;
 import hu.kuru.security.Authentication;
+import hu.kuru.ui.EventBusAttachListener;
+import hu.kuru.ui.EventBusDetachListener;
 import hu.kuru.ui.component.ShoppingCart;
+import hu.kuru.ui.event.ArticleCategorySelectedEvent;
 import hu.kuru.ui.layout.ArticleCategoryLayout;
 import hu.kuru.ui.layout.ArticleLayout;
 import hu.kuru.util.Pair;
@@ -15,6 +18,8 @@ import java.util.Map;
 import org.springframework.context.annotation.Scope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
+import com.vaadin.event.LayoutEvents.LayoutClickEvent;
+import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
@@ -45,7 +50,7 @@ public class MainViewForCustomer extends CustomComponent implements View {
 	private PopupView cartPopup;
 	private ArticleCategoryLayout categoryLayout;
 
-	private Component buildArticleLayout() {
+	private Component buildArticleLayout(Long selectedCategoryId) {
 		Panel panel = new Panel();
 		panel.setSizeFull();
 		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -75,7 +80,7 @@ public class MainViewForCustomer extends CustomComponent implements View {
 			}
 		});
 		l.addComponent(cartPopup);
-		l.addComponent(new ArticleLayout(customer, cartContent,categoryLayout.getSelectedArticleCategoryId()));
+		l.addComponent(new ArticleLayout(customer, cartContent,selectedCategoryId));
 		panel.setContent(l);
 		return panel;
 	}
@@ -149,29 +154,23 @@ public class MainViewForCustomer extends CustomComponent implements View {
 
 		HorizontalLayout actions = new HorizontalLayout();
 		actions.setSizeFull();
-		actions.addComponent(createArticlesButton());
 		Component logoutButton = createLogoutButton();
 		actions.addComponent(logoutButton);
 		actions.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT);
 
 		l.addComponent(actions);
 		categoryLayout = new ArticleCategoryLayout(customer, cartContent);
+		
+		categoryLayout.addLayoutClickListener(new LayoutClickListener() {
+			
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				MainViewForCustomer.this.setCompositionRoot(buildArticleLayout(categoryLayout.getSelectedArticleCategoryId()));
+			}
+		});
 		l.addComponent(categoryLayout);
 		panel.setContent(l);
 		return panel;
 	}
 	
-	private Component createArticlesButton() {
-		Button articlesButton = new Button("Cikkek");
-
-		articlesButton.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				MainViewForCustomer.this.setCompositionRoot(buildArticleLayout());
-			}
-		});
-
-		return articlesButton;
-	}
 }

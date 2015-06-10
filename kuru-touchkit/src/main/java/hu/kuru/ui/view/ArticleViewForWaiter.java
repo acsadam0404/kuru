@@ -16,6 +16,8 @@ import java.util.Map;
 import org.springframework.context.annotation.Scope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 
+import com.vaadin.event.LayoutEvents.LayoutClickEvent;
+import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
@@ -142,7 +144,6 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 		HorizontalLayout actions = new HorizontalLayout();
 		actions.setSizeFull();
 		Component backBtn = createBackButton();
-		actions.addComponent(createArticlesButton());
 		actions.addComponent(backBtn);
 		actions.setComponentAlignment(backBtn, Alignment.MIDDLE_RIGHT);
 		l.addComponent(actions);
@@ -161,22 +162,16 @@ public class ArticleViewForWaiter extends CustomComponent implements View {
 		});
 		l.addComponent(cartPopup);
 		articleCategoryLayout = new ArticleCategoryLayout(customer, cartContent);
+		articleCategoryLayout.addLayoutClickListener(new LayoutClickListener() {
+			
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				ArticleViewForWaiter.this.setCompositionRoot(build(articleCategoryLayout.getSelectedArticleCategoryId()));
+			}
+		});
 		l.addComponent(articleCategoryLayout);
 		panel.setContent(l);
 		return panel;
 	}
-	
-	private Component createArticlesButton() {
-		Button articlesButton = new Button("Cikkek");
 
-		articlesButton.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				ArticleViewForWaiter.this.setCompositionRoot(build(articleCategoryLayout.getSelectedArticleCategoryId()));
-			}
-		});
-
-		return articlesButton;
-	}
 }

@@ -4,9 +4,10 @@ import groovy.transform.EqualsAndHashCode
 import hu.kuru.BaseEntity
 import hu.kuru.ServiceLocator
 
+import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import javax.persistence.FetchType
+import javax.persistence.ManyToOne
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
@@ -27,6 +28,7 @@ class Article extends BaseEntity {
 	}
 
 	@NotNull
+	@Column(unique = true)
 	String code
 	@NotNull
 	String name

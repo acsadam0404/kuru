@@ -9,7 +9,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class SummaryBox extends Panel {
 
 	private SummaryBox(String title, String value) {
-		setSizeFull();
+		setSizeUndefined();
 		setStyleName(ValoTheme.PANEL_WELL);
 		VerticalLayout content = new VerticalLayout();
 		content.setMargin(true);
