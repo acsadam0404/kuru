@@ -80,10 +80,9 @@ public class BillBox extends CustomComponent {
 	 */
 	private String getPrice() {
 		int priceSum = 0;
-		// TODO:
 		List<Item> itemList = Item.findByBill(bill.getId());
 		for (Item item : itemList) {
-			priceSum += item.getArticle().getPrice();
+			priceSum += item.getAmount() * item.getArticle().getPrice();
 		}
 
 		return getChangedSum(priceSum);

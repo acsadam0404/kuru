@@ -14,17 +14,17 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>hu.si</groupId>
-			<artifactId>si-birt</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>javax.wsdl</artifactId>
-					<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+	<dependency>
+		<groupId>hu.si</groupId>
+		<artifactId>si-birt</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<exclusions>
+			<exclusion>
+				<artifactId>javax.wsdl</artifactId>
+				<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
+			</exclusion>
+		</exclusions>
+	</dependency>
 
 
 		<dependency>
