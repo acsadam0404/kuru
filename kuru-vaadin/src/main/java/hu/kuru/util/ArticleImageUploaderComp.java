@@ -47,12 +47,12 @@ public class ArticleImageUploaderComp extends CustomComponent {
 			public void onFileUploaded(PluploadFile file) {
 				try {
 					File filed = (File) file.getUploadedFile();
-					ArticleImageUploaderComp.this.imageName = UUID.randomUUID().toString();
+					ArticleImageUploaderComp.this.imageName = UUID.randomUUID().toString()+".png";
 					Path uploaded = filed.toPath();
 					Path root = Paths.get(KuruUtils
 							.getArticlePicturePathFromFileSystem());
 					Files.createDirectories(root);
-					Path path = root.resolve(file.getName());
+					Path path = root.resolve(ArticleImageUploaderComp.this.imageName);
 					Files.copy(uploaded, path,
 							StandardCopyOption.REPLACE_EXISTING);
 				} catch (IOException e) {

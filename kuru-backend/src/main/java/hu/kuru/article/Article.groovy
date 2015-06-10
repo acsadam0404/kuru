@@ -28,7 +28,6 @@ class Article extends BaseEntity {
 	}
 
 	@NotNull
-	@Column(unique = true)
 	String code
 	@NotNull
 	String name
