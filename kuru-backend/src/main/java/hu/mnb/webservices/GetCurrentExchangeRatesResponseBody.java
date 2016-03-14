@@ -1,28 +1,24 @@
 
 package hu.mnb.webservices;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.jvnet.jaxb2_commons.lang.Equals;
-import org.jvnet.jaxb2_commons.lang.EqualsStrategy;
-import org.jvnet.jaxb2_commons.lang.HashCode;
-import org.jvnet.jaxb2_commons.lang.HashCodeStrategy;
-import org.jvnet.jaxb2_commons.lang.JAXBEqualsStrategy;
-import org.jvnet.jaxb2_commons.lang.JAXBHashCodeStrategy;
+import org.jvnet.jaxb2_commons.lang.*;
 import org.jvnet.jaxb2_commons.locator.ObjectLocator;
 import org.jvnet.jaxb2_commons.locator.util.LocatorUtils;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlType;
+
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for GetCurrentExchangeRatesResponseBody complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType>
+ * &lt;complexType name="GetCurrentExchangeRatesResponseBody">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -36,26 +32,25 @@ import org.jvnet.jaxb2_commons.locator.util.LocatorUtils;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
+@XmlType(name = "GetCurrentExchangeRatesResponseBody", propOrder = {
     "getCurrentExchangeRatesResult"
 })
-@XmlRootElement(name = "GetCurrentExchangeRatesResponse")
-public class GetCurrentExchangeRatesResponse
+public class GetCurrentExchangeRatesResponseBody
     implements Equals, HashCode
 {
 
-    @XmlElement(name = "GetCurrentExchangeRatesResult")
-    protected String getCurrentExchangeRatesResult;
+    @XmlElementRef(name = "GetCurrentExchangeRatesResult", namespace = "http://www.mnb.hu/webservices/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> getCurrentExchangeRatesResult;
 
     /**
      * Gets the value of the getCurrentExchangeRatesResult property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getGetCurrentExchangeRatesResult() {
+    public JAXBElement<String> getGetCurrentExchangeRatesResult() {
         return getCurrentExchangeRatesResult;
     }
 
@@ -64,17 +59,17 @@ public class GetCurrentExchangeRatesResponse
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setGetCurrentExchangeRatesResult(String value) {
-        this.getCurrentExchangeRatesResult = value;
+    public void setGetCurrentExchangeRatesResult(JAXBElement<String> value) {
+        this.getCurrentExchangeRatesResult = ((JAXBElement<String> ) value);
     }
 
     public int hashCode(ObjectLocator locator, HashCodeStrategy strategy) {
         int currentHashCode = 1;
         {
-            String theGetCurrentExchangeRatesResult;
+            JAXBElement<String> theGetCurrentExchangeRatesResult;
             theGetCurrentExchangeRatesResult = this.getGetCurrentExchangeRatesResult();
             currentHashCode = strategy.hashCode(LocatorUtils.property(locator, "getCurrentExchangeRatesResult", theGetCurrentExchangeRatesResult), currentHashCode, theGetCurrentExchangeRatesResult);
         }
@@ -87,17 +82,17 @@ public class GetCurrentExchangeRatesResponse
     }
 
     public boolean equals(ObjectLocator thisLocator, ObjectLocator thatLocator, Object object, EqualsStrategy strategy) {
-        if (!(object instanceof GetCurrentExchangeRatesResponse)) {
+        if (!(object instanceof GetCurrentExchangeRatesResponseBody)) {
             return false;
         }
         if (this == object) {
             return true;
         }
-        final GetCurrentExchangeRatesResponse that = ((GetCurrentExchangeRatesResponse) object);
+        final GetCurrentExchangeRatesResponseBody that = ((GetCurrentExchangeRatesResponseBody) object);
         {
-            String lhsGetCurrentExchangeRatesResult;
+            JAXBElement<String> lhsGetCurrentExchangeRatesResult;
             lhsGetCurrentExchangeRatesResult = this.getGetCurrentExchangeRatesResult();
-            String rhsGetCurrentExchangeRatesResult;
+            JAXBElement<String> rhsGetCurrentExchangeRatesResult;
             rhsGetCurrentExchangeRatesResult = that.getGetCurrentExchangeRatesResult();
             if (!strategy.equals(LocatorUtils.property(thisLocator, "getCurrentExchangeRatesResult", lhsGetCurrentExchangeRatesResult), LocatorUtils.property(thatLocator, "getCurrentExchangeRatesResult", rhsGetCurrentExchangeRatesResult), lhsGetCurrentExchangeRatesResult, rhsGetCurrentExchangeRatesResult)) {
                 return false;

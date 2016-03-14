@@ -1,11 +1,13 @@
-package hu.kuru.external.mnb;
+package hu.kuru.external.mnb
 
-import hu.mnb.webservices.MNBArfolyamService
-import hu.mnb.webservices.MNBArfolyamServiceSoap
+import hu.mnb.webservices.GetCurrentExchangeRatesRequestBody
+import hu.mnb.webservices.GetCurrentExchangeRatesResponseBody
+import hu.mnb.webservices.MNBArfolyamServiceSoap;
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import org.tempuri.MNBArfolyamServiceSoapImpl
 
 @Service
 class MNBExchangeRateServiceImpl implements MNBExchangeRateService{
@@ -15,9 +17,10 @@ class MNBExchangeRateServiceImpl implements MNBExchangeRateService{
 	List<ExchangeRate> getExchangeRates() throws MNBServiceException {
 		String responseXml = null
 		try {
-			MNBArfolyamService s = new MNBArfolyamService();
-			MNBArfolyamServiceSoap mnbArfolyamServiceSoap12 = s.getMNBArfolyamServiceSoap12();
-			responseXml = mnbArfolyamServiceSoap12.getCurrentExchangeRates();
+			MNBArfolyamServiceSoapImpl s = new MNBArfolyamServiceSoapImpl();
+			MNBArfolyamServiceSoap mnbArfolyamServiceSoap12 = s.getCustomBindingMNBArfolyamServiceSoap();
+			GetCurrentExchangeRatesResponseBody response =  mnbArfolyamServiceSoap12.getCurrentExchangeRates(new GetCurrentExchangeRatesRequestBody());
+			responseXml = response.getGetCurrentExchangeRatesResult().getValue()
 		}
 		catch (Exception ex) {
 			logger.error("MNB webservice hívás nem sikerült!", ex);

@@ -1,28 +1,24 @@
 
 package hu.mnb.webservices;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.jvnet.jaxb2_commons.lang.Equals;
-import org.jvnet.jaxb2_commons.lang.EqualsStrategy;
-import org.jvnet.jaxb2_commons.lang.HashCode;
-import org.jvnet.jaxb2_commons.lang.HashCodeStrategy;
-import org.jvnet.jaxb2_commons.lang.JAXBEqualsStrategy;
-import org.jvnet.jaxb2_commons.lang.JAXBHashCodeStrategy;
+import org.jvnet.jaxb2_commons.lang.*;
 import org.jvnet.jaxb2_commons.locator.ObjectLocator;
 import org.jvnet.jaxb2_commons.locator.util.LocatorUtils;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlType;
+
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for GetCurrenciesResponseBody complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType>
+ * &lt;complexType name="GetCurrenciesResponseBody">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -36,26 +32,25 @@ import org.jvnet.jaxb2_commons.locator.util.LocatorUtils;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
+@XmlType(name = "GetCurrenciesResponseBody", propOrder = {
     "getCurrenciesResult"
 })
-@XmlRootElement(name = "GetCurrenciesResponse")
-public class GetCurrenciesResponse
+public class GetCurrenciesResponseBody
     implements Equals, HashCode
 {
 
-    @XmlElement(name = "GetCurrenciesResult")
-    protected String getCurrenciesResult;
+    @XmlElementRef(name = "GetCurrenciesResult", namespace = "http://www.mnb.hu/webservices/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> getCurrenciesResult;
 
     /**
      * Gets the value of the getCurrenciesResult property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getGetCurrenciesResult() {
+    public JAXBElement<String> getGetCurrenciesResult() {
         return getCurrenciesResult;
     }
 
@@ -64,17 +59,17 @@ public class GetCurrenciesResponse
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setGetCurrenciesResult(String value) {
-        this.getCurrenciesResult = value;
+    public void setGetCurrenciesResult(JAXBElement<String> value) {
+        this.getCurrenciesResult = ((JAXBElement<String> ) value);
     }
 
     public int hashCode(ObjectLocator locator, HashCodeStrategy strategy) {
         int currentHashCode = 1;
         {
-            String theGetCurrenciesResult;
+            JAXBElement<String> theGetCurrenciesResult;
             theGetCurrenciesResult = this.getGetCurrenciesResult();
             currentHashCode = strategy.hashCode(LocatorUtils.property(locator, "getCurrenciesResult", theGetCurrenciesResult), currentHashCode, theGetCurrenciesResult);
         }
@@ -87,17 +82,17 @@ public class GetCurrenciesResponse
     }
 
     public boolean equals(ObjectLocator thisLocator, ObjectLocator thatLocator, Object object, EqualsStrategy strategy) {
-        if (!(object instanceof GetCurrenciesResponse)) {
+        if (!(object instanceof GetCurrenciesResponseBody)) {
             return false;
         }
         if (this == object) {
             return true;
         }
-        final GetCurrenciesResponse that = ((GetCurrenciesResponse) object);
+        final GetCurrenciesResponseBody that = ((GetCurrenciesResponseBody) object);
         {
-            String lhsGetCurrenciesResult;
+            JAXBElement<String> lhsGetCurrenciesResult;
             lhsGetCurrenciesResult = this.getGetCurrenciesResult();
-            String rhsGetCurrenciesResult;
+            JAXBElement<String> rhsGetCurrenciesResult;
             rhsGetCurrenciesResult = that.getGetCurrenciesResult();
             if (!strategy.equals(LocatorUtils.property(thisLocator, "getCurrenciesResult", lhsGetCurrenciesResult), LocatorUtils.property(thatLocator, "getCurrenciesResult", rhsGetCurrenciesResult), lhsGetCurrenciesResult, rhsGetCurrenciesResult)) {
                 return false;

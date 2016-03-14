@@ -1,28 +1,24 @@
 
 package hu.mnb.webservices;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.jvnet.jaxb2_commons.lang.Equals;
-import org.jvnet.jaxb2_commons.lang.EqualsStrategy;
-import org.jvnet.jaxb2_commons.lang.HashCode;
-import org.jvnet.jaxb2_commons.lang.HashCodeStrategy;
-import org.jvnet.jaxb2_commons.lang.JAXBEqualsStrategy;
-import org.jvnet.jaxb2_commons.lang.JAXBHashCodeStrategy;
+import org.jvnet.jaxb2_commons.lang.*;
 import org.jvnet.jaxb2_commons.locator.ObjectLocator;
 import org.jvnet.jaxb2_commons.locator.util.LocatorUtils;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlType;
+
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for GetInfoResponseBody complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType>
+ * &lt;complexType name="GetInfoResponseBody">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -36,26 +32,25 @@ import org.jvnet.jaxb2_commons.locator.util.LocatorUtils;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
+@XmlType(name = "GetInfoResponseBody", propOrder = {
     "getInfoResult"
 })
-@XmlRootElement(name = "GetInfoResponse")
-public class GetInfoResponse
+public class GetInfoResponseBody
     implements Equals, HashCode
 {
 
-    @XmlElement(name = "GetInfoResult")
-    protected String getInfoResult;
+    @XmlElementRef(name = "GetInfoResult", namespace = "http://www.mnb.hu/webservices/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> getInfoResult;
 
     /**
      * Gets the value of the getInfoResult property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getGetInfoResult() {
+    public JAXBElement<String> getGetInfoResult() {
         return getInfoResult;
     }
 
@@ -64,17 +59,17 @@ public class GetInfoResponse
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setGetInfoResult(String value) {
-        this.getInfoResult = value;
+    public void setGetInfoResult(JAXBElement<String> value) {
+        this.getInfoResult = ((JAXBElement<String> ) value);
     }
 
     public int hashCode(ObjectLocator locator, HashCodeStrategy strategy) {
         int currentHashCode = 1;
         {
-            String theGetInfoResult;
+            JAXBElement<String> theGetInfoResult;
             theGetInfoResult = this.getGetInfoResult();
             currentHashCode = strategy.hashCode(LocatorUtils.property(locator, "getInfoResult", theGetInfoResult), currentHashCode, theGetInfoResult);
         }
@@ -87,17 +82,17 @@ public class GetInfoResponse
     }
 
     public boolean equals(ObjectLocator thisLocator, ObjectLocator thatLocator, Object object, EqualsStrategy strategy) {
-        if (!(object instanceof GetInfoResponse)) {
+        if (!(object instanceof GetInfoResponseBody)) {
             return false;
         }
         if (this == object) {
             return true;
         }
-        final GetInfoResponse that = ((GetInfoResponse) object);
+        final GetInfoResponseBody that = ((GetInfoResponseBody) object);
         {
-            String lhsGetInfoResult;
+            JAXBElement<String> lhsGetInfoResult;
             lhsGetInfoResult = this.getGetInfoResult();
-            String rhsGetInfoResult;
+            JAXBElement<String> rhsGetInfoResult;
             rhsGetInfoResult = that.getGetInfoResult();
             if (!strategy.equals(LocatorUtils.property(thisLocator, "getInfoResult", lhsGetInfoResult), LocatorUtils.property(thatLocator, "getInfoResult", rhsGetInfoResult), lhsGetInfoResult, rhsGetInfoResult)) {
                 return false;

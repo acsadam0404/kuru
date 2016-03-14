@@ -31,4 +31,7 @@ interface ArticleRepo extends JpaRepository<Article, Long>{
 	Boolean isExistReferenceToArticleCategory(Long articleCategoryId)
 	
 	void delete(Article article);
+
+	@Query("select a from Article a where a.articleCategory.id = ?1")
+	List<Article> findByArticleCategoryId(Long articleCategoryId)
 }

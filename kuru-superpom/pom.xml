@@ -15,7 +15,7 @@
 
 	<properties>
 		<project.version>0.1.0-SNAPSHOT</project.version>
-		<javac.version>1.7</javac.version>
+		<javac.version>1.8</javac.version>
 		<slf4j.version>1.7.6</slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<vaadin.version>7.3.6</vaadin.version>
