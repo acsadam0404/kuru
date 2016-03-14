@@ -19,7 +19,7 @@ class ArticleController {
     List<Article> getArticleByCategory(
             @RequestParam(required = false, value = "groupId", defaultValue = "0") Long groupId) {
         if (groupId) {
-            articleRepo.findByArticleCategoryId(groupId)
+            return articleRepo.findByArticleCategoryId(groupId)
         }
         articleRepo.findAll()
     }
