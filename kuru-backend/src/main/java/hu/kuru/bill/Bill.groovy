@@ -1,5 +1,6 @@
 package hu.kuru.bill
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.EqualsAndHashCode
 import hu.kuru.BaseEntity
 import hu.kuru.ServiceLocator
@@ -27,6 +28,7 @@ class Bill extends BaseEntity {
 	}
 
 	@NotNull
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	Customer customer
 	@NotNull
@@ -35,8 +37,6 @@ class Bill extends BaseEntity {
 	Long sum
 	@NotNull
 	String currency
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bill")
-	Set<Item> items = []
 	static List<Bill> findByCustomer(Customer customer) {
 		repo.findByCustomer(customer)
 	}

@@ -1,6 +1,6 @@
 package hu.kuru.user
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore
 import hu.kuru.BaseEntity
 import hu.kuru.ServiceLocator;
 

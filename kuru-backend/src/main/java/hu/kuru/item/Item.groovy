@@ -1,5 +1,6 @@
 package hu.kuru.item
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.EqualsAndHashCode
 import hu.kuru.BaseEntity
 import hu.kuru.ServiceLocator
@@ -25,7 +26,7 @@ class Item extends BaseEntity {
 	}
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	Bill bill
 	
 	@NotNull

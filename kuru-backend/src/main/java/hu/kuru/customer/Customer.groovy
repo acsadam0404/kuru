@@ -37,7 +37,7 @@ class Customer extends BaseEntity {
 	@NotNull
 	String name
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
 	Set<Bill> bills = []
 
 	static Customer findByCode(String code) {

@@ -1,6 +1,8 @@
 package hu.kuru.rest
 
 import hu.kuru.article.Article
+import hu.kuru.article.ArticleCategory
+import hu.kuru.article.ArticleCategoryRepo
 import hu.kuru.article.ArticleRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -12,23 +14,32 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
 
-@RequestMapping(value = "/articles")
+@RequestMapping(value = "/articlecategories")
 @RestController
-class ArticleController {
+class ArticleCategoryController {
+    @Autowired
+    ArticleCategoryRepo articleCategoryRepo
     @Autowired
     ArticleRepo articleRepo
 
+    @RequestMapping(value = "/{id}/articles", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseEntity getArticlesByArticleCategory(
+            @PathVariable(value = "id") Long id) {
+        return new ResponseEntity<List<Article>>(articleRepo.findByArticleCategoryId(id), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseEntity getArticle(
+    ResponseEntity getArticleCategory(
             @PathVariable(value = "id") Long id) {
-        return new ResponseEntity<Article>(articleRepo.findOne(id), HttpStatus.OK);
+        return new ResponseEntity<ArticleCategory>(articleCategoryRepo.findOne(id), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    ResponseEntity getArticles() {
-        return new ResponseEntity<List<Article>>(articleRepo.findAll(), HttpStatus.OK);
+    ResponseEntity getArticleCategories() {
+        return new ResponseEntity<List<ArticleCategory>>(articleCategoryRepo.findAll(), HttpStatus.OK);
     }
 
 }

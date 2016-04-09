@@ -95,8 +95,7 @@ public class ArticleMaintComp extends CustomComponent {
 		name = new KTextField("Cikk név");
 		price = new KTextField("Cikk ár (forintban)");
 		unit = new ComboBox("Mértékegység");
-		unit.addItems(ServiceLocator.getBean(ValueSetRepo.class)
-				.findByName(ValueSet.QUANTITY).getValues());
+		unit.addItems(ServiceLocator.getBean(ValueSetRepo.class).findByName(ValueSet.QUANTITY).getValues());
 		description = new KTextArea("Cikk leírás");
 		price.setConverter(new StringToLongConverter());
 		price.setConversionError("Csak számot lehet megadni!");

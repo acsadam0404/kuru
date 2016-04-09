@@ -24,67 +24,67 @@ import com.vaadin.ui.Window;
 
 public class ItemAdditionalComp extends CustomComponent {
 
-	private Window window;
-	private ComboBox article;
-	private TextField amount;
+    private Window window;
+    private ComboBox article;
+    private TextField amount;
 
-	public ItemAdditionalComp(Bill bill) {
-		setCompositionRoot(buildLayout(bill));
-	}
+    public ItemAdditionalComp(Bill bill) {
+        setCompositionRoot(buildLayout(bill));
+    }
 
-	private Component buildLayout(Bill bill) {
-		HorizontalLayout main = new HorizontalLayout();
-		main.setSpacing(true);
-		main.setMargin(true);
-		article = new ComboBox("Cikk név");
-		article.addValidator(new NullValidator("Kötelező kitölteni!", false));
-		article.setItemCaptionPropertyId("name");
-		article.setContainerDataSource(new BeanItemContainer<>(Article.class, Article.findAllActive()));
-		amount = new TextField("Mennyiség");
-		amount.setNullRepresentation("");
-		amount.setImmediate(true);
-		amount.addValidator(new NullValidator("Kötelező kitölteni!", false));
-		amount.setConverter(new StringToLongConverter());
-		main.addComponent(article);
-		main.addComponent(amount);
-		Button save = new SaveButton(bill);
-		main.addComponent(save);
-		main.setComponentAlignment(save, Alignment.BOTTOM_RIGHT);
-		return main;
-	}
+    private Component buildLayout(Bill bill) {
+        HorizontalLayout main = new HorizontalLayout();
+        main.setSpacing(true);
+        main.setMargin(true);
+        article = new ComboBox("Cikk név");
+        article.addValidator(new NullValidator("Kötelező kitölteni!", false));
+        article.setItemCaptionPropertyId("name");
+        article.setContainerDataSource(new BeanItemContainer<>(Article.class, Article.findAllActive()));
+        amount = new TextField("Mennyiség");
+        amount.setNullRepresentation("");
+        amount.setImmediate(true);
+        amount.addValidator(new NullValidator("Kötelező kitölteni!", false));
+        amount.setConverter(new StringToLongConverter());
+        main.addComponent(article);
+        main.addComponent(amount);
+        Button save = new SaveButton(bill);
+        main.addComponent(save);
+        main.setComponentAlignment(save, Alignment.BOTTOM_RIGHT);
+        return main;
+    }
 
-	public static ItemAdditionalComp fromBill(Bill bill) {
-		return new ItemAdditionalComp(bill);
-	}
+    public static ItemAdditionalComp fromBill(Bill bill) {
+        return new ItemAdditionalComp(bill);
+    }
 
-	public void setWindow(Window window) {
-		this.window = window;
-	}
+    public void setWindow(Window window) {
+        this.window = window;
+    }
 
-	private class SaveButton extends Button {
-		public SaveButton(final Bill bill) {
-			super("Mentés");
-			addClickListener(new ClickListener() {
+    private class SaveButton extends Button {
+        public SaveButton(final Bill bill) {
+            super("Mentés");
+            addClickListener(new ClickListener() {
 
-				@Override
-				public void buttonClick(ClickEvent event) {
-					try {
-						article.validate();
-						amount.validate();
-						Item item = new Item();
-						item.setBill(bill);
-						item.setArticle((Article) article.getValue());
-						item.setAmount((long) amount.getConvertedValue());
-						item.setCreateDate(new Date());
-						item.save();
-						window.close();
-						UIEventBus.post(new ItemAddedEvent(bill.getId()));
-					} catch (InvalidValueException e) {
-						new KNotification("Minden mező kitöltése kötelező!").showError();
-					}
-				}
-			});
-		}
-	}
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    try {
+                        article.validate();
+                        amount.validate();
+                        Item item = new Item();
+                        item.setBill(bill);
+                        item.setArticle((Article) article.getValue());
+                        item.setAmount((long) amount.getConvertedValue());
+                        item.setCreateDate(new Date());
+                        item.save();
+                        window.close();
+                        UIEventBus.post(new ItemAddedEvent(bill.getId()));
+                    } catch (InvalidValueException e) {
+                        new KNotification("Minden mező kitöltése kötelező!").showError();
+                    }
+                }
+            });
+        }
+    }
 
 }
