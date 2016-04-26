@@ -42,261 +42,280 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class BillComp extends CustomComponent {
 
-	private MasonryLayout billsLayout;
-	private SearchComboBox searchCombo;
-	private Button addBillBtn;
-	private ModifyButton addCustomerBtn;
-	private ModifyButton modifyBtn;
-	private DeleteButton deleteBtn;
+    private MasonryLayout billsLayout;
+    private SearchComboBox searchCombo;
+    private Button addBillBtn;
+    private ModifyButton addCustomerBtn;
+    private ModifyButton modifyBtn;
+    private DeleteButton deleteBtn;
 
-	private Map<Customer, List<BillBox>> customerMap;
-	private List<BillBox> openBills;
+    private Map<Customer, List<BillBox>> customerMap;
+    private List<BillBox> openBills;
 
-	public BillComp() {
-		setSizeFull();
-		setCompositionRoot(build());
-	}
+    BillRepo billRepo = ServiceLocator.getBean(BillRepo.class);
 
-	private Component build() {
-		VerticalLayout main = new VerticalLayout();
-		main.setSizeFull();
-		main.setSpacing(true);
-		main.setMargin(true);
-		List<Customer> customerList = ServiceLocator.getBean(CustomerRepo.class).findAll(new Sort(Direction.ASC, "name"));
-		main.addComponent(buildHeader(customerList));
-		Component billsLayout = buildBillsLayout(customerList);
-		main.addComponent(billsLayout);
-		main.setExpandRatio(billsLayout, 1f);
-		Responsive.makeResponsive(main);
-		return main;
-	}
+    public BillComp() {
+        setSizeFull();
+        setCompositionRoot(build());
+    }
 
-	private Component buildBillsLayout(List<Customer> customerList) {
-		billsLayout = new MasonryLayout();
-		billsLayout.setSizeFull();
-		customerMap = new HashMap<>();
-		openBills = new ArrayList<BillBox>();
-		for (Customer customer : customerList) {
-			addCustomerToLayout(customer, true);
-		}
-		reBuildBillLayout(null);
+    private Component build() {
+        VerticalLayout main = new VerticalLayout();
+        main.setSizeFull();
+        main.setSpacing(true);
+        main.setMargin(true);
+        List<Customer> customerList = ServiceLocator.getBean(CustomerRepo.class).findAll(new Sort(Direction.ASC, "name"));
+        main.addComponent(buildHeader(customerList));
+        Component billsLayout = buildBillsLayout(customerList);
+        main.addComponent(billsLayout);
+        main.setExpandRatio(billsLayout, 1f);
+        Responsive.makeResponsive(main);
+        return main;
+    }
 
-		Panel billsPanel = new Panel(billsLayout);
-		billsPanel.setSizeFull();
-		billsPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
-		return billsPanel;
-	}
+    private Component buildBillsLayout(List<Customer> customerList) {
+        billsLayout = new MasonryLayout();
+        billsLayout.setSizeFull();
+        customerMap = new HashMap<>();
+        openBills = new ArrayList<BillBox>();
+        for (Customer customer : customerList) {
+            addCustomerToLayout(customer, true);
+        }
+        reBuildBillLayout(null);
 
-	private Component buildHeader(List<Customer> customerList) {
-		HorizontalLayout header = new HorizontalLayout();
-		header.setSizeUndefined();
-		header.setWidth("100%");
-		header.setSpacing(true);
+        Panel billsPanel = new Panel(billsLayout);
+        billsPanel.setSizeFull();
+        billsPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+        return billsPanel;
+    }
 
-		addBillBtn = new AddBillButton();
-		addCustomerBtn = new ModifyButton("Új ügyfél", true);
-		modifyBtn = new ModifyButton("Ügyfél módosítás", false);
-		deleteBtn = new DeleteButton("Ügyfél törlés");
-		searchCombo = new SearchComboBox(customerList);
+    private Component buildHeader(List<Customer> customerList) {
+        HorizontalLayout header = new HorizontalLayout();
+        header.setSizeUndefined();
+        header.setWidth("100%");
+        header.setSpacing(true);
 
-		addBillBtn.setEnabled(false);
-		modifyBtn.setEnabled(false);
-		deleteBtn.setEnabled(false);
+        addBillBtn = new AddBillButton();
+        addCustomerBtn = new ModifyButton("Új ügyfél", true);
+        modifyBtn = new ModifyButton("Ügyfél módosítás", false);
+        deleteBtn = new DeleteButton("Ügyfél törlés");
+        searchCombo = new SearchComboBox(customerList);
 
-		header.addComponent(searchCombo);
-		header.addComponent(addBillBtn);
-		header.addComponent(addCustomerBtn);
-		header.addComponent(modifyBtn);
-		header.addComponent(deleteBtn);
-		header.setExpandRatio(searchCombo, 1f);
+        addBillBtn.setEnabled(false);
+        modifyBtn.setEnabled(false);
+        deleteBtn.setEnabled(false);
 
-		return header;
-	}
+        header.addComponent(searchCombo);
+        header.addComponent(addBillBtn);
+        header.addComponent(addCustomerBtn);
+        header.addComponent(modifyBtn);
+        header.addComponent(deleteBtn);
+        header.setExpandRatio(searchCombo, 1f);
 
-	private void addCustomerToLayout(Customer customer, boolean isFirstLoading) {
-		List<Bill> billList = Bill.findByCustomer(customer);
-		List<BillBox> components = new ArrayList<>();
-		if (billList != null) {
-			Collections.sort(billList, new BillComparator());
-			for (Bill bill : billList) {
-				BillBox box = BillBox.buildBillBox(bill);
-				if (isFirstLoading && bill.getCloseDate() == null) {
-					openBills.add(box);
-				}
-				components.add(box);
-			}
-		}
-		customerMap.put(customer, components);
-	}
+        return header;
+    }
 
-	private void removeBoxFromList(List<BillBox> list, Bill bill) {
-		for (BillBox box : list) {
-			if (box.getCurrentBill().getId().equals(bill.getId())) {
-				list.remove(box);
-				break;
-			}
-		}
-		list.add(BillBox.buildBillBox(bill));
-	}
+    private void addCustomerToLayout(Customer customer, boolean isFirstLoading) {
+        List<Bill> billList = Bill.findByCustomer(customer);
+        List<BillBox> components = new ArrayList<>();
+        if (billList != null) {
+            Collections.sort(billList, new BillComparator());
+            for (Bill bill : billList) {
+                BillBox box = BillBox.buildBillBox(bill);
+                if (isFirstLoading && bill.getCloseDate() == null) {
+                    openBills.add(box);
+                }
+                components.add(box);
+            }
+        }
+        customerMap.put(customer, components);
+    }
 
-	@Subscribe
-	public void onItemAdded(ItemAddedEvent event) {
-		Bill bill = ServiceLocator.getBean(BillRepo.class).findById(event.getBillId());
-		Customer customer = bill.getCustomer();
-		removeBoxFromList(customerMap.get(customer), bill);
-		removeBoxFromList(openBills, bill);
-		Collections.sort(customerMap.get(customer), new BillBoxComparator());
-		Collections.sort(openBills, new BillBoxComparator());
-		reBuildBillLayout((Customer) (searchCombo.getValue() != null ? searchCombo.getValue() : null));
-	}
+    private void removeBoxFromList(List<BillBox> list, Bill bill) {
+        for (BillBox box : list) {
+            if (box.getCurrentBill().getId().equals(bill.getId())) {
+                list.remove(box);
+                break;
+            }
+        }
+        list.add(BillBox.buildBillBox(bill));
+    }
 
-	@Subscribe
-	public void onBillClosed(BillClosedEvent event) {
-		openBills.remove(event.getBillBox());
-		addCustomerToLayout(event.getCustomer(), false);
-		reBuildBillLayout(searchCombo.getValue() != null ? event.getCustomer() : null);
-	}
+    @Subscribe
+    public void onItemAdded(ItemAddedEvent event) {
+        Bill bill = billRepo.findById(event.getBillId());
+        Customer customer = bill.getCustomer();
+        removeBoxFromList(customerMap.get(customer), bill);
+        removeBoxFromList(openBills, bill);
+        Collections.sort(customerMap.get(customer), new BillBoxComparator());
+        Collections.sort(openBills, new BillBoxComparator());
+        reBuildBillLayout((Customer) (searchCombo.getValue() != null ? searchCombo.getValue() : null));
+    }
 
-	@Subscribe
-	public void onBillAdded(AddBillEvent event) {
-		BillBox box = BillBox.buildBillBox(event.getBill());
-		openBills.add(box);
-		customerMap.get(event.getBill().getCustomer()).add(box);
-		reBuildBillLayout(event.getBill().getCustomer());
-	}
+    @Subscribe
+    public void onBillClosed(BillClosedEvent event) {
+        Customer customer = (Customer) searchCombo.getValue();
+        if (null != customer) {
+            Bill bill = billRepo.getOpenBillByCustomerId(customer.getId());
+            if (null == bill) {
+                addBillBtn.setEnabled(true);
+            }
+        }
+        openBills.remove(event.getBillBox());
+        addCustomerToLayout(event.getCustomer(), false);
+        reBuildBillLayout(searchCombo.getValue() != null ? event.getCustomer() : null);
+    }
 
-	@Subscribe
-	public void onAddCustomer(AddCustomerEvent event) {
-		if (event.isNew()) {
-			customerMap.put(event.getCustomer(), new ArrayList<BillBox>());
-		} else {
-			setBoxCaptions(event.getCustomer());
-		}
-		searchCombo.refresh();
-		searchCombo.setValue(event.getCustomer());
-	}
+    @Subscribe
+    public void onBillAdded(AddBillEvent event) {
+        Customer customer = (Customer) searchCombo.getValue();
+        Bill bill = billRepo.getOpenBillByCustomerId(customer.getId());
+        if (null != bill) {
+            addBillBtn.setEnabled(false);
+        }
+        BillBox box = BillBox.buildBillBox(event.getBill());
+        openBills.add(box);
+        customerMap.get(event.getBill().getCustomer()).add(box);
+        reBuildBillLayout(event.getBill().getCustomer());
+    }
 
-	private void setBoxCaptions(Customer customer) {
-		for (BillBox component : customerMap.get(customer)) {
-			component.setCaption(customer.getName());
-		}
-	}
+    @Subscribe
+    public void onAddCustomer(AddCustomerEvent event) {
+        if (event.isNew()) {
+            customerMap.put(event.getCustomer(), new ArrayList<BillBox>());
+        } else {
+            setBoxCaptions(event.getCustomer());
+        }
+        searchCombo.refresh();
+        searchCombo.setValue(event.getCustomer());
+    }
 
-	private void reBuildBillLayout(Customer value) {
-		billsLayout.removeAllComponents();
-		if (value != null) {
-			for (BillBox component : customerMap.get(value)) {
-				billsLayout.addComponent(component, component.getCurrentBill().isClosed() ? "border-red" : "border-green");
-			}
-		} else {
-			for (BillBox component : openBills) {
-				billsLayout.addComponent(component, "border-green");
-			}
-		}
-	}
+    private void setBoxCaptions(Customer customer) {
+        for (BillBox component : customerMap.get(customer)) {
+            component.setCaption(customer.getName());
+        }
+    }
 
-	private class ModifyButton extends Button {
-		private ModifyButton(final String caption, final boolean isNew) {
-			super(caption);
-			addClickListener(new ClickListener() {
-				@Override
-				public void buttonClick(ClickEvent event) {
-					final KWindow window = new KWindow(caption);
-					Customer customer = (Customer) searchCombo.getValue();
-					CustomerMaintComp comp = isNew ? CustomerMaintComp.createNew() : CustomerMaintComp.fromCustomer(customer);
-					comp.setWindow(window);
-					window.setContent(comp);
-					UI.getCurrent().addWindow(window);
-				}
-			});
-		}
-	}
+    private void reBuildBillLayout(Customer value) {
+        billsLayout.removeAllComponents();
+        if (value != null) {
+            for (BillBox component : customerMap.get(value)) {
+                billsLayout.addComponent(component, component.getCurrentBill().isClosed() ? "border-red" : "border-green");
+            }
+        } else {
+            for (BillBox component : openBills) {
+                billsLayout.addComponent(component, "border-green");
+            }
+        }
+    }
 
-	private class SearchComboBox extends ComboBox {
-		private SearchComboBox(List<Customer> customerList) {
-			setImmediate(true);
-			setCaption(null);
-			setWidth("300px");
-			setIcon(FontAwesome.SEARCH);
-			setItemCaptionPropertyId("name");
-			addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-			addStyleName(ValoTheme.COMBOBOX_ALIGN_RIGHT);
-			setContainerDataSource(new BeanItemContainer<Customer>(Customer.class, customerList));
-			addValueChangeListener(new ValueChangeListener() {
+    private class ModifyButton extends Button {
+        private ModifyButton(final String caption, final boolean isNew) {
+            super(caption);
+            addClickListener(new ClickListener() {
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    final KWindow window = new KWindow(caption);
+                    Customer customer = (Customer) searchCombo.getValue();
+                    CustomerMaintComp comp = isNew ? CustomerMaintComp.createNew() : CustomerMaintComp.fromCustomer(customer);
+                    comp.setWindow(window);
+                    window.setContent(comp);
+                    UI.getCurrent().addWindow(window);
+                }
+            });
+        }
+    }
 
-				@Override
-				public void valueChange(Property.ValueChangeEvent event) {
-					reBuildBillLayout((Customer) getValue());
-					setButtonsEnabled(getValue() != null);
-				}
-			});
-		}
+    private class SearchComboBox extends ComboBox {
+        private SearchComboBox(List<Customer> customerList) {
+            setImmediate(true);
+            setCaption(null);
+            setWidth("300px");
+            setIcon(FontAwesome.SEARCH);
+            setItemCaptionPropertyId("name");
+            addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+            addStyleName(ValoTheme.COMBOBOX_ALIGN_RIGHT);
+            setContainerDataSource(new BeanItemContainer<Customer>(Customer.class, customerList));
+            addValueChangeListener(new ValueChangeListener() {
 
-		public void refresh() {
-			setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(CustomerRepo.class).findAll(
-					new Sort(Direction.ASC, "name"))));
-		}
+                @Override
+                public void valueChange(Property.ValueChangeEvent event) {
+                    Customer customer = (Customer) getValue();
+                    reBuildBillLayout(customer);
+                    setButtonsEnabled(getValue() != null);
+                    Bill bill = billRepo.getOpenBillByCustomerId(customer.getId());
+                    if (null != bill) {
+                        addBillBtn.setEnabled(false);
+                    }
+                }
+            });
+        }
 
-	}
+        public void refresh() {
+            setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(CustomerRepo.class).findAll(
+                    new Sort(Direction.ASC, "name"))));
+        }
 
-	private class AddBillButton extends Button {
-		private AddBillButton() {
-			super("Új számla");
-			addClickListener(new ClickListener() {
-				@Override
-				public void buttonClick(ClickEvent event) {
-					Customer customer = (Customer) searchCombo.getValue();
-					final KWindow window = new KWindow("Új számla");
-					BillAdditionalComp comp = BillAdditionalComp.fromCustomer(customer);
-					comp.setWindow(window);
-					window.setContent(comp);
-					UI.getCurrent().addWindow(window);
-				}
-			});
-		}
-	}
+    }
 
-	private class DeleteButton extends Button {
-		private DeleteButton(String caption) {
-			super(caption);
-			addClickListener(new ClickListener() {
-				@Override
-				public void buttonClick(ClickEvent event) {
-					try {
-						Customer customer = (Customer) searchCombo.getValue();
-						ServiceLocator.getBean(CustomerService.class).deleteCustomer(customer.getId());
-						searchCombo.setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(
-								CustomerRepo.class).findAll(new Sort(Direction.ASC, "name"))));
-					} catch (Exception e) {
-						UIExceptionHandler.handleException(e);
-					}
-				}
-			});
-		}
-	}
+    private class AddBillButton extends Button {
+        private AddBillButton() {
+            super("Új számla");
+            addClickListener(new ClickListener() {
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    Customer customer = (Customer) searchCombo.getValue();
+                    final KWindow window = new KWindow("Új számla");
+                    BillAdditionalComp comp = BillAdditionalComp.fromCustomer(customer);
+                    comp.setWindow(window);
+                    window.setContent(comp);
+                    UI.getCurrent().addWindow(window);
+                }
+            });
+        }
+    }
 
-	private void setButtonsEnabled(boolean enabled) {
-		addBillBtn.setEnabled(enabled);
-		modifyBtn.setEnabled(enabled);
-		deleteBtn.setEnabled(enabled);
-	}
+    private class DeleteButton extends Button {
+        private DeleteButton(String caption) {
+            super(caption);
+            addClickListener(new ClickListener() {
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    try {
+                        Customer customer = (Customer) searchCombo.getValue();
+                        ServiceLocator.getBean(CustomerService.class).deleteCustomer(customer.getId());
+                        searchCombo.setContainerDataSource(new BeanItemContainer<>(Customer.class, ServiceLocator.getBean(
+                                CustomerRepo.class).findAll(new Sort(Direction.ASC, "name"))));
+                    } catch (Exception e) {
+                        UIExceptionHandler.handleException(e);
+                    }
+                }
+            });
+        }
+    }
 
-	private static class BillComparator implements Comparator<Bill> {
+    private void setButtonsEnabled(boolean enabled) {
+        addBillBtn.setEnabled(enabled);
+        modifyBtn.setEnabled(enabled);
+        deleteBtn.setEnabled(enabled);
+    }
 
-		@Override
-		public int compare(Bill o1, Bill o2) {
-			return o1.getOpenDate().compareTo(o2.getOpenDate());
-		}
+    private static class BillComparator implements Comparator<Bill> {
 
-	}
+        @Override
+        public int compare(Bill o1, Bill o2) {
+            return o1.getOpenDate().compareTo(o2.getOpenDate());
+        }
 
-	private static class BillBoxComparator implements Comparator<BillBox> {
+    }
 
-		@Override
-		public int compare(BillBox o1, BillBox o2) {
-			return o1.getCurrentBill().getOpenDate().compareTo(o2.getCurrentBill().getOpenDate());
-		}
+    private static class BillBoxComparator implements Comparator<BillBox> {
 
-	}
+        @Override
+        public int compare(BillBox o1, BillBox o2) {
+            return o1.getCurrentBill().getOpenDate().compareTo(o2.getCurrentBill().getOpenDate());
+        }
+
+    }
 
 }

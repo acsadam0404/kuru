@@ -1,5 +1,6 @@
 package hu.kuru.article
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.EqualsAndHashCode
 import hu.kuru.BaseEntity
 import hu.kuru.ServiceLocator
@@ -40,6 +41,7 @@ class Article extends BaseEntity {
 	String description
 	@NotNull
 	boolean active
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@NotNull
 	ArticleCategory articleCategory

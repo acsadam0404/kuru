@@ -25,6 +25,8 @@ import hu.si.vaadin.converter.StringToIntegerConverter;
 
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -91,7 +93,7 @@ public class BillBox extends CustomComponent {
 		List<Item> itemList = Item.findByBill(currentBill.getId());
 		box.addComponent(buildHeader());
 		box.addComponent(buildTable(itemList));
-		box.addComponent(buildFooter(getSum(itemList)));
+		box.addComponent(buildFooter());
 
 		panel = new Panel(currentBill.getCustomer().getCode() + " - "
 				+ currentBill.getCustomer().getName());
@@ -124,15 +126,7 @@ public class BillBox extends CustomComponent {
 		return layout;
 	}
 
-	private int getSum(List<Item> itemList) {
-		int sum = 0;
-		for (Item item : itemList) {
-			sum += item.getAmount() * item.getArticle().getPrice();
-		}
-		return sum;
-	}
-
-	private Component buildFooter(int sum) {
+	private Component buildFooter() {
 		HorizontalLayout footer = new HorizontalLayout();
 		footer.setSizeUndefined();
 		footer.setWidth("100%");
@@ -144,8 +138,7 @@ public class BillBox extends CustomComponent {
 			buttonLayout.addComponent(new AddItemButton());
 			buttonLayout.addComponent(new CloseButton());
 		}
-
-		Label price = new Label("Ár: " + getChangedSum(sum));
+		Label price = new Label("Ár: " + round(currentBill) + " ");
 		price.setStyleName(ValoTheme.LABEL_BOLD);
 		priceLayout.addComponent(price);
 
@@ -156,46 +149,14 @@ public class BillBox extends CustomComponent {
 		return footer;
 	}
 
-	private String getChangedSum(int sum) {
-
-		DecimalFormat format = new DecimalFormat("#.##");
-		double result = 0;
-		String currency = currentBill.getCurrency();
-		try {
-			if (!Currency.HUF.name().equals(currency)) {
-				List<ExchangeRate> list = ServiceLocator.getBean(
-						MNBExchangeRateService.class).getExchangeRates();
-				if (Currency.EUR.name().equals(currency)) {
-					result = sum / getRate(list, Currency.EUR.name());
-				} else if (Currency.GBP.name().equals(currency)) {
-					result = sum / getRate(list, Currency.GBP.name());
-				} else if (Currency.USD.name().equals(currency)) {
-					result = sum / getRate(list, Currency.USD.name());
-				}
-				result = Double.valueOf(format.format(result).replace(",", "."));
-			} else {
-				return new StringToIntegerConverter(AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY).convertToPresentation(sum)+ " Ft";
-			}
-		} catch (MNBServiceException e) {
-			new KNotification("Sikertelen MNB árfolyam lekérdezés.").withDescription("A árak forintban jelennek meg.");
-			return "Sikertelen";
-		}
-		return new StringToDoubleConverter(
+	private String round(Bill currentBill) {
+		String result = !"HUF".equals(currentBill.getCurrency()) ? String.valueOf(currentBill.getSum()) :
+		new StringToDoubleConverter(
 				AbstractCustomizableStringToNumberConverter.FORMAT_MONETARY)
-				.convertToPresentation(result)
-				+ " " + currency;
+				.convertToPresentation(currentBill.getSum());
+		return  result + " " + currentBill.getCurrency();
 	}
 
-	private double getRate(List<ExchangeRate> list, String name)
-			throws MNBServiceException {
-		for (ExchangeRate exchangeRate : list) {
-			if (exchangeRate.getCurr().equals(name)) {
-				return Double
-						.valueOf(exchangeRate.getValue().replace(",", "."));
-			}
-		}
-		throw new MNBServiceException();
-	}
 
 	private List<ItemBean> getItemList(List<Item> itemList) {
 		List<ItemBean> beanList = new ArrayList<>();

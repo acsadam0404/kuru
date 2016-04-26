@@ -82,4 +82,22 @@ class User extends BaseEntity{
 	String toString() {
 		return username
 	}
+
+	boolean equals(o) {
+		if (this.is(o)) return true
+		if (getClass() != o.class) return false
+		if (!super.equals(o)) return false
+
+		User user = (User) o
+
+		if (username != user.username) return false
+
+		return true
+	}
+
+	int hashCode() {
+		int result = super.hashCode()
+		result = 31 * result + (username != null ? username.hashCode() : 0)
+		return result
+	}
 }

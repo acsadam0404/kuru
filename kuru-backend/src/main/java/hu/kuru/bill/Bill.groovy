@@ -34,7 +34,7 @@ class Bill extends BaseEntity {
 	@NotNull
 	Date openDate
 	Date closeDate
-	Long sum
+	double sum
 	@NotNull
 	String currency
 	static List<Bill> findByCustomer(Customer customer) {

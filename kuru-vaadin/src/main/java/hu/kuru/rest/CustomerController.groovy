@@ -33,6 +33,13 @@ class CustomerController {
         return new ResponseEntity<List<Bill>>(billRepo.findByCustomer(customerRepo.findByCode(code)), HttpStatus.OK)
     }
 
+    @RequestMapping(value = "/{code}/activebill", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseEntity getActiveBillByCustomer(
+            @PathVariable(value = "code") String code) {
+        return new ResponseEntity<Bill>(billRepo.getOpenBillByCustomerId(customerRepo.findByCode(code).id), HttpStatus.OK)
+    }
+
     @RequestMapping(value = "/{code}", method = RequestMethod.GET)
     @ResponseBody
     ResponseEntity getCustomer(

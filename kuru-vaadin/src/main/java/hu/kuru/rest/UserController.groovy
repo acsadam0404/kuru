@@ -34,7 +34,8 @@ class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity login(@RequestBody User user) {
-        if (userRepo.findAll().contains(user)) {
+        User found = userRepo.findByUsername(user.username)
+        if (found && found.password == user.password) {
             return new ResponseEntity(HttpStatus.OK)
         }
         return new ResponseEntity(HttpStatus.FORBIDDEN)

@@ -1,5 +1,7 @@
 package hu.kuru.rest
 
+import hu.kuru.bill.Bill
+import hu.kuru.bill.BillRepo
 import hu.kuru.item.Item
 import hu.kuru.item.ItemRepo
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController
 class ItemController {
     @Autowired
     ItemRepo itemRepo
+    @Autowired
+    BillRepo billRepo
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -34,6 +38,9 @@ class ItemController {
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity addItem(@RequestBody Item item) {
         itemRepo.save(item)
+        Bill bill = billRepo.findById(item.getBill().id)
+        bill.setSum(bill.getSum() + item.getAmount()*item.getArticle().getPrice())
+        billRepo.save(bill)
         return new ResponseEntity<Item>(item, HttpStatus.CREATED)
     }
 
