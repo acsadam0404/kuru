@@ -61,6 +61,18 @@ class Item extends BaseEntity {
 		repo.save(this)
 	}
 
+	Item save(double changedSum) {
+		if(0 != changedSum) {
+			repo.save(this)
+			Bill bill = this.bill
+			bill.setSum(bill.getSum() + changedSum)
+			bill.save()
+		}
+		return this
+	}
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

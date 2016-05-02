@@ -1,9 +1,15 @@
 package hu.kuru.rest
 
+import hu.kuru.ServiceLocator
 import hu.kuru.bill.Bill
 import hu.kuru.bill.BillRepo
+import hu.kuru.enums.Currency
+import hu.kuru.external.mnb.ExchangeRate
+import hu.kuru.external.mnb.MNBExchangeRateService
+import hu.kuru.external.mnb.MNBServiceException
 import hu.kuru.item.Item
 import hu.kuru.item.ItemRepo
+import hu.kuru.vaadin.component.KNotification
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -37,10 +43,7 @@ class ItemController {
 
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity addItem(@RequestBody Item item) {
-        itemRepo.save(item)
-        Bill bill = billRepo.findById(item.getBill().id)
-        bill.setSum(bill.getSum() + item.getAmount()*item.getArticle().getPrice())
-        billRepo.save(bill)
+        item.save(getChangedSum(item.getArticle().getPrice() * item.getAmount(), item.bill))
         return new ResponseEntity<Item>(item, HttpStatus.CREATED)
     }
 
@@ -48,6 +51,41 @@ class ItemController {
     ResponseEntity deleteItemById(@PathVariable("id") Long id) {
         itemRepo.delete(id)
         return new ResponseEntity<>(HttpStatus.NO_CONTENT)
+    }
+
+    private double getChangedSum(double sum, Bill bill) {
+        double result = 0;
+        String currency = bill.getCurrency();
+        try {
+            if (!Currency.HUF.name().equals(currency)) {
+                List<ExchangeRate> list = ServiceLocator.getBean(
+                        MNBExchangeRateService.class).getExchangeRates();
+                if (Currency.EUR.name().equals(currency)) {
+                    result = sum / getRate(list, Currency.EUR.name());
+                } else if (Currency.GBP.name().equals(currency)) {
+                    result = sum / getRate(list, Currency.GBP.name());
+                } else if (Currency.USD.name().equals(currency)) {
+                    result = sum / getRate(list, Currency.USD.name());
+                }
+            } else {
+                return sum;
+            }
+        } catch (MNBServiceException e) {
+            new KNotification("Sikertelen MNB árfolyam lekérdezés.").withDescription("A árak forintban jelennek meg.");
+            return 0;
+        }
+        return result;
+    }
+
+    private double getRate(List<ExchangeRate> list, String name)
+            throws MNBServiceException {
+        for (ExchangeRate exchangeRate : list) {
+            if (exchangeRate.getCurr().equals(name)) {
+                return Double
+                        .valueOf(exchangeRate.getValue().replace(",", "."));
+            }
+        }
+        throw new MNBServiceException();
     }
 
 }

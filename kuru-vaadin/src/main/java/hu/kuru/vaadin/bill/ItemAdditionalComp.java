@@ -86,9 +86,7 @@ public class ItemAdditionalComp extends CustomComponent {
                         item.setArticle((Article) article.getValue());
                         item.setAmount((long) amount.getConvertedValue());
                         item.setCreateDate(new Date());
-                        item.save();
-                        bill.setSum(bill.getSum() + getChangedSum(item.getArticle().getPrice() * item.getAmount(), bill));
-                        bill.save();
+                        item.save(getChangedSum(item.getArticle().getPrice() * item.getAmount(), bill));
                         window.close();
                         UIEventBus.post(new ItemAddedEvent(bill.getId()));
                     } catch (InvalidValueException e) {

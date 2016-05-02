@@ -1,5 +1,6 @@
 package hu.kuru.customer
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.EqualsAndHashCode
 import hu.kuru.BaseEntity
 import hu.kuru.ServiceLocator
@@ -36,7 +37,8 @@ class Customer extends BaseEntity {
 	
 	@NotNull
 	String name
-	
+
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
 	Set<Bill> bills = []
 

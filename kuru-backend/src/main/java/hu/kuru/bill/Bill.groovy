@@ -28,7 +28,6 @@ class Bill extends BaseEntity {
 	}
 
 	@NotNull
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	Customer customer
 	@NotNull
