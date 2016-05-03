@@ -243,7 +243,7 @@ public class BillComp extends CustomComponent {
                     Customer customer = (Customer) getValue();
                     reBuildBillLayout(customer);
                     setButtonsEnabled(getValue() != null);
-                    Bill bill = billRepo.getOpenBillByCustomerId(customer.getId());
+                    Bill bill = null != customer ? billRepo.getOpenBillByCustomerId(customer.getId()) : null;
                     if (null != bill) {
                         addBillBtn.setEnabled(false);
                     }

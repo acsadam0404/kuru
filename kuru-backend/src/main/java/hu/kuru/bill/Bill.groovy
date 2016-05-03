@@ -68,7 +68,6 @@ class Bill extends BaseEntity {
 		result = prime * result + ((currency == null) ? 0 : currency.hashCode());
 		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
 		result = prime * result + ((openDate == null) ? 0 : openDate.hashCode());
-		result = prime * result + ((sum == null) ? 0 : sum.hashCode());
 		return result;
 	}
 
@@ -105,12 +104,7 @@ class Bill extends BaseEntity {
 		}
 		else if (!openDate.equals(other.openDate))
 			return false;
-		if (sum == null) {
-			if (other.sum != null)
-				return false;
-		}
-		else if (!sum.equals(other.sum))
-			return false;
+
 		return true;
 	}
 	
